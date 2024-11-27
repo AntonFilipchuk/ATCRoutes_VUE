@@ -17,7 +17,7 @@ import { onMounted, ref } from 'vue';
 import GeographicCoordinate from '@/utils/Classes/GeographicCoordinate';
 import type IGeographicalCoordinate from '@/utils/Interfaces/IGeographicalCoordinate';
 import CanvasesContainer from './CanvasesContainer.vue';
-import AIPRoutePoint from '@/utils/Classes/AIPRoute/AIPRoutePoint';
+//import AIPRoutePoint from '@/utils/Classes/AIPRoute/AIPRoutePoint';
 import AIPRoute from '@/utils/Classes/AIPRoute/AIPRoute';
 
 const coordinatesPath = "/coordinates.json";
@@ -26,7 +26,7 @@ const AIPRoutesPath = "/AIPRoutes.json"
 const loading = ref(true);
 
 let coordinates: GeographicCoordinate[] = [];
-const AIPRoutes: AIPRoute[] = [];
+let AIPRoutes: AIPRoute[] = [];
 let errorMessage: string | null = null;
 
 onMounted(async () => await load());
@@ -57,11 +57,7 @@ async function load() {
         }
 
         if (AIPRoutesJSON.routes) {
-            AIPRoutesJSON.routes.forEach((route: { points: { name: string; altitude: number; }[]; name: string; id: number; }) => {
-                const aipPoints = route.points.map(point => new AIPRoutePoint(point.name, point.altitude))
-                AIPRoutes.push(new AIPRoute(route.name, route.id, aipPoints))
-            }
-            )
+            AIPRoutes = AIPRoutesJSON.routes
         }
         else {
             errorMessage = "No AIP routes found"

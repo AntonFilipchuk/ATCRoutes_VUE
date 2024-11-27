@@ -13,7 +13,7 @@ export function drawPoints(
 }
 
 export function drawPoint(
-  point: RoutePoint,
+  point: { x: number; y: number },
   width: number,
   canvasContext: CanvasRenderingContext2D,
 ): Path2D {

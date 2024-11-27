@@ -18,7 +18,7 @@ const props = defineProps<{
     canvasHeigh: number,
     pointWidth: number,
     lineWidth: number,
-    route: Route
+    route: Route | undefined
 }>()
 
 const canvas = ref(null);
@@ -26,7 +26,6 @@ let canvasContext: CanvasRenderingContext2D | undefined = undefined;
 let selectedPoint: RoutePoint | undefined = undefined;
 
 onMounted(() => {
-
     try {
         canvasContext = getCanvasInfo(canvas.value).canvasContext;
         setCanvasDimensions(canvasContext, props.canvasWidth, props.canvasHeigh)
@@ -38,11 +37,17 @@ onMounted(() => {
 })
 
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-    drawLines(props.route.points, "black", props.lineWidth, canvasContext)
-    drawPoints(props.route.points, "black", props.pointWidth, canvasContext)
+    if (props.route) {
+        drawLines(props.route.points, "black", props.lineWidth, canvasContext)
+        drawPoints(props.route.points, "black", props.pointWidth, canvasContext)
+    }
+
 }
 
 function clickPoint(event: MouseEvent) {
+
+    if (!props.route) { return }
+
     const x = event.offsetX;
     const y = event.offsetY;
 
@@ -77,6 +82,6 @@ canvas {
     position: absolute;
     left: 0;
     top: 0;
-    z-index: 2;
+    z-index: 3;
 }
 </style>

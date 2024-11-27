@@ -24,14 +24,9 @@ onMounted(() => {
     try {
         const canvasContext = getCanvasInfo(pointsCanvas.value).canvasContext;
         setCanvasDimensions(canvasContext, props.canvasWidth, props.canvasHeigh);
-        console.log("1",props.routes[0]);
-        
         props.routes.forEach(route => {
             drawPoints(route.points, getRandomColor(), props.pointWidth, canvasContext)
         });
-
-        console.log("2",props.routes[0]);
-
     } catch (error) {
         console.error(error)
     }

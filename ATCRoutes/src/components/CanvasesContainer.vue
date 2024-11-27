@@ -4,7 +4,10 @@
             :routes="routes" />
         <PointsCanvas :point-width="pointWidth" :canvas-heigh="props.canvasHeight" :canvas-width="props.canvasWidth"
             :routes="routes" />
-        <ActiveRouteCanvas :line-width="lineWidth" :point-width="pointWidth" :canvas-heigh="props.canvasHeight" :canvas-width="props.canvasWidth" :route="routes[0]" />
+        <ActiveRouteCanvas :line-width="lineWidth" :point-width="pointWidth" :canvas-heigh="props.canvasHeight"
+            :canvas-width="props.canvasWidth" :route="activeRoute" />
+        <ConflictPointsCanvas :active-route="activeRoute" :routes="routes" :canvas-heigh="props.canvasHeight"
+            :canvas-width="props.canvasWidth" :point-width="pointWidth" />
     </div>
 </template>
 
@@ -23,6 +26,7 @@ import normalizePoints from '@/utils/Modules/normalizePoints';
 import PointsCanvas from './Canvases/PointsCanvas.vue';
 import LinesCanvas from './Canvases/LinesCanvas.vue';
 import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
+import ConflictPointsCanvas from './Canvases/ConflictPointsCanvas.vue';
 
 const props = defineProps<{
     coordinates: GeographicCoordinate[],
@@ -39,6 +43,7 @@ const lineWidth = 15;
 
 let points: Point[] = [];
 const routes: Route[] = [];
+let activeRoute: Route | undefined = undefined;
 const originCoordinate: GeographicCoordinate | undefined = props.coordinates.find(coordinate => {
     return coordinate.name === props.originPointName
 })
@@ -68,6 +73,21 @@ props.aipRoutes.forEach((route: AIPRoute) => {
     })
     routes.push(new Route(route.name, routePoints))
 })
+
+setActiveRoute(routes[0]);
+
+function setActiveRoute(route: Route) {
+
+    if (activeRoute && activeRoute !== route) {
+        routes.push(activeRoute);
+    }
+
+    activeRoute = route;
+    const index = routes.indexOf(route);
+    if (index > -1) {
+        routes.splice(index, 1)
+    }
+}
 </script>
 
 
