@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import type IntersectionPoint from '@/utils/Classes/IntersectionPoint';
 import type Route from '@/utils/Classes/Route/Route';
-import { drawPoint } from '@/utils/Modules/drawer';
+import { cleanCanvas, drawPoint } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import findIntersections from '@/utils/Modules/intersectionsFinder';
 import { ref, defineProps, onMounted } from 'vue';
@@ -19,6 +19,10 @@ const props = defineProps<{
     activeRoute: Route | undefined,
     routes: Route[]
 }>()
+
+defineExpose({
+    redrawConflictPoints
+})
 
 const canvas = ref(null);
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
@@ -35,17 +39,23 @@ onMounted(() => {
     }
 })
 
+function redrawConflictPoints() {
+    if (canvasContext) {
+        cleanCanvas(canvasContext)
+        drawContent(canvasContext);
+    }
+    else {
+        throw new Error("Can't access conflict points canvas context!")
+    }
+};
+
 function drawContent(canvasContext: CanvasRenderingContext2D) {
     if (!props.activeRoute) {
         return
     }
     const intersections: IntersectionPoint[] = findIntersections(props.activeRoute, props.routes);
 
-    //intersections = intersections.slice(0,1)
-
-    console.log(intersections);
-    
-    
+    //TODO: FIX point style
     canvasContext.fillStyle = "red"
 
     intersections.forEach(intersection => {

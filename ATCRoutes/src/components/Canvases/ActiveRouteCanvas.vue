@@ -21,6 +21,10 @@ const props = defineProps<{
     route: Route | undefined
 }>()
 
+const emits = defineEmits(
+    ['activeRouteChange']
+)
+
 const canvas = ref(null);
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
 let selectedPoint: RoutePoint | undefined = undefined;
@@ -70,6 +74,7 @@ function clickPoint(event: MouseEvent) {
         cleanCanvas(canvasContext)
         drawContent(canvasContext)
         selectedPoint = undefined;
+        emits('activeRouteChange')
     }
 
 }

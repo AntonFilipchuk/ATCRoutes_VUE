@@ -4,10 +4,11 @@
             :routes="routes" />
         <PointsCanvas :point-width="pointWidth" :canvas-heigh="props.canvasHeight" :canvas-width="props.canvasWidth"
             :routes="routes" />
-        <ActiveRouteCanvas :line-width="lineWidth" :point-width="pointWidth" :canvas-heigh="props.canvasHeight"
-            :canvas-width="props.canvasWidth" :route="activeRoute" />
-        <ConflictPointsCanvas :active-route="activeRoute" :routes="routes" :canvas-heigh="props.canvasHeight"
-            :canvas-width="props.canvasWidth" :point-width="pointWidth" />
+        <ActiveRouteCanvas ref="activeRouteCanvas" :line-width="lineWidth" :point-width="pointWidth"
+            :canvas-heigh="props.canvasHeight" :canvas-width="props.canvasWidth" :route="activeRoute"
+            @active-route-change="redrawCanvases" />
+        <ConflictPointsCanvas ref="conflictPointsCanvas" :active-route="activeRoute" :routes="routes"
+            :canvas-heigh="props.canvasHeight" :canvas-width="props.canvasWidth" :point-width="pointWidth" />
     </div>
 </template>
 
@@ -27,6 +28,7 @@ import PointsCanvas from './Canvases/PointsCanvas.vue';
 import LinesCanvas from './Canvases/LinesCanvas.vue';
 import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
 import ConflictPointsCanvas from './Canvases/ConflictPointsCanvas.vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
     coordinates: GeographicCoordinate[],
@@ -38,11 +40,15 @@ const props = defineProps<{
     aipRoutes: AIPRoute[]
 }>();
 
+const conflictPointsCanvas = ref<InstanceType<typeof ConflictPointsCanvas> | null>(null);
+
 const pointWidth = 25;
 const lineWidth = 15;
 
 let points: Point[] = [];
 const routes: Route[] = [];
+
+
 let activeRoute: Route | undefined = undefined;
 const originCoordinate: GeographicCoordinate | undefined = props.coordinates.find(coordinate => {
     return coordinate.name === props.originPointName
@@ -74,6 +80,8 @@ props.aipRoutes.forEach((route: AIPRoute) => {
     routes.push(new Route(route.name, routePoints))
 })
 
+
+//TODO: move logic for selecting active route
 setActiveRoute(routes[0]);
 
 function setActiveRoute(route: Route) {
@@ -86,6 +94,15 @@ function setActiveRoute(route: Route) {
     const index = routes.indexOf(route);
     if (index > -1) {
         routes.splice(index, 1)
+    }
+}
+
+function redrawCanvases() {
+
+    console.log("Redrawing canvases!");
+
+    if (conflictPointsCanvas.value) {
+        conflictPointsCanvas.value.redrawConflictPoints();
     }
 }
 </script>
