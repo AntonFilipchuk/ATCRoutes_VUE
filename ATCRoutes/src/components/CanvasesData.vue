@@ -11,7 +11,9 @@
             <ConflictPointsCanvas ref="conflictPointsCanvas" :active-route="activeRoute" :routes="routes"
                 :canvas-heigh="canvasHeight" :canvas-width="canvasWidth" :point-width="pointWidth" />
         </div>
-        <div></div>
+        <div>
+            <IntersectionsList />
+        </div>
     </div>
 </template>
 
@@ -36,6 +38,7 @@ import { coordinatesStore } from '@/stores/coordinatesStore';
 import { AIPRoutesStore } from '@/stores/AIPRoutesStore';
 import { routesStore } from '@/stores/routesStore';
 import { activeRouteStore, } from '@/stores/activeRouteStore';
+import IntersectionsList from './IntersectionsList.vue';
 
 
 const props = defineProps<{

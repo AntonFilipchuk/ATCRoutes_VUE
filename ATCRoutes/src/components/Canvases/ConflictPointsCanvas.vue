@@ -5,12 +5,13 @@
 </template>
 <script setup lang="ts">
 import { activeRouteStore } from '@/stores/activeRouteStore';
+import { intersectionsStore } from '@/stores/intersectionsStore';
 import type IntersectionPoint from '@/utils/Classes/IntersectionPoint';
 import type Route from '@/utils/Classes/Route/Route';
 import { cleanCanvas, drawPoint } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import findIntersections from '@/utils/Modules/intersectionsFinder';
-import { ref, defineProps, onMounted } from 'vue';
+import { ref, defineProps, onMounted, computed } from 'vue';
 
 
 const props = defineProps<{
@@ -26,7 +27,7 @@ defineExpose({
 
 const canvas = ref(null);
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
-const activeRoute = activeRouteStore().activeRoute;
+const activeRoute = computed(() => activeRouteStore().activeRoute);
 
 onMounted(() => {
     try {
@@ -48,11 +49,15 @@ function redrawConflictPoints() {
     }
 };
 
+//TODO: move calculation of intersections to a separate module
+
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-    if (!activeRoute) {
+    if (!activeRoute.value) {
         return
     }
-    const intersections: IntersectionPoint[] = findIntersections(activeRoute, props.routes);
+    const intersections: IntersectionPoint[] = findIntersections(activeRoute.value, props.routes);
+
+    intersectionsStore().$patch({ intersections: intersections })
 
     //TODO: FIX point style
     canvasContext.fillStyle = "red"
