@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 
-import type Route from '@/utils/Classes/Route/Route';
+import { activeRouteStore } from '@/stores/activeRouteStore';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
 import drawLines, { cleanCanvas, drawPoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
@@ -18,12 +18,12 @@ const props = defineProps<{
     canvasHeigh: number,
     pointWidth: number,
     lineWidth: number,
-    route: Route | undefined
 }>()
 
 const emits = defineEmits(
     ['activeRouteChange']
 )
+const activeRoute = activeRouteStore().activeRoute;
 
 const canvas = ref(null);
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
@@ -37,20 +37,21 @@ onMounted(() => {
     } catch (error) {
         console.error(error)
     }
-
 })
 
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-    if (props.route) {
-        drawLines(props.route.points, "black", props.lineWidth, canvasContext)
-        drawPoints(props.route.points, "black", props.pointWidth, canvasContext)
+    if (activeRoute) {
+        drawLines(activeRoute.points, "black", props.lineWidth, canvasContext)
+        drawPoints(activeRoute.points, "black", props.pointWidth, canvasContext)
     }
-
+    else {
+        console.error("No route to draw!")
+    }
 }
 
 function clickPoint(event: MouseEvent) {
 
-    if (!props.route) { return }
+    if (!activeRoute) { return }
 
     const x = event.offsetX;
     const y = event.offsetY;
@@ -60,7 +61,7 @@ function clickPoint(event: MouseEvent) {
     }
 
     if (!selectedPoint) {
-        props.route.points.forEach(point => {
+        activeRoute.points.forEach(point => {
             if (canvasContext!.isPointInPath(point.path2D!, x, y) ||
                 canvasContext!.isPointInStroke(point.path2D!, x, y)) {
                 selectedPoint = point;

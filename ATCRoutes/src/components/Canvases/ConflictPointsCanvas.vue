@@ -4,6 +4,7 @@
     </div>
 </template>
 <script setup lang="ts">
+import { activeRouteStore } from '@/stores/activeRouteStore';
 import type IntersectionPoint from '@/utils/Classes/IntersectionPoint';
 import type Route from '@/utils/Classes/Route/Route';
 import { cleanCanvas, drawPoint } from '@/utils/Modules/drawer';
@@ -16,7 +17,6 @@ const props = defineProps<{
     canvasWidth: number,
     canvasHeigh: number,
     pointWidth: number,
-    activeRoute: Route | undefined,
     routes: Route[]
 }>()
 
@@ -26,10 +26,9 @@ defineExpose({
 
 const canvas = ref(null);
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
+const activeRoute = activeRouteStore().activeRoute;
 
 onMounted(() => {
-    console.log(props.activeRoute, props.routes);
-
     try {
         canvasContext = getCanvasInfo(canvas.value).canvasContext;
         setCanvasDimensions(canvasContext, props.canvasWidth, props.canvasHeigh)
@@ -50,10 +49,10 @@ function redrawConflictPoints() {
 };
 
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-    if (!props.activeRoute) {
+    if (!activeRoute) {
         return
     }
-    const intersections: IntersectionPoint[] = findIntersections(props.activeRoute, props.routes);
+    const intersections: IntersectionPoint[] = findIntersections(activeRoute, props.routes);
 
     //TODO: FIX point style
     canvasContext.fillStyle = "red"
