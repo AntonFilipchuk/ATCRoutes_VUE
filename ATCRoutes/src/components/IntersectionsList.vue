@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <table>
             <thead>
                 <tr>
@@ -16,7 +15,7 @@
                     <td>{{ intersection.route1.name }} - {{ intersection.route2.name }}</td>
                     <td>[{{ intersection.sectionRoute1[0].name }} - {{ intersection.sectionRoute1[1].name }}] - [{{
                         intersection.sectionRoute2[0].name }} - {{ intersection.sectionRoute2[1].name }}]</td>
-                        <td>FL{{ intersection.z }}</td>
+                    <td>FL{{ intersection.z }}</td>
                 </tr>
             </tbody>
         </table>
@@ -27,4 +26,9 @@ import { intersectionsStore } from '@/stores/intersectionsStore';
 import { computed } from 'vue';
 const intersections = computed(() => intersectionsStore().intersections);
 </script>
-<style></style>
+<style scoped>
+table {
+    width: 100%;
+    font-size: 46px;
+}
+</style>

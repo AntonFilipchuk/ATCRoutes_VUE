@@ -7,51 +7,53 @@
 
 <script setup lang="ts">
 
-import { activeRouteStore } from '@/stores/activeRouteStore';
+import { canvasDataStore } from '@/stores/canvasDataStore';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
 import drawLines, { cleanCanvas, drawPoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
-const props = defineProps<{
-    canvasWidth: number,
-    canvasHeigh: number,
-    pointWidth: number,
-    lineWidth: number,
-}>()
-
-const emits = defineEmits(
-    ['activeRouteChange']
-)
-const activeRoute = computed(() => activeRouteStore().activeRoute);
 
 const canvas = ref(null);
+const canvasStore = computed(() => canvasDataStore())
+const watchedProperties = [
+    computed(() => canvasStore.value.canvasData?.width),
+    computed(() => canvasStore.value.canvasData?.height),
+    computed(() => canvasStore.value.canvasData?.activeRoute)
+]
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
 let selectedPoint: RoutePoint | undefined = undefined;
 
+watch(watchedProperties, () => {
+    renderCanvas();
+})
+
 onMounted(() => {
     try {
-        canvasContext = getCanvasInfo(canvas.value).canvasContext;
-        setCanvasDimensions(canvasContext, props.canvasWidth, props.canvasHeigh)
-        drawContent(canvasContext)
+        renderCanvas();
     } catch (error) {
         console.error(error)
     }
 })
 
+function renderCanvas() {
+    canvasContext = getCanvasInfo(canvas.value).canvasContext;
+    setCanvasDimensions(canvasContext, canvasStore.value.canvasData!.width, canvasStore.value.canvasData!.height)
+    drawContent(canvasContext)
+}
+
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-    if (activeRoute.value) {
-        drawLines(activeRoute.value.points, "black", props.lineWidth, canvasContext)
-        drawPoints(activeRoute.value.points, "black", props.pointWidth, canvasContext)
-    }
-    else {
-        console.error("No route to draw!")
+    const route = canvasStore.value.canvasData!.activeRoute;
+    if (route) {
+        drawLines(route.points, "black", route.lineWidth, canvasContext)
+        drawPoints(route.points, "black", route.pointWidth, canvasContext)
     }
 }
 
 function clickPoint(event: MouseEvent) {
 
-    if (!activeRoute.value) { return }
+    const route = canvasStore.value.canvasData!.activeRoute;
+    if (!route) { return }
 
     const x = event.offsetX;
     const y = event.offsetY;
@@ -61,7 +63,7 @@ function clickPoint(event: MouseEvent) {
     }
 
     if (!selectedPoint) {
-        activeRoute.value.points.forEach(point => {
+        route!.points.forEach(point => {
             if (canvasContext!.isPointInPath(point.path2D!, x, y) ||
                 canvasContext!.isPointInStroke(point.path2D!, x, y)) {
                 selectedPoint = point;
@@ -75,9 +77,7 @@ function clickPoint(event: MouseEvent) {
         cleanCanvas(canvasContext)
         drawContent(canvasContext)
         selectedPoint = undefined;
-        emits('activeRouteChange')
     }
-
 }
 
 </script>
@@ -85,7 +85,7 @@ function clickPoint(event: MouseEvent) {
 
 <style scoped>
 canvas {
-    position: absolute;
+    /* position: absolute; */
     left: 0;
     top: 0;
     z-index: 3;

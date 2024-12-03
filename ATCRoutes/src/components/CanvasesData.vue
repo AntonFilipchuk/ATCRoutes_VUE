@@ -1,17 +1,27 @@
 <template>
     <div>
         <div>
-            <LinesCanvas :line-width="lineWidth" :canvas-heigh="canvasHeight" :canvas-width="canvasWidth"
-                :routes="routes" />
-            <PointsCanvas :point-width="pointWidth" :canvas-heigh="canvasHeight" :canvas-width="canvasWidth"
-                :routes="routes" />
-            <ActiveRouteCanvas ref="activeRouteCanvas" :line-width="lineWidth" :point-width="pointWidth"
-                :canvas-heigh="canvasHeight" :canvas-width="canvasWidth" :route="activeRoute"
-                @active-route-change="redrawCanvases" />
-            <ConflictPointsCanvas ref="conflictPointsCanvas" :active-route="activeRoute" :routes="routes"
-                :canvas-heigh="canvasHeight" :canvas-width="canvasWidth" :point-width="pointWidth" />
+            <h1>Size: {{ canvasWidth }} by {{ canvasHeight }}</h1>
+            <button @click="increaseCanvasSize" style="font-size: 32px;">Increase</button>
+            <button @click="decreaseCanvasSize" style="font-size: 32px;">Decrease</button>
         </div>
         <div>
+            <select style="font-size: 32px;" v-model="activeRoute">
+                <option v-for="(route, index) in routes" :key="index" :value="route">
+                    {{ route.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction:row; align-items: stretch;">
+        <div :style="canvasContainerStyle">
+            <LinesCanvas />
+            <PointsCanvas />
+            <ActiveRouteCanvas />
+            <!-- <ConflictPointsCanvas ref="conflictPointsCanvas" :active-route="activeRoute" :routes="routes"
+                :canvas-heigh="canvasHeight" :canvas-width="canvasWidth" :point-width="pointWidth" />  -->
+        </div>
+        <div style="display: flex; flex: 1; position: relative;">
             <IntersectionsList />
         </div>
     </div>
@@ -19,26 +29,17 @@
 
 <script setup lang="ts">
 import type AIPRoute from '@/utils/Classes/AIPRoute/AIPRoute';
-import type AIPRoutePoint from '@/utils/Classes/AIPRoute/AIPRoutePoint';
 import GeographicCoordinate from '@/utils/Classes/GeographicCoordinate';
-import Point from '@/utils/Classes/Point';
-import Route from '@/utils/Classes/Route/Route';
-import RoutePoint from '@/utils/Classes/Route/RoutePoint';
-import type IBearingAndDistance from '@/utils/Interfaces/IBearingAndDistance';
-import type ICartesianCoordinates from '@/utils/Interfaces/ICartesianCoordinates';
-import calculateBearingAndDistance from '@/utils/Modules/bearingAndDistanceCalculator';
-import calculateCartesianCoordinate from '@/utils/Modules/cartesianCoordinatesCalculator';
-import normalizePoints from '@/utils/Modules/normalizePoints';
-import PointsCanvas from './Canvases/PointsCanvas.vue';
 import LinesCanvas from './Canvases/LinesCanvas.vue';
-import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
-import ConflictPointsCanvas from './Canvases/ConflictPointsCanvas.vue';
-import { ref } from 'vue';
+import { computed, ref, type CSSProperties, type Ref } from 'vue';
 import { coordinatesStore } from '@/stores/coordinatesStore';
 import { AIPRoutesStore } from '@/stores/AIPRoutesStore';
-import { routesStore } from '@/stores/routesStore';
-import { activeRouteStore, } from '@/stores/activeRouteStore';
 import IntersectionsList from './IntersectionsList.vue';
+import CanvasData from '@/utils/Classes/CanvasData';
+import { canvasDataStore } from '@/stores/canvasDataStore';
+import PointsCanvas from './Canvases/PointsCanvas.vue';
+import type Route from '@/utils/Classes/Route/Route';
+import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
 
 
 const props = defineProps<{
@@ -47,80 +48,55 @@ const props = defineProps<{
     useMagneticBearing: boolean,
 }>();
 
-const conflictPointsCanvas = ref<InstanceType<typeof ConflictPointsCanvas> | null>(null);
-
-const canvasWidth: number = 2000
-const canvasHeight: number = 2000
-const pointWidth = 25;
-const lineWidth = 15;
-
+const canvasWidth: Ref<number> = ref(800)
+const canvasHeight: Ref<number> = ref(800)
 
 const coordinates = coordinatesStore().coordinates as GeographicCoordinate[];
 const aipRoutes = AIPRoutesStore().routes as AIPRoute[];
-const routes = routesStore().routes;
-const activeRoute = activeRouteStore().activeRoute;
-
-let points: Point[] = [];
 
 const originCoordinate: GeographicCoordinate | undefined = coordinates.find(coordinate => {
     return coordinate.name === props.originPointName
 })
 
+canvasDataStore().canvasData = new CanvasData(canvasWidth.value, canvasHeight.value, originCoordinate!, coordinates, aipRoutes, -11, true)
 
-if (!originCoordinate) {
-    const errorMessage = `Can't find origin point: ${props.originPointName}`;
-    console.error(errorMessage);
-    throw new Error(errorMessage);
-}
+const routes = computed(() => canvasDataStore().canvasData!.allRoutes)
 
-coordinates.forEach((coordinate: GeographicCoordinate) => {
-    const bearingAndDistance: IBearingAndDistance = calculateBearingAndDistance(originCoordinate, coordinate, props.magneticDeviation)
-    const cartesianCoordinates: ICartesianCoordinates = calculateCartesianCoordinate(bearingAndDistance, props.useMagneticBearing)
-    points.push(new Point(cartesianCoordinates.x, cartesianCoordinates.y, coordinate))
-})
-
-points = normalizePoints(points, canvasWidth, canvasHeight);
-
-aipRoutes.forEach((route: AIPRoute) => {
-    const routePoints: RoutePoint[] = []
-    route.points.forEach((point: AIPRoutePoint) => {
-        const p = points.find(p => p.name === point.name);
-        if (!p) {
-            throw new Error(`Can't find ${point.name} for ${route.name} route in points list!`)
-        }
-        routePoints.push(new RoutePoint(p.x, p.y, point.altitude, route.name, p.name));
-    })
-    routes.push(new Route(route.name, routePoints))
+const activeRoute = computed({
+    get() {
+        return canvasDataStore().canvasData!.activeRoute
+    },
+    set(route: Route) {
+        canvasDataStore().canvasData!.setActiveRoute(route)
+    }
 })
 
 
-//TODO: move logic for selecting active route
-setActiveRoute(routes[0]);
+const canvasContainerStyle = computed((): CSSProperties => ({
+    width: `${canvasWidth.value}px`,
+    height: `${canvasHeight.value}px`,
+    position: `relative`
+}))
 
-console.log("route", activeRouteStore().activeRoute);
 
-
-function setActiveRoute(route: Route) {
-
-    if (activeRoute && activeRoute !== route) {
-        routes.push(activeRoute);
-    }
-
-    //Important to change the value through using the store to retain reactivity
-    activeRouteStore().$patch({ activeRoute: route })
-
-    const index = routes.indexOf(route);
-    if (index > -1) {
-        routes.splice(index, 1)
-    }
+const increaseCanvasSize = () => {
+    canvasWidth.value += 200;
+    canvasHeight.value += 200;
+    updateCanvasData()
 }
 
-function redrawCanvases() {
-    if (conflictPointsCanvas.value) {
-        conflictPointsCanvas.value.redrawConflictPoints();
-    }
+const decreaseCanvasSize = () => {
+    canvasWidth.value -= 200;
+    canvasHeight.value -= 200;
+    updateCanvasData()
 }
+
+function updateCanvasData() {
+    const canvas = canvasDataStore().canvasData;
+    canvas!.changeSize(canvasWidth.value, canvasHeight.value)
+}
+
 </script>
 
 
-<style></style>
+<style scoped></style>

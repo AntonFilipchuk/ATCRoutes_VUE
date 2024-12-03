@@ -75,7 +75,7 @@ function drawContent(canvasContext: CanvasRenderingContext2D) {
 
 <style scoped>
 canvas {
-    position: absolute;
+    /* position: absolute; */
     left: 0;
     top: 0;
     z-index: 2;
