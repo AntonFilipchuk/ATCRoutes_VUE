@@ -40,7 +40,8 @@ function renderCanvas() {
     try {
         const canvasContext = getCanvasInfo(linesCanvas.value).canvasContext;
         setCanvasDimensions(canvasContext, canvasStore.canvasData.value.width, canvasStore.canvasData.value.height);
-        drawContent(canvasContext, canvasStore.canvasData.value.inactiveRoutes);
+        const routes = canvasStore.canvasData.value.allRoutes
+        drawContent(canvasContext, routes);
     } catch (error) {
         console.error(error);
     }

@@ -4,6 +4,7 @@
             <h1>Size: {{ canvasWidth }} by {{ canvasHeight }}</h1>
             <button @click="increaseCanvasSize" style="font-size: 32px;">Increase</button>
             <button @click="decreaseCanvasSize" style="font-size: 32px;">Decrease</button>
+            <button @click="test" style="font-size: 32px;">Test</button>
         </div>
         <div>
             <select style="font-size: 32px;" v-model="activeRoute">
@@ -17,7 +18,7 @@
         <div :style="canvasContainerStyle">
             <LinesCanvas />
             <PointsCanvas />
-            <ActiveRouteCanvas />
+            <ActiveRouteCanvas /> 
             <!-- <ConflictPointsCanvas ref="conflictPointsCanvas" :active-route="activeRoute" :routes="routes"
                 :canvas-heigh="canvasHeight" :canvas-width="canvasWidth" :point-width="pointWidth" />  -->
         </div>
@@ -37,8 +38,8 @@ import { AIPRoutesStore } from '@/stores/AIPRoutesStore';
 import IntersectionsList from './IntersectionsList.vue';
 import CanvasData from '@/utils/Classes/CanvasData';
 import { canvasDataStore } from '@/stores/canvasDataStore';
-import PointsCanvas from './Canvases/PointsCanvas.vue';
 import type Route from '@/utils/Classes/Route/Route';
+import PointsCanvas from './Canvases/PointsCanvas.vue';
 import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
 
 
@@ -58,7 +59,7 @@ const originCoordinate: GeographicCoordinate | undefined = coordinates.find(coor
     return coordinate.name === props.originPointName
 })
 
-canvasDataStore().canvasData = new CanvasData(canvasWidth.value, canvasHeight.value, originCoordinate!, coordinates, aipRoutes, -11, true)
+canvasDataStore().canvasData = new CanvasData(canvasWidth.value, canvasHeight.value, originCoordinate!, coordinates, aipRoutes, -11)
 
 const routes = computed(() => canvasDataStore().canvasData!.allRoutes)
 
@@ -78,6 +79,9 @@ const canvasContainerStyle = computed((): CSSProperties => ({
     position: `relative`
 }))
 
+const test = () => {
+    canvasDataStore().canvasData!.testRoutePointChange();
+}
 
 const increaseCanvasSize = () => {
     canvasWidth.value += 200;

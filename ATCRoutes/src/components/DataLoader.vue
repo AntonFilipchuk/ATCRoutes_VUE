@@ -6,7 +6,7 @@
             {{ errorMessage }}
         </div>
         <div v-if="!errorMessage">
-            <CanvasesData :magnetic-deviation=-11 :use-magnetic-bearing=true origin-point-name="rw06" />
+            <CanvasesData :magnetic-deviation=-11 :use-magnetic-bearing=true origin-point-name="Moscow" />
         </div>
     </div>
 </template>

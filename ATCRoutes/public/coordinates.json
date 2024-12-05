@@ -1,6 +1,6 @@
-
 {
   "coordinates": [
+    { "name": "Moscow", "latitude": "554424.63N", "longitude": "0373636.00E" },
     { "name": "rw01", "latitude": "553511.63N", "longitude": "0371527.39E" },
     { "name": "rw06", "latitude": "553511.23N", "longitude": "0371419.19E" },
     { "name": "rw19", "latitude": "553642.44N", "longitude": "0371636.78E" },
@@ -151,7 +151,7 @@
     { "name": "test9", "latitude": "553715.00N", "longitude": "0381428.00E" },
     { "name": "test10", "latitude": "552715.00N", "longitude": "0381428.00E" },
     { "name": "test11", "latitude": "551715.00N", "longitude": "0381428.00E" },
-    { "name": "test12", "latitude": "549115.00N", "longitude": "0381428.00E" },
-    { "name": "test13", "latitude": "548315.00N", "longitude": "0381428.00E" }
+    { "name": "test12", "latitude": "554015.00N", "longitude": "0381428.00E" },
+    { "name": "test13", "latitude": "555815.00N", "longitude": "0381428.00E" }
   ]
 }

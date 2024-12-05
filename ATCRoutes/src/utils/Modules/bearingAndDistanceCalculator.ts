@@ -40,5 +40,6 @@ export default function calculateBearingAndDistance(
     distance: distance,
     magneticBearing: magneticBearing,
     trueBearing: trueBearing,
+    magneticDeviation: magneticDeviation,
   }
 }

@@ -19,12 +19,14 @@ const canvasStore = computed(() => canvasDataStore())
 const watchedProperties = [
     computed(() => canvasStore.value.canvasData?.width),
     computed(() => canvasStore.value.canvasData?.height),
-    computed(() => canvasStore.value.canvasData?.activeRoute)
+    computed(() => canvasStore.value.canvasData?.activeRoute?.points)
 ]
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
 let selectedPoint: RoutePoint | undefined = undefined;
 
 watch(watchedProperties, () => {
+    console.log("Change active route!");
+
     renderCanvas();
 })
 
@@ -72,8 +74,8 @@ function clickPoint(event: MouseEvent) {
         )
     }
     else {
-        selectedPoint.x = x;
-        selectedPoint.y = y;
+        canvasStore.value.canvasData?.changeRoutePoint(selectedPoint, x, y)
+        console.log("Point Selected", selectedPoint.name);
         cleanCanvas(canvasContext)
         drawContent(canvasContext)
         selectedPoint = undefined;

@@ -7,6 +7,7 @@ export default class Route {
   name: string
   points: RoutePoint[]
   isActive: boolean
+  wasChanged: boolean = false
 
   constructor(
     name: string,

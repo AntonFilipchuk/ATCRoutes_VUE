@@ -1,4 +1,6 @@
-export default class GeographicCoordinate {
+import type IGeographicCoordinate from '../Interfaces/IGeographicCoordinate'
+
+export default class GeographicCoordinate implements IGeographicCoordinate {
   name: string
   latitude: string
   longitude: string
@@ -29,16 +31,11 @@ export default class GeographicCoordinate {
     } else if (noPostfix.length == 10) {
       return +noPostfix.substring(1)
     } else {
-      throw new Error(`${prop} in wrong format!`)
+      throw new Error(`${prop} is in wrong format!`)
     }
   }
 
   private convertCoordinateToDegrees(coordinate: number): number {
-    //553511.63 371527.39
-    // const degrees = Math.floor(coordinate / 10000)
-    // const minutes = Math.floor((coordinate % 10000) / 100)
-    // const seconds = Math.floor(coordinate % 100)
-    // return +(degrees + minutes / 60 + seconds / 3600).toPrecision(4);
 
     // Convert the number to a string to handle slicing
     const coordStr = coordinate.toFixed(2).padStart(8, '0') // Ensure fixed decimal format

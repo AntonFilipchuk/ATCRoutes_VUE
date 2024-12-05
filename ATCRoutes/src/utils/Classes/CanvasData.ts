@@ -1,10 +1,13 @@
-import type IBearingAndDistance from '../Interfaces/IBearingAndDistance'
-import type ICartesianCoordinates from '../Interfaces/ICartesianCoordinates'
+import type IGeographicCoordinate from '../Interfaces/IGeographicCoordinate'
+import type INormalizationParameters from '../Interfaces/INormalizationParameters'
 import calculateBearingAndDistance from '../Modules/bearingAndDistanceCalculator'
 import calculateCartesianCoordinate from '../Modules/cartesianCoordinatesCalculator'
-import normalizePoints from '../Modules/normalizePoints'
+import convertCartesianToGeographic from '../Modules/convertCartesianToGeographic'
+import normalizeCartesianCoordinates, {
+  calculateNormalizationParameters,
+  denormalizeCartesianCoordinates,
+} from '../Modules/normalizePoints'
 import AIPRoute from './AIPRoute/AIPRoute'
-import type AIPRoutePoint from './AIPRoute/AIPRoutePoint'
 import type GeographicCoordinate from './GeographicCoordinate'
 import Point from './Point'
 import Route from './Route/Route'
@@ -17,13 +20,12 @@ export default class CanvasData {
   coordinates: GeographicCoordinate[]
   AIPRoutes: AIPRoute[]
   magneticDeviation: number
-  useMagneticBearing: boolean
 
-  points: Point[] = []
   conflictPoints: Point[] = []
   activeRoute: Route | null = null
   inactiveRoutes: Route[] = []
   allRoutes: Route[] = []
+  normalizationParameters: INormalizationParameters
 
   constructor(
     width: number,
@@ -32,7 +34,6 @@ export default class CanvasData {
     coordinates: GeographicCoordinate[],
     AIPRoutes: AIPRoute[],
     magneticDeviation: number,
-    useMagneticBearing: boolean,
     activeRoute: Route | null = null,
   ) {
     this.AIPRoutes = AIPRoutes
@@ -41,36 +42,105 @@ export default class CanvasData {
     this.height = height
     this.originCoordinate = originCoordinate
     this.magneticDeviation = magneticDeviation
-    this.useMagneticBearing = useMagneticBearing
     this.activeRoute = activeRoute
 
-    this.points = this.calculatePoints(
+    this.allRoutes = this.makeRoutes(
       this.coordinates,
-      this.originCoordinate,
-      this.magneticDeviation,
-      this.useMagneticBearing,
+      this.AIPRoutes,
+      originCoordinate,
+      magneticDeviation,
+    )
+    this.normalizationParameters = calculateNormalizationParameters(
+      this.allRoutes,
       this.width,
       this.height,
     )
 
-    this.allRoutes = this.makeRoutes(this.AIPRoutes, this.points)
-    this.inactiveRoutes = this.allRoutes
+    normalizeCartesianCoordinates(this.allRoutes, this.normalizationParameters)
+    this.inactiveRoutes = this.allRoutes.slice()
+  }
+
+  testRoutePointChange() {
+    this.changeRoutePoint(this.allRoutes[0].points[0], this.width / 2, this.height / 2)
+  }
+
+  changeRoutePoint(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
+    const denormalizedCoordinates = denormalizeCartesianCoordinates(
+      normalizedX,
+      normalizedY,
+      this.normalizationParameters,
+    )
+
+    routePoint.cartesianData.magneticCartesianCoordinates.x = denormalizedCoordinates.x
+    routePoint.cartesianData.magneticCartesianCoordinates.y = denormalizedCoordinates.y
+
+    const newGeoCoordinates = convertCartesianToGeographic(
+      routePoint.cartesianData.magneticCartesianCoordinates,
+      routePoint.bearingAndDistance.originCoordinate,
+      routePoint.name,
+    )
+
+    routePoint.geographicCoordinate = newGeoCoordinates
+  }
+
+  //Get aip routes and coordinates
+  //Make routes with points with coordinates
+  //For each point calculate bearing and distance from origin
+  //Set x and y for point based on canvas size
+
+  makeRoutes(
+    coordinates: IGeographicCoordinate[],
+    AIPRoutes: AIPRoute[],
+    originCoordinate: IGeographicCoordinate,
+    magneticDeviation: number | undefined,
+  ): Route[] {
+    const routes = AIPRoutes.map((aipRoute) => {
+      const points = aipRoute.points.map((point) => {
+        const geoCoordinate = coordinates.find((coordinate) => coordinate.name === point.name)
+
+        if (!geoCoordinate) {
+          throw new Error(
+            `Can't find coordinate for a Point: ${point.name} in Route:${aipRoute.name}`,
+          )
+        }
+        const bearingAndDistanceFromOrigin = calculateBearingAndDistance(
+          originCoordinate as GeographicCoordinate,
+          geoCoordinate as GeographicCoordinate,
+          magneticDeviation,
+        )
+
+        const cartesianCoordinate = calculateCartesianCoordinate(bearingAndDistanceFromOrigin)
+        const routePoint = new RoutePoint(
+          point.name,
+          point.altitude,
+          geoCoordinate,
+          bearingAndDistanceFromOrigin,
+          cartesianCoordinate,
+        )
+
+        return routePoint
+      })
+
+      const route = new Route(aipRoute.name, points)
+      points.forEach((point) => (point.route = route))
+      return route
+    })
+
+    return routes
   }
 
   changeSize(newWidth: number, newHeight: number) {
     this.width = newWidth
     this.height = newHeight
 
-    this.points = this.calculatePoints(
-      this.coordinates,
-      this.originCoordinate,
-      this.magneticDeviation,
-      this.useMagneticBearing,
+    this.normalizationParameters = calculateNormalizationParameters(
+      this.allRoutes,
       this.width,
       this.height,
     )
 
-    this.allRoutes = this.makeRoutes(this.AIPRoutes, this.points)
+    normalizeCartesianCoordinates(this.allRoutes, this.normalizationParameters)
+
     if (this.activeRoute) {
       this.inactiveRoutes = this.allRoutes.slice()
       const activeRoute = this.inactiveRoutes.find((route) => route.name === this.activeRoute?.name)
@@ -83,47 +153,15 @@ export default class CanvasData {
       const routeIndex = this.inactiveRoutes.indexOf(activeRoute)
       this.inactiveRoutes.splice(routeIndex, 1)
     } else {
-      this.inactiveRoutes = this.allRoutes
+      this.inactiveRoutes = this.allRoutes.slice()
     }
   }
 
-  private calculatePoints(
-    coordinates: GeographicCoordinate[],
-    originCoordinate: GeographicCoordinate,
-    magneticDeviation: number,
-    useMagneticBearing: boolean,
-    canvasWidth: number,
-    canvasHeight: number,
-  ): Point[] {
-    const points = coordinates.map((coordinate: GeographicCoordinate) => {
-      const bearingAndDistance: IBearingAndDistance = calculateBearingAndDistance(
-        originCoordinate,
-        coordinate,
-        magneticDeviation,
-      )
-      const cartesianCoordinates: ICartesianCoordinates = calculateCartesianCoordinate(
-        bearingAndDistance,
-        useMagneticBearing,
-      )
-      return new Point(cartesianCoordinates.x, cartesianCoordinates.y, coordinate)
-    })
-    return normalizePoints(points, canvasWidth, canvasHeight)
-  }
-
-  private makeRoutes(aipRoutes: AIPRoute[], points: Point[]) {
-    return aipRoutes.map((route: AIPRoute) => {
-      const routePoints: RoutePoint[] = []
-
-      route.points.forEach((point: AIPRoutePoint) => {
-        const p = points.find((p) => p.name === point.name)
-        if (!p) {
-          throw new Error(`Can't find ${point.name} for ${route.name} route in points list!`)
-        }
-        routePoints.push(new RoutePoint(p.x, p.y, point.altitude, route.name, p.name))
-      })
-      return new Route(route.name, routePoints)
-    })
-  }
+  //On resize
+  //Find what points were changed
+  //Calculate new geo coors for them
+  //Based on new geo coors and canvas size calculate new x and y values
+  //Update these points
 
   setActiveRoute(route: Route) {
     // If the route is already active, do nothing

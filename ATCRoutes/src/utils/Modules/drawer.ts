@@ -8,7 +8,11 @@ export function drawPoints(
 ) {
   canvasContext.fillStyle = color
   points.forEach((point) => {
-    point.path2D = drawPoint(point, width, canvasContext)
+    point.path2D = drawPoint(
+      point.normalizedCartesianData!.magneticCartesianCoordinates,
+      width,
+      canvasContext,
+    )
   })
 }
 
@@ -36,9 +40,15 @@ export default function drawLines(
 
   points.forEach((point, index) => {
     if (index === 0) {
-      canvasContext.moveTo(point.x, point.y)
+      canvasContext.moveTo(
+        point.normalizedCartesianData!.magneticCartesianCoordinates.x,
+        point.normalizedCartesianData!.magneticCartesianCoordinates.y,
+      )
     } else {
-      canvasContext.lineTo(point.x, point.y)
+      canvasContext.lineTo(
+        point.normalizedCartesianData!.magneticCartesianCoordinates.x,
+        point.normalizedCartesianData!.magneticCartesianCoordinates.y,
+      )
     }
   })
 

@@ -1,4 +1,4 @@
-import type GeographicCoordinate from "../Classes/GeographicCoordinate"
+import type GeographicCoordinate from '../Classes/GeographicCoordinate'
 
 export default interface IBearingAndDistance {
   originCoordinate: GeographicCoordinate
@@ -6,4 +6,5 @@ export default interface IBearingAndDistance {
   trueBearing: number
   magneticBearing: number
   distance: number
+  magneticDeviation: number
 }

@@ -1,21 +1,27 @@
 import type IBearingAndDistance from '../Interfaces/IBearingAndDistance'
-import type ICartesianCoordinates from '../Interfaces/ICartesianCoordinates'
+import type ICartesianData from '../Interfaces/ICartesianData'
 
 export default function calculateCartesianCoordinate(
   bearingAndDistanceBetweenTwoCoordinates: IBearingAndDistance,
-  useMagneticBearing: boolean,
-  // xOffset: number,
-  // yOffset: number,
-): ICartesianCoordinates {
-  let radians
-  if (useMagneticBearing) {
-    radians = (bearingAndDistanceBetweenTwoCoordinates.magneticBearing - 90) * (Math.PI / 180)
-  } else {
-    radians = (bearingAndDistanceBetweenTwoCoordinates.trueBearing - 90) * (Math.PI / 180)
+): ICartesianData {
+  const magneticRadians =
+    (bearingAndDistanceBetweenTwoCoordinates.magneticBearing - 90) * (Math.PI / 180)
+  const trueRadians = (bearingAndDistanceBetweenTwoCoordinates.trueBearing - 90) * (Math.PI / 180)
+
+  const magneticCoordinates = {
+    x: bearingAndDistanceBetweenTwoCoordinates.distance * Math.cos(magneticRadians),
+    y: bearingAndDistanceBetweenTwoCoordinates.distance * Math.sin(magneticRadians),
+    deviation: bearingAndDistanceBetweenTwoCoordinates.magneticDeviation,
   }
 
-  const x = bearingAndDistanceBetweenTwoCoordinates.distance * Math.cos(radians)
-  const y = bearingAndDistanceBetweenTwoCoordinates.distance * Math.sin(radians)
+  const trueCoordinates = {
+    x: bearingAndDistanceBetweenTwoCoordinates.distance * Math.cos(trueRadians),
+    y: bearingAndDistanceBetweenTwoCoordinates.distance * Math.sin(trueRadians),
+    deviation: 0,
+  }
 
-  return <ICartesianCoordinates>{ x: Math.round(x), y: Math.round(y) }
+  return {
+    magneticCartesianCoordinates: magneticCoordinates,
+    trueCartesianCoordinates: trueCoordinates,
+  }
 }

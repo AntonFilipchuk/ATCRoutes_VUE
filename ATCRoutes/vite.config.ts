@@ -6,6 +6,9 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    sourcemap: true, // Ensure this is enabled
+  },
   plugins: [
     vue(),
     vueDevTools(),

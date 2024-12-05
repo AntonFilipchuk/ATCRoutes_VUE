@@ -1,15 +1,38 @@
+import type IGeographicCoordinate from '@/utils/Interfaces/IGeographicCoordinate'
+import type Route from './Route'
+import type IBearingAndDistance from '@/utils/Interfaces/IBearingAndDistance'
+import type ICartesianData from '@/utils/Interfaces/ICartesianData'
+
 export default class RoutePoint {
-  z: number
-  x: number
-  y: number
-  routeName: string
   name: string
-  path2D: Path2D | undefined
-  constructor(x: number, y: number, z: number, routeName: string, name: string) {
-    this.x = x
-    this.y = y
-    this.z = z
-    this.routeName = routeName
+  cartesianData: ICartesianData
+  normalizedCartesianData: ICartesianData | undefined
+  z: number
+  route: Route | undefined
+  path2D: Path2D | undefined = undefined
+  geographicCoordinate: IGeographicCoordinate | undefined
+  bearingAndDistance: IBearingAndDistance
+  wasChanged: boolean = false
+
+  constructor(
+    name: string,
+    z: number,
+    geographicCoordinate: IGeographicCoordinate,
+    bearingAndDistance: IBearingAndDistance,
+    cartesianData: ICartesianData,
+  ) {
     this.name = name
+    this.z = z
+    this.geographicCoordinate = geographicCoordinate
+    this.bearingAndDistance = bearingAndDistance
+    this.cartesianData = cartesianData
+  }
+
+  setNormalizedCartesianCoordinates(normalizedCartesianData: ICartesianData) {
+    this.normalizedCartesianData = normalizedCartesianData
+  }
+
+  setRoute(route: Route) {
+    this.route = route
   }
 }
