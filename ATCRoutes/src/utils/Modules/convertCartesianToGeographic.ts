@@ -1,7 +1,6 @@
 import type GeographicCoordinate from '../Classes/GeographicCoordinate'
 import type ICartesianCoordinate from '../Interfaces/ICartesianCoordinate'
 import type IGeographicCoordinate from '../Interfaces/IGeographicCoordinate'
-import convertToDMSFormat from './convertToDMSFormat'
 
 export default function convertCartesianToGeographic(
   cartesianCoordinates: ICartesianCoordinate,
@@ -53,5 +52,5 @@ export default function convertCartesianToGeographic(
     name: coordinateName,
   }
 
-  return convertToDMSFormat(coordinate)
+  return coordinate
 }

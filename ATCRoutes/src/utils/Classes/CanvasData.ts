@@ -60,10 +60,6 @@ export default class CanvasData {
     this.inactiveRoutes = this.allRoutes.slice()
   }
 
-  testRoutePointChange() {
-    this.changeRoutePoint(this.allRoutes[0].points[0], this.width / 2, this.height / 2)
-  }
-
   changeRoutePoint(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
     routePoint.normalizedCartesianData!.magneticCartesianCoordinates.x = normalizedX
     routePoint.normalizedCartesianData!.magneticCartesianCoordinates.y = normalizedY

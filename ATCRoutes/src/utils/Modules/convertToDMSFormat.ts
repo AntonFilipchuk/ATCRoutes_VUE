@@ -1,10 +1,7 @@
-import type IGeographicCoordinate from '../Interfaces/IGeographicCoordinate'
-
 export default function convertToDMSFormat(geographicCoordinate: {
   latitudeDegrees: number
   longitudeDegrees: number
-  name: string
-}): IGeographicCoordinate {
+}): { latitude: string; longitude: string } {
   function toDMS(degrees: number, isLatitude: boolean): string {
     const absoluteDegrees = Math.abs(degrees)
 
@@ -29,11 +26,5 @@ export default function convertToDMSFormat(geographicCoordinate: {
   const latitudeDMS = toDMS(geographicCoordinate.latitudeDegrees, true)
   const longitudeDMS = toDMS(geographicCoordinate.longitudeDegrees, false)
 
-  return {
-    latitude: latitudeDMS,
-    longitude: longitudeDMS,
-    latitudeDegrees: geographicCoordinate.latitudeDegrees,
-    longitudeDegrees: geographicCoordinate.longitudeDegrees,
-    name: geographicCoordinate.name,
-  }
+  return { latitude: latitudeDMS, longitude: longitudeDMS }
 }

@@ -1,10 +1,10 @@
 import type IGeographicCoordinate from '../Interfaces/IGeographicCoordinate'
+import convertToDMSFormat from '../Modules/convertToDMSFormat'
 
 export default class GeographicCoordinate implements IGeographicCoordinate {
   name: string
-  latitude: string
-  longitude: string
-
+  private latitude: string | undefined = undefined
+  private longitude: string | undefined = undefined
   latitudeDegrees: number
   longitudeDegrees: number
 
@@ -22,6 +22,23 @@ export default class GeographicCoordinate implements IGeographicCoordinate {
     }
   }
 
+  public getLatLonDMS(): {
+    longitude: string
+    latitude: string
+  } {
+    if (!this.latitude || !this.longitude) {
+      return convertToDMSFormat({
+        longitudeDegrees: this.longitudeDegrees,
+        latitudeDegrees: this.latitudeDegrees,
+      })
+    }
+
+    return {
+      longitude: this.longitude,
+      latitude: this.latitude,
+    }
+  }
+
   //"553642.44N", "0371636.78E"
   private toNumber(prop: string): number {
     const noPostfix = prop.slice(0, -1)
@@ -36,7 +53,6 @@ export default class GeographicCoordinate implements IGeographicCoordinate {
   }
 
   private convertCoordinateToDegrees(coordinate: number): number {
-
     // Convert the number to a string to handle slicing
     const coordStr = coordinate.toFixed(2).padStart(8, '0') // Ensure fixed decimal format
 
