@@ -1,8 +1,10 @@
+import { getRandomColor } from '@/utils/Modules/randomColorGenerator'
 import type RoutePoint from './RoutePoint'
 
 export default class Route {
-  color: string
+  lineColor: string
   lineWidth: number
+  pointColor: string
   pointWidth: number
   name: string
   points: RoutePoint[]
@@ -12,16 +14,18 @@ export default class Route {
   constructor(
     name: string,
     points: RoutePoint[],
-    color = 'black',
     lineWidth = 10,
     pointWidth = 10,
     isActive = false,
   ) {
     this.name = name
     this.points = points
-    this.color = color
     this.lineWidth = lineWidth
     this.pointWidth = pointWidth
     this.isActive = isActive
+
+    const color = getRandomColor()
+    this.lineColor = color
+    this.pointColor = color
   }
 }

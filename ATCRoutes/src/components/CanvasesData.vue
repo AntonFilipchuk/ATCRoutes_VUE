@@ -1,26 +1,34 @@
 <template>
     <div>
-        <div>
-            <h1>Size: {{ canvasWidth }} by {{ canvasHeight }}</h1>
-            <button @click="increaseCanvasSize" style="font-size: 32px;">Increase</button>
-            <button @click="decreaseCanvasSize" style="font-size: 32px;">Decrease</button>
-            <button @click="test" style="font-size: 32px;">Test</button>
+        <div style="display: flex; flex-direction: row; align-items: baseline; gap: 10px;">
+            <div style="width: 350px;">
+                <h1>Size: {{ canvasWidth }}px by {{ canvasHeight }}px</h1>
+            </div>
+            <div style="display: flex; flex-direction: row; gap: 5px;">
+                <button @click="increaseCanvasSize" style="font-size: 32px; width: 60px; height: 60px;">+</button>
+                <button @click="decreaseCanvasSize" style="font-size: 32px; width: 60px; height: 60px;">-</button>
+            </div>
         </div>
-        <div>
-            <select style="font-size: 32px;" v-model="activeRoute">
-                <option v-for="(route, index) in routes" :key="index" :value="route">
-                    {{ route.name }}
-                </option>
-            </select>
+        <div style="display: flex; flex-direction: row; align-items: baseline; gap: 10px;">
+            <div>
+                <h1>Selected route: </h1>
+            </div>
+            <div> <select style="font-size: 32px;" v-model="activeRoute">
+                    <option v-for="(route, index) in routes" :key="index" :value="route">
+                        {{ route.name }}
+                    </option>
+                </select>
+            </div>
         </div>
     </div>
     <div style="display: flex; flex-direction:row; align-items: stretch;">
         <div :style="canvasContainerStyle">
             <LinesCanvas />
             <PointsCanvas />
-            <ActiveRouteCanvas /> 
+            <ActiveRouteCanvas />
             <!-- <ConflictPointsCanvas ref="conflictPointsCanvas" :active-route="activeRoute" :routes="routes"
                 :canvas-heigh="canvasHeight" :canvas-width="canvasWidth" :point-width="pointWidth" />  -->
+            <GridCanvas />
         </div>
         <div style="display: flex; flex: 1; position: relative;">
             <IntersectionsList />
@@ -41,6 +49,7 @@ import { canvasDataStore } from '@/stores/canvasDataStore';
 import type Route from '@/utils/Classes/Route/Route';
 import PointsCanvas from './Canvases/PointsCanvas.vue';
 import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
+import GridCanvas from './Canvases/GridCanvas.vue';
 
 
 const props = defineProps<{
@@ -78,10 +87,6 @@ const canvasContainerStyle = computed((): CSSProperties => ({
     height: `${canvasHeight.value}px`,
     position: `relative`
 }))
-
-const test = () => {
-    canvasDataStore().canvasData!.testRoutePointChange();
-}
 
 const increaseCanvasSize = () => {
     canvasWidth.value += 200;

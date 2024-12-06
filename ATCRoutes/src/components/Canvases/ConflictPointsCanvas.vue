@@ -8,7 +8,7 @@ import { activeRouteStore } from '@/stores/activeRouteStore';
 import { intersectionsStore } from '@/stores/intersectionsStore';
 import type IntersectionPoint from '@/utils/Classes/IntersectionPoint';
 import type Route from '@/utils/Classes/Route/Route';
-import { cleanCanvas, drawPoint } from '@/utils/Modules/drawer';
+import { cleanCanvas, drawRoutePoint } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import findIntersections from '@/utils/Modules/intersectionsFinder';
 import { ref, defineProps, onMounted, computed } from 'vue';
@@ -63,7 +63,7 @@ function drawContent(canvasContext: CanvasRenderingContext2D) {
     canvasContext.fillStyle = "red"
 
     intersections.forEach(intersection => {
-        drawPoint(intersection, props.pointWidth, canvasContext)
+        drawRoutePoint(intersection, props.pointWidth, canvasContext)
     })
 }
 

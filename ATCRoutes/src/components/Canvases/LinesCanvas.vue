@@ -7,9 +7,8 @@
 <script setup lang="ts">
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import type Route from '@/utils/Classes/Route/Route';
-import drawLines from '@/utils/Modules/drawer';
+import drawRouteLines from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
-import { getRandomColor } from '@/utils/Modules/randomColorGenerator';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref, watch } from 'vue';
 
@@ -49,7 +48,7 @@ function renderCanvas() {
 
 function drawContent(canvasContext: CanvasRenderingContext2D, routes: Route[]) {
     routes.forEach(route => {
-        drawLines(route.points, getRandomColor(), route.lineWidth, canvasContext);
+        drawRouteLines(route.points, route.lineColor, route.lineWidth, canvasContext);
     });
 }
 

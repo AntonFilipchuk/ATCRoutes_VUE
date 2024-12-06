@@ -1,6 +1,6 @@
 import type RoutePoint from '../Classes/Route/RoutePoint'
 
-export function drawPoints(
+export function drawRoutePoints(
   points: RoutePoint[],
   color: string,
   width: number,
@@ -8,7 +8,7 @@ export function drawPoints(
 ) {
   canvasContext.fillStyle = color
   points.forEach((point) => {
-    point.path2D = drawPoint(
+    point.path2D = drawRoutePoint(
       point.normalizedCartesianData!.magneticCartesianCoordinates,
       width,
       canvasContext,
@@ -16,19 +16,20 @@ export function drawPoints(
   })
 }
 
-export function drawPoint(
+export function drawRoutePoint(
   point: { x: number; y: number },
   width: number,
   canvasContext: CanvasRenderingContext2D,
 ): Path2D {
   const path = new Path2D()
   path.rect(point.x - width / 2, point.y - width / 2, width, width)
+  canvasContext.lineWidth = 10
   canvasContext.stroke(path)
   canvasContext.fill(path)
   return path
 }
 
-export default function drawLines(
+export default function drawRouteLines(
   points: RoutePoint[],
   color: string,
   width: number,
@@ -58,4 +59,36 @@ export default function drawLines(
 export function cleanCanvas(canvasContext: CanvasRenderingContext2D) {
   canvasContext.clearRect(0, 0, 10000000, 10000000)
 }
-//export default function drawLine() {}
+
+export function drawPoint(
+  point: Point,
+  color: string,
+  width: number,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  const path = new Path2D()
+  path.rect(point.x - width / 2, point.y - width / 2, width, width)
+  canvasContext.fillStyle = color
+  canvasContext.fill(path)
+  return path
+}
+
+export function drawLine(
+  point1: Point,
+  point2: Point,
+  color: string,
+  width: number,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  canvasContext.strokeStyle = color
+  canvasContext.lineWidth = width
+  canvasContext.beginPath()
+  canvasContext.moveTo(point1.x, point1.y)
+  canvasContext.lineTo(point2.x, point2.y)
+  canvasContext.stroke()
+}
+
+interface Point {
+  x: number
+  y: number
+}

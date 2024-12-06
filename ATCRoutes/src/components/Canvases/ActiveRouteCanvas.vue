@@ -9,7 +9,7 @@
 
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
-import drawLines, { cleanCanvas, drawPoints } from '@/utils/Modules/drawer';
+import drawRouteLines, { cleanCanvas, drawRoutePoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch } from 'vue';
 
@@ -19,14 +19,12 @@ const canvasStore = computed(() => canvasDataStore())
 const watchedProperties = [
     computed(() => canvasStore.value.canvasData?.width),
     computed(() => canvasStore.value.canvasData?.height),
-    computed(() => canvasStore.value.canvasData?.activeRoute?.points)
+    computed(() => canvasStore.value.canvasData?.activeRoute)
 ]
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
 let selectedPoint: RoutePoint | undefined = undefined;
 
 watch(watchedProperties, () => {
-    console.log("Change active route!");
-
     renderCanvas();
 })
 
@@ -47,8 +45,8 @@ function renderCanvas() {
 function drawContent(canvasContext: CanvasRenderingContext2D) {
     const route = canvasStore.value.canvasData!.activeRoute;
     if (route) {
-        drawLines(route.points, "black", route.lineWidth, canvasContext)
-        drawPoints(route.points, "black", route.pointWidth, canvasContext)
+        drawRouteLines(route.points, "black", route.lineWidth, canvasContext)
+        drawRoutePoints(route.points, "black", route.pointWidth, canvasContext)
     }
 }
 

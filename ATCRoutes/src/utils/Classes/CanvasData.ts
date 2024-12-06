@@ -65,6 +65,8 @@ export default class CanvasData {
   }
 
   changeRoutePoint(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
+    routePoint.normalizedCartesianData!.magneticCartesianCoordinates.x = normalizedX
+    routePoint.normalizedCartesianData!.magneticCartesianCoordinates.y = normalizedY
     const denormalizedCoordinates = denormalizeCartesianCoordinates(
       normalizedX,
       normalizedY,
