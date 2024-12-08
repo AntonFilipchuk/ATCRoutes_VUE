@@ -26,7 +26,7 @@ onMounted(async () => await load());
 
 async function load() {
     await AIPRoutesStore().fetchRoutes('/AIPRoutes.json')
-    await coordinatesStore().fetchCoordinates('/coordinates.json')
+    await coordinatesStore().fetchCoordinates('/coordinates2.json')
     loading.value = false;
 }
 

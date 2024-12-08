@@ -28,7 +28,7 @@
         { "name": "gekla", "altitude": 190 },
         { "name": "enmur", "altitude": 150 },
         { "name": "kibur", "altitude": 150 },
-        { "name": "lo", "altitude": 140 },
+        { "name": "ndb lo", "altitude": 140 },
         { "name": "bemas", "altitude": 130 },
         { "name": "tebdi", "altitude": 100 },
         { "name": "tepta", "altitude": 80 },
@@ -83,6 +83,18 @@
         { "name": "mezer", "altitude": 70 },
         { "name": "fidot", "altitude": 70 },
         { "name": "roruk", "altitude": 60 }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "dipop3E",
+      "points": [
+        { "name": "dipop", "altitude": 170 },
+        { "name": "lasra", "altitude": 140 },
+        { "name": "dazla", "altitude": 240 },
+        { "name": "amdro", "altitude": 240 },
+        { "name": "ee815", "altitude": 240 },
+        { "name": "romta", "altitude": 240 }
       ]
     }
   ]

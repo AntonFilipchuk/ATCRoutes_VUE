@@ -13,7 +13,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 const canvas = ref(null);
 const canvasStore = computed(() => canvasDataStore())
 let canvasContext: CanvasRenderingContext2D | undefined = undefined;
-const watchedProperties = [computed(() => canvasStore.value.canvasData?.width), computed(() => canvasStore.value.canvasData?.height)]
+const watchedProperties = [computed(() => canvasStore.value.width), computed(() => canvasStore.value.height)]
 
 watch(watchedProperties, () => {
     renderCanvas()
@@ -29,17 +29,11 @@ onMounted(() => {
 
 function renderCanvas() {
     canvasContext = getCanvasInfo(canvas.value).canvasContext;
-    setCanvasDimensions(canvasContext, canvasStore.value.canvasData!.width, canvasStore.value.canvasData!.height)
-    drawGrid(canvasContext)
+    setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height)
+    drawGrid(canvasContext, canvasStore.value.width, canvasStore.value.height)
 }
 
-function drawGrid(canvasContext: CanvasRenderingContext2D) {
-    const width = canvasStore.value.canvasData?.width
-    const height = canvasStore.value.canvasData?.height
-
-    if (!width || !height) {
-        throw new Error("Can't access width or height of a canvas")
-    }
+function drawGrid(canvasContext: CanvasRenderingContext2D, width: number, height: number) {
     const top = { x: width / 2, y: 0 }
     const bottom = { x: width / 2, y: height }
     const left = { x: 0, y: height / 2 }
@@ -55,5 +49,6 @@ function drawGrid(canvasContext: CanvasRenderingContext2D) {
 canvas {
     z-index: -1;
     outline: black 3px solid;
+    pointer-events: none;
 }
 </style>

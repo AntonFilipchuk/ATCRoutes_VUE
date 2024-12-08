@@ -8,7 +8,7 @@ export default class RoutePoint {
   cartesianData: ICartesianData
   normalizedCartesianData: ICartesianData | undefined
   z: number
-  route: Route | undefined
+  route: Route
   path2D: Path2D | undefined = undefined
   geographicCoordinate: IGeographicCoordinate | undefined
   bearingAndDistance: IBearingAndDistance
@@ -20,19 +20,28 @@ export default class RoutePoint {
     geographicCoordinate: IGeographicCoordinate,
     bearingAndDistance: IBearingAndDistance,
     cartesianData: ICartesianData,
+    route: Route,
   ) {
     this.name = name
     this.z = z
     this.geographicCoordinate = geographicCoordinate
     this.bearingAndDistance = bearingAndDistance
     this.cartesianData = cartesianData
+    this.route = route
   }
 
-  setNormalizedCartesianCoordinates(normalizedCartesianData: ICartesianData) {
+  setNormalizedCartesianData(normalizedCartesianData: ICartesianData) {
     this.normalizedCartesianData = normalizedCartesianData
   }
 
-  setRoute(route: Route) {
-    this.route = route
+  getNormalizedCartesianCoordinates() {
+    if (!this.normalizedCartesianData) {
+      throw new Error(`${this.name} point doesn't have normalized cartesian data!`)
+    }
+
+    if (this.route.ifRouteMagnetic) {
+      return this.normalizedCartesianData.magneticCartesianCoordinates
+    }
+    return this.normalizedCartesianData.trueCartesianCoordinates
   }
 }

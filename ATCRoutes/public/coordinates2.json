@@ -1,0 +1,1370 @@
+{
+  "coordinates": [
+    { "name": "Moscow", "latitude": "554424.63N", "longitude": "0373636.00E" },
+    {
+      "name": "rw01",
+      "latitude": "553511.63N",
+      "longitude": "0371527.39E"
+    },
+    {
+      "name": "rw06",
+      "latitude": "553511.23N",
+      "longitude": "0371419.19E"
+    },
+    {
+      "name": "rw19",
+      "latitude": "553642.44N",
+      "longitude": "0371636.78E"
+    },
+    {
+      "name": "rw24",
+      "latitude": "553552.98N",
+      "longitude": "0371724.93E"
+    },
+    {
+      "name": "ww014",
+      "latitude": "552815.50N",
+      "longitude": "0371858.30E"
+    },
+    {
+      "name": "ww016",
+      "latitude": "552505.11N",
+      "longitude": "0371058.85E"
+    },
+    {
+      "name": "ww017",
+      "latitude": "554039.30N",
+      "longitude": "0371938.81E"
+    },
+    {
+      "name": "ww018",
+      "latitude": "553915.77N",
+      "longitude": "0372519.97E"
+    },
+    {
+      "name": "ww019",
+      "latitude": "553426.75N",
+      "longitude": "0372929.75E"
+    },
+    {
+      "name": "ww058",
+      "latitude": "552211.20N",
+      "longitude": "0371620.10E"
+    },
+    {
+      "name": "ww063",
+      "latitude": "553722.21N",
+      "longitude": "0372403.40E"
+    },
+    {
+      "name": "ww150",
+      "latitude": "553122.70N",
+      "longitude": "0371232.80E"
+    },
+    {
+      "name": "ww151",
+      "latitude": "553124.96N",
+      "longitude": "0371234.52E"
+    },
+    {
+      "name": "ww152",
+      "latitude": "553710.40N",
+      "longitude": "0371658.10E"
+    },
+    {
+      "name": "ww187",
+      "latitude": "553055.20N",
+      "longitude": "0372526.40E"
+    },
+    {
+      "name": "ww188",
+      "latitude": "553804.24N",
+      "longitude": "0372720.79E"
+    },
+    {
+      "name": "ww191",
+      "latitude": "553246.40N",
+      "longitude": "0371207.90E"
+    },
+    {
+      "name": "ww192",
+      "latitude": "552906.30N",
+      "longitude": "0370703.40E"
+    },
+    {
+      "name": "ww238",
+      "latitude": "553026.50N",
+      "longitude": "0372742.90E"
+    },
+    {
+      "name": "ww239",
+      "latitude": "553531.10N",
+      "longitude": "0373010.50E"
+    },
+    {
+      "name": "ww240",
+      "latitude": "553253.60N",
+      "longitude": "0370845.90E"
+    },
+    {
+      "name": "ww241",
+      "latitude": "553832.60N",
+      "longitude": "0372803.60E"
+    },
+    {
+      "name": "ww306",
+      "latitude": "551115.00N",
+      "longitude": "0365034.00E"
+    },
+    {
+      "name": "ww450",
+      "latitude": "553700.30N",
+      "longitude": "0372225.40E"
+    },
+    {
+      "name": "ww451",
+      "latitude": "553659.54N",
+      "longitude": "0372221.97E"
+    },
+    {
+      "name": "ww452",
+      "latitude": "553446.10N",
+      "longitude": "0371227.70E"
+    },
+    {
+      "name": "ww500",
+      "latitude": "552939.30N",
+      "longitude": "0370406.50E"
+    },
+    {
+      "name": "ww501",
+      "latitude": "553226.20N",
+      "longitude": "0370208.90E"
+    },
+    {
+      "name": "ww502",
+      "latitude": "553339.30N",
+      "longitude": "0370731.90E"
+    },
+    {
+      "name": "ww503",
+      "latitude": "554233.50N",
+      "longitude": "0372105.90E"
+    },
+    {
+      "name": "ww504",
+      "latitude": "554140.60N",
+      "longitude": "0372444.20E"
+    },
+    {
+      "name": "ww505",
+      "latitude": "552929.80N",
+      "longitude": "0370353.50E"
+    },
+    {
+      "name": "ww506",
+      "latitude": "553338.54N",
+      "longitude": "0370728.39E"
+    },
+    {
+      "name": "ww652",
+      "latitude": "553621.70N",
+      "longitude": "0371933.50E"
+    },
+    {
+      "name": "ww950",
+      "latitude": "553939.30N",
+      "longitude": "0371852.20E"
+    },
+    {
+      "name": "ww951",
+      "latitude": "553937.89N",
+      "longitude": "0371851.10E"
+    },
+    {
+      "name": "ww952",
+      "latitude": "553356.20N",
+      "longitude": "0371429.90E"
+    },
+    {
+      "name": "abviv",
+      "latitude": "553431.00N",
+      "longitude": "0382710.00E"
+    },
+    {
+      "name": "afisa",
+      "latitude": "553817.80N",
+      "longitude": "0372814.00E"
+    },
+    {
+      "name": "agmer",
+      "latitude": "562609.40N",
+      "longitude": "0371307.10E"
+    },
+    {
+      "name": "amred",
+      "latitude": "553241.50N",
+      "longitude": "0370314.60E"
+    },
+    {
+      "name": "aslek",
+      "latitude": "553542.80N",
+      "longitude": "0365950.90E"
+    },
+    {
+      "name": "babut",
+      "latitude": "550242.90N",
+      "longitude": "0380106.80E"
+    },
+    {
+      "name": "begez",
+      "latitude": "561313.00N",
+      "longitude": "0363722.00E"
+    },
+    {
+      "name": "bekip",
+      "latitude": "563500.00N",
+      "longitude": "0363908.00E"
+    },
+    {
+      "name": "bemas",
+      "latitude": "551252.03N",
+      "longitude": "0373221.31E"
+    },
+    {
+      "name": "bilru",
+      "latitude": "552322.00N",
+      "longitude": "0353430.00E"
+    },
+    {
+      "name": "binpi",
+      "latitude": "555540.60N",
+      "longitude": "0391804.30E"
+    },
+    {
+      "name": "bitsa",
+      "latitude": "553400.00N",
+      "longitude": "0373653.00E"
+    },
+    {
+      "name": "boppe",
+      "latitude": "552932.00N",
+      "longitude": "0375650.00E"
+    },
+    {
+      "name": "bupos",
+      "latitude": "552421.00N",
+      "longitude": "0365950.90E"
+    },
+    {
+      "name": "defal",
+      "latitude": "555443.60N",
+      "longitude": "0364528.70E"
+    },
+    {
+      "name": "dimgi",
+      "latitude": "554740.00N",
+      "longitude": "0394840.00E"
+    },
+    {
+      "name": "dufar",
+      "latitude": "555937.70N",
+      "longitude": "0365408.60E"
+    },
+    {
+      "name": "duzev",
+      "latitude": "554150.00N",
+      "longitude": "0382732.00E"
+    },
+    {
+      "name": "emgas",
+      "latitude": "542728.00N",
+      "longitude": "0375019.00E"
+    },
+    {
+      "name": "enmur",
+      "latitude": "553310.00N",
+      "longitude": "0373419.00E"
+    },
+    {
+      "name": "famla",
+      "latitude": "561746.90N",
+      "longitude": "0370704.60E"
+    },
+    {
+      "name": "fegra",
+      "latitude": "543658.00N",
+      "longitude": "0384723.90E"
+    },
+    {
+      "name": "fidot",
+      "latitude": "551300.00N",
+      "longitude": "0372153.00E"
+    },
+    {
+      "name": "fobul",
+      "latitude": "552617.60N",
+      "longitude": "0370841.40E"
+    },
+    {
+      "name": "gekla",
+      "latitude": "553900.00N",
+      "longitude": "0375205.00E"
+    },
+    {
+      "name": "gigun",
+      "latitude": "554407.00N",
+      "longitude": "0365729.90E"
+    },
+    {
+      "name": "gorna",
+      "latitude": "563742.90N",
+      "longitude": "0375006.10E"
+    },
+    {
+      "name": "itvin",
+      "latitude": "554546.00N",
+      "longitude": "0362901.00E"
+    },
+    {
+      "name": "kanen",
+      "latitude": "553646.10N",
+      "longitude": "0372150.50E"
+    },
+    {
+      "name": "kenep",
+      "latitude": "553833.60N",
+      "longitude": "0371200.70E"
+    },
+    {
+      "name": "kibur",
+      "latitude": "552744.46N",
+      "longitude": "0373306.02E"
+    },
+    {
+      "name": "kogom",
+      "latitude": "555933.00N",
+      "longitude": "0394004.00E"
+    },
+    {
+      "name": "komni",
+      "latitude": "562337.70N",
+      "longitude": "0372407.70E"
+    },
+    {
+      "name": "korfi",
+      "latitude": "553745.60N",
+      "longitude": "0383656.70E"
+    },
+    {
+      "name": "lazit",
+      "latitude": "543914.50N",
+      "longitude": "0374934.00E"
+    },
+    {
+      "name": "lekdo",
+      "latitude": "543653.00N",
+      "longitude": "0371540.00E"
+    },
+    {
+      "name": "lerte",
+      "latitude": "551552.00N",
+      "longitude": "0363714.00E"
+    },
+    {
+      "name": "lifas",
+      "latitude": "551000.00N",
+      "longitude": "0374753.00E"
+    },
+    {
+      "name": "likni",
+      "latitude": "553833.80N",
+      "longitude": "0370134.30E"
+    },
+    {
+      "name": "lilga",
+      "latitude": "544938.10N",
+      "longitude": "0364253.10E"
+    },
+    {
+      "name": "logpu",
+      "latitude": "554255.00N",
+      "longitude": "0384149.00E"
+    },
+    {
+      "name": "mefed",
+      "latitude": "554400.90N",
+      "longitude": "0385557.00E"
+    },
+    {
+      "name": "mezer",
+      "latitude": "550654.70N",
+      "longitude": "0370301.70E"
+    },
+    {
+      "name": "nalfi",
+      "latitude": "550224.30N",
+      "longitude": "0371040.50E"
+    },
+    {
+      "name": "ndb ao",
+      "latitude": "550910.00N",
+      "longitude": "0381719.00E"
+    },
+    {
+      "name": "ndb dr",
+      "latitude": "551240.00N",
+      "longitude": "0372152.00E"
+    },
+    {
+      "name": "ndb lo",
+      "latitude": "552104.00N",
+      "longitude": "0373137.00E"
+    },
+    {
+      "name": "ndb wt",
+      "latitude": "553520.00N",
+      "longitude": "0374709.00E"
+    },
+    {
+      "name": "nidol",
+      "latitude": "545850.30N",
+      "longitude": "0364932.30E"
+    },
+    {
+      "name": "nukdi",
+      "latitude": "552059.80N",
+      "longitude": "0355456.50E"
+    },
+    {
+      "name": "nuzor",
+      "latitude": "554903.80N",
+      "longitude": "0365342.80E"
+    },
+    {
+      "name": "odnel",
+      "latitude": "555609.20N",
+      "longitude": "0365550.80E"
+    },
+    {
+      "name": "ofira",
+      "latitude": "545952.50N",
+      "longitude": "0374336.10E"
+    },
+    {
+      "name": "okpen",
+      "latitude": "544355.50N",
+      "longitude": "0382807.20E"
+    },
+    {
+      "name": "olmun",
+      "latitude": "560439.00N",
+      "longitude": "0393303.00E"
+    },
+    {
+      "name": "olopi",
+      "latitude": "541400.00N",
+      "longitude": "0385353.00E"
+    },
+    {
+      "name": "omeza",
+      "latitude": "544546.70N",
+      "longitude": "0383813.70E"
+    },
+    {
+      "name": "orsif",
+      "latitude": "551605.00N",
+      "longitude": "0365816.00E"
+    },
+    {
+      "name": "osgak",
+      "latitude": "564130.60N",
+      "longitude": "0375649.20E"
+    },
+    {
+      "name": "otsur",
+      "latitude": "554044.20N",
+      "longitude": "0381319.50E"
+    },
+    {
+      "name": "ozler",
+      "latitude": "545513.89N",
+      "longitude": "0372051.60E"
+    },
+    {
+      "name": "pizur",
+      "latitude": "551300.00N",
+      "longitude": "0365953.00E"
+    },
+    {
+      "name": "pokag",
+      "latitude": "553756.00N",
+      "longitude": "0353301.00E"
+    },
+    {
+      "name": "pozuk",
+      "latitude": "545102.90N",
+      "longitude": "0382156.20E"
+    },
+    {
+      "name": "preki",
+      "latitude": "551742.80N",
+      "longitude": "0362249.70E"
+    },
+    {
+      "name": "pufik",
+      "latitude": "555008.20N",
+      "longitude": "0364441.10E"
+    },
+    {
+      "name": "rafni",
+      "latitude": "551818.40N",
+      "longitude": "0365950.90E"
+    },
+    {
+      "name": "ramza",
+      "latitude": "550037.10N",
+      "longitude": "0372110.10E"
+    },
+    {
+      "name": "rebri",
+      "latitude": "553253.60N",
+      "longitude": "0370134.60E"
+    },
+    {
+      "name": "rekro",
+      "latitude": "544532.00N",
+      "longitude": "0372022.70E"
+    },
+    {
+      "name": "remli",
+      "latitude": "552150.00N",
+      "longitude": "0373247.70E"
+    },
+    {
+      "name": "rifma",
+      "latitude": "542928.70N",
+      "longitude": "0384039.20E"
+    },
+    {
+      "name": "rilpo",
+      "latitude": "565220.00N",
+      "longitude": "0381614.00E"
+    },
+    {
+      "name": "riren",
+      "latitude": "545330.80N",
+      "longitude": "0374615.20E"
+    },
+    {
+      "name": "rizno",
+      "latitude": "560519.30N",
+      "longitude": "0363045.80E"
+    },
+    {
+      "name": "rolaz",
+      "latitude": "555209.70N",
+      "longitude": "0362714.50E"
+    },
+    {
+      "name": "romta",
+      "latitude": "570628.00N",
+      "longitude": "0374243.00E"
+    },
+    {
+      "name": "ronez",
+      "latitude": "550319.60N",
+      "longitude": "0371138.80E"
+    },
+    {
+      "name": "roruk",
+      "latitude": "551858.90N",
+      "longitude": "0372213.90E"
+    },
+    {
+      "name": "sidaz",
+      "latitude": "550629.00N",
+      "longitude": "0371904.00E"
+    },
+    {
+      "name": "sodle",
+      "latitude": "551847.90N",
+      "longitude": "0370654.70E"
+    },
+    {
+      "name": "somag",
+      "latitude": "551627.20N",
+      "longitude": "0373939.90E"
+    },
+    {
+      "name": "soruk",
+      "latitude": "561825.40N",
+      "longitude": "0364618.00E"
+    },
+    {
+      "name": "sotog",
+      "latitude": "544400.00N",
+      "longitude": "0363853.00E"
+    },
+    {
+      "name": "subod",
+      "latitude": "563208.90N",
+      "longitude": "0371716.00E"
+    },
+    {
+      "name": "sunun",
+      "latitude": "560857.00N",
+      "longitude": "0360728.00E"
+    },
+    {
+      "name": "surza",
+      "latitude": "550615.90N",
+      "longitude": "0375440.00E"
+    },
+    {
+      "name": "tadut",
+      "latitude": "551300.80N",
+      "longitude": "0370148.30E"
+    },
+    {
+      "name": "tafaz",
+      "latitude": "561508.00N",
+      "longitude": "0371731.00E"
+    },
+    {
+      "name": "tazol",
+      "latitude": "564009.10N",
+      "longitude": "0372319.30E"
+    },
+    {
+      "name": "tebdi",
+      "latitude": "550311.80N",
+      "longitude": "0373144.10E"
+    },
+    {
+      "name": "tepta",
+      "latitude": "550141.70N",
+      "longitude": "0372113.80E"
+    },
+    {
+      "name": "tirde",
+      "latitude": "560708.00N",
+      "longitude": "0370254.20E"
+    },
+    {
+      "name": "titap",
+      "latitude": "550802.20N",
+      "longitude": "0365614.50E"
+    },
+    {
+      "name": "togmo",
+      "latitude": "542318.00N",
+      "longitude": "0390131.00E"
+    },
+    {
+      "name": "tolke",
+      "latitude": "550726.50N",
+      "longitude": "0370439.90E"
+    },
+    {
+      "name": "tosla",
+      "latitude": "551911.80N",
+      "longitude": "0381029.00E"
+    },
+    {
+      "name": "udzok",
+      "latitude": "555056.00N",
+      "longitude": "0390900.00E"
+    },
+    {
+      "name": "ukabe",
+      "latitude": "550215.70N",
+      "longitude": "0373240.20E"
+    },
+    {
+      "name": "ulkek",
+      "latitude": "553034.60N",
+      "longitude": "0372127.50E"
+    },
+    {
+      "name": "unrum",
+      "latitude": "553652.80N",
+      "longitude": "0380842.50E"
+    },
+    {
+      "name": "vivzo",
+      "latitude": "554601.00N",
+      "longitude": "0392403.00E"
+    },
+    {
+      "name": "test1",
+      "latitude": "555742.00N",
+      "longitude": "0393243.00E"
+    },
+    {
+      "name": "test2",
+      "latitude": "553930.00N",
+      "longitude": "0393736.00E"
+    },
+    {
+      "name": "test3",
+      "latitude": "553511.00N",
+      "longitude": "0391716.00E"
+    },
+    {
+      "name": "test4",
+      "latitude": "554921.00N",
+      "longitude": "0384504.00E"
+    },
+    {
+      "name": "test5",
+      "latitude": "552923.00N",
+      "longitude": "0385104.00E"
+    },
+    {
+      "name": "test6",
+      "latitude": "554715.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "test7",
+      "latitude": "554515.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "test8",
+      "latitude": "554315.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "test9",
+      "latitude": "553715.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "test10",
+      "latitude": "552715.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "test11",
+      "latitude": "551715.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "test12",
+      "latitude": "544015.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "test13",
+      "latitude": "545015.00N",
+      "longitude": "0381428.00E"
+    },
+    {
+      "name": "rw 06c",
+      "latitude": "555811.31N",
+      "longitude": "0372312.86E"
+    },
+    {
+      "name": "rw 06r",
+      "latitude": "555801.74N",
+      "longitude": "0372311.55E"
+    },
+    {
+      "name": "rw 06l",
+      "latitude": "555851.49N",
+      "longitude": "0371944.17E"
+    },
+    {
+      "name": "rw 24l",
+      "latitude": "555832.53N",
+      "longitude": "0372637.69E"
+    },
+    {
+      "name": "rw 24c",
+      "latitude": "555840.88N",
+      "longitude": "0372630.79E"
+    },
+    {
+      "name": "rw 24r",
+      "latitude": "555918.21N",
+      "longitude": "0372242.47E"
+    },
+    {
+      "name": "ee018",
+      "latitude": "560429.00N",
+      "longitude": "0373321.00E"
+    },
+    {
+      "name": "ee043",
+      "latitude": "562232.00N",
+      "longitude": "0373305.00E"
+    },
+    {
+      "name": "ee044",
+      "latitude": "562551.00N",
+      "longitude": "0372401.00E"
+    },
+    {
+      "name": "ee045",
+      "latitude": "562334.00N",
+      "longitude": "0370332.00E"
+    },
+    {
+      "name": "ee048",
+      "latitude": "562441.00N",
+      "longitude": "0370144.00E"
+    },
+    {
+      "name": "ee049",
+      "latitude": "562753.00N",
+      "longitude": "0371238.00E"
+    },
+    {
+      "name": "ee050",
+      "latitude": "562733.00N",
+      "longitude": "0372511.00E"
+    },
+    {
+      "name": "ee051",
+      "latitude": "562339.00N",
+      "longitude": "0373525.00E"
+    },
+    {
+      "name": "ee057",
+      "latitude": "555802.00N",
+      "longitude": "0373901.00E"
+    },
+    {
+      "name": "ee058",
+      "latitude": "560252.00N",
+      "longitude": "0370726.00E"
+    },
+    {
+      "name": "ee063",
+      "latitude": "555311.74N",
+      "longitude": "0372040.50E"
+    },
+    {
+      "name": "ee078",
+      "latitude": "561150.80N",
+      "longitude": "0373513.90E"
+    },
+    {
+      "name": "ee101",
+      "latitude": "561920.50N",
+      "longitude": "0372843.90E"
+    },
+    {
+      "name": "ee112",
+      "latitude": "560110.07N",
+      "longitude": "0373512.00E"
+    },
+    {
+      "name": "ee114",
+      "latitude": "551331.60N",
+      "longitude": "0371427.80E"
+    },
+    {
+      "name": "ee115",
+      "latitude": "545746.60N",
+      "longitude": "0370805.50E"
+    },
+    {
+      "name": "ee116",
+      "latitude": "551450.40N",
+      "longitude": "0371459.90E"
+    },
+    {
+      "name": "ee117",
+      "latitude": "551732.90N",
+      "longitude": "0373816.00E"
+    },
+    {
+      "name": "ee122",
+      "latitude": "555935.82N",
+      "longitude": "0373343.46E"
+    },
+    {
+      "name": "ee130",
+      "latitude": "560344.80N",
+      "longitude": "0372507.50E"
+    },
+    {
+      "name": "ee142",
+      "latitude": "555943.86N",
+      "longitude": "0373334.86E"
+    },
+    {
+      "name": "ee242",
+      "latitude": "560509.70N",
+      "longitude": "0365050.90E"
+    },
+    {
+      "name": "ee245",
+      "latitude": "555108.35N",
+      "longitude": "0371450.80E"
+    },
+    {
+      "name": "ee300",
+      "latitude": "560426.20N",
+      "longitude": "0374456.00E"
+    },
+    {
+      "name": "ee306",
+      "latitude": "560040.00N",
+      "longitude": "0374046.00E"
+    },
+    {
+      "name": "ee502",
+      "latitude": "560737.00N",
+      "longitude": "0363445.30E"
+    },
+    {
+      "name": "ee612",
+      "latitude": "555658.80N",
+      "longitude": "0370719.44E"
+    },
+    {
+      "name": "ee622",
+      "latitude": "555658.22N",
+      "longitude": "0371607.42E"
+    },
+    {
+      "name": "ee632",
+      "latitude": "555707.56N",
+      "longitude": "0371607.07E"
+    },
+    {
+      "name": "ee700",
+      "latitude": "560608.83N",
+      "longitude": "0371116.93E"
+    },
+    {
+      "name": "ee701",
+      "latitude": "561108.70N",
+      "longitude": "0370219.40E"
+    },
+    {
+      "name": "ee705",
+      "latitude": "560204.10N",
+      "longitude": "0363227.00E"
+    },
+    {
+      "name": "ee801",
+      "latitude": "561646.00N",
+      "longitude": "0375329.00E"
+    },
+    {
+      "name": "ee802",
+      "latitude": "554807.00N",
+      "longitude": "0382433.00E"
+    },
+    {
+      "name": "ee803",
+      "latitude": "560443.00N",
+      "longitude": "0371443.00E"
+    },
+    {
+      "name": "ee804",
+      "latitude": "554852.00N",
+      "longitude": "0360036.00E"
+    },
+    {
+      "name": "ee805",
+      "latitude": "560109.00N",
+      "longitude": "0371245.00E"
+    },
+    {
+      "name": "ee806",
+      "latitude": "551430.00N",
+      "longitude": "0374915.00E"
+    },
+    {
+      "name": "ee807",
+      "latitude": "554124.00N",
+      "longitude": "0382316.00E"
+    },
+    {
+      "name": "ee810",
+      "latitude": "555843.00N",
+      "longitude": "0374124.00E"
+    },
+    {
+      "name": "ee813",
+      "latitude": "555325.00N",
+      "longitude": "0371040.00E"
+    },
+    {
+      "name": "ee815",
+      "latitude": "561536.00N",
+      "longitude": "0362831.00E"
+    },
+    {
+      "name": "ee819",
+      "latitude": "554551.00N",
+      "longitude": "0375159.00E"
+    },
+    {
+      "name": "ee822",
+      "latitude": "561351.00N",
+      "longitude": "0373126.00E"
+    },
+    {
+      "name": "ee824",
+      "latitude": "555844.00N",
+      "longitude": "0373611.00E"
+    },
+    {
+      "name": "\u0435\u0435825",
+      "latitude": "555831.00N",
+      "longitude": "0373940.00E"
+    },
+    {
+      "name": "ee826",
+      "latitude": "561502.00N",
+      "longitude": "0374208.00E"
+    },
+    {
+      "name": "ee827",
+      "latitude": "554948.00N",
+      "longitude": "0372040.00E"
+    },
+    {
+      "name": "ee828",
+      "latitude": "545754.00N",
+      "longitude": "0380945.00E"
+    },
+    {
+      "name": "ee829",
+      "latitude": "560320.00N",
+      "longitude": "0382304.00E"
+    },
+    {
+      "name": "ee831",
+      "latitude": "553615.00N",
+      "longitude": "0363138.00E"
+    },
+    {
+      "name": "ee832",
+      "latitude": "552421.00N",
+      "longitude": "0363455.00E"
+    },
+    {
+      "name": "agpab",
+      "latitude": "550334.00N",
+      "longitude": "0364533.00E"
+    },
+    {
+      "name": "akfol",
+      "latitude": "555443.30N",
+      "longitude": "0370015.40E"
+    },
+    {
+      "name": "akkus",
+      "latitude": "553641.00N",
+      "longitude": "0363852.00E"
+    },
+    {
+      "name": "albor",
+      "latitude": "550722.16N",
+      "longitude": "0380728.43E"
+    },
+    {
+      "name": "amdro",
+      "latitude": "561000.00N",
+      "longitude": "0362100.00E"
+    },
+    {
+      "name": "arkud",
+      "latitude": "560535.50N",
+      "longitude": "0374642.20E"
+    },
+    {
+      "name": "besta",
+      "latitude": "555500.00N",
+      "longitude": "0374429.00E"
+    },
+    {
+      "name": "bipsi",
+      "latitude": "552019.50N",
+      "longitude": "0374524.20E"
+    },
+    {
+      "name": "bukub",
+      "latitude": "543940.00N",
+      "longitude": "0370057.00E"
+    },
+    {
+      "name": "bunzi",
+      "latitude": "545033.80N",
+      "longitude": "0375830.10E"
+    },
+    {
+      "name": "dazla",
+      "latitude": "560213.80N",
+      "longitude": "0361526.00E"
+    },
+    {
+      "name": "denza",
+      "latitude": "550539.20N",
+      "longitude": "0371116.10E"
+    },
+    {
+      "name": "desmo",
+      "latitude": "560133.50N",
+      "longitude": "0370652.20E"
+    },
+    {
+      "name": "dilni",
+      "latitude": "550750.90N",
+      "longitude": "0373846.80E"
+    },
+    {
+      "name": "dipop",
+      "latitude": "555450.00N",
+      "longitude": "0355048.00E"
+    },
+    {
+      "name": "imizo",
+      "latitude": "555144.40N",
+      "longitude": "0370344.70E"
+    },
+    {
+      "name": "kezvu",
+      "latitude": "560936.00N",
+      "longitude": "0372016.00E"
+    },
+    {
+      "name": "ndb kn",
+      "latitude": "561807.00N",
+      "longitude": "0374239.00E"
+    },
+    {
+      "name": "ndb ks",
+      "latitude": "554932.00N",
+      "longitude": "0371616.00E"
+    },
+    {
+      "name": "kusip",
+      "latitude": "555435.29N",
+      "longitude": "0370024.80E"
+    },
+    {
+      "name": "kuzun",
+      "latitude": "560108.00N",
+      "longitude": "0374409.20E"
+    },
+    {
+      "name": "lasra",
+      "latitude": "555623.00N",
+      "longitude": "0361113.30E"
+    },
+    {
+      "name": "lezom",
+      "latitude": "560048.67N",
+      "longitude": "0370559.59E"
+    },
+    {
+      "name": "lidri",
+      "latitude": "554514.00N",
+      "longitude": "0353227.00E"
+    },
+    {
+      "name": "ligva",
+      "latitude": "555900.00N",
+      "longitude": "0364757.00E"
+    },
+    {
+      "name": "dvor dmd",
+      "latitude": "552317.87N",
+      "longitude": "0375441.57E"
+    },
+    {
+      "name": "enkoz",
+      "latitude": "555614.60N",
+      "longitude": "0371118.10E"
+    },
+    {
+      "name": "fapas",
+      "latitude": "555124.10N",
+      "longitude": "0384252.50E"
+    },
+    {
+      "name": "figal",
+      "latitude": "563059.30N",
+      "longitude": "0371104.20E"
+    },
+    {
+      "name": "fozbe",
+      "latitude": "552557.00N",
+      "longitude": "0372106.00E"
+    },
+    {
+      "name": "fukas",
+      "latitude": "555627.20N",
+      "longitude": "0373118.00E"
+    },
+    {
+      "name": "gakti",
+      "latitude": "560441.18N",
+      "longitude": "0373237.10E"
+    },
+    {
+      "name": "gegna",
+      "latitude": "553015.00N",
+      "longitude": "0374301.10E"
+    },
+    {
+      "name": "gensi",
+      "latitude": "560225.50N",
+      "longitude": "0374336.85E"
+    },
+    {
+      "name": "lonaf",
+      "latitude": "561740.70N",
+      "longitude": "0364225.30E"
+    },
+    {
+      "name": "lunza",
+      "latitude": "561907.70N",
+      "longitude": "0365159.80E"
+    },
+    {
+      "name": "lupte",
+      "latitude": "554505.00N",
+      "longitude": "0383412.00E"
+    },
+    {
+      "name": "masus",
+      "latitude": "555626.30N",
+      "longitude": "0383332.30E"
+    },
+    {
+      "name": "mazil",
+      "latitude": "554338.90N",
+      "longitude": "0372119.50E"
+    },
+    {
+      "name": "molzi",
+      "latitude": "555749.00N",
+      "longitude": "0390703.50E"
+    },
+    {
+      "name": "monik",
+      "latitude": "554744.90N",
+      "longitude": "0380738.40E"
+    },
+    {
+      "name": "dvor mr",
+      "latitude": "555844.40N",
+      "longitude": "0371940.80E"
+    },
+    {
+      "name": "namin",
+      "latitude": "564306.00N",
+      "longitude": "0364916.00E"
+    },
+    {
+      "name": "nibla",
+      "latitude": "545611.90N",
+      "longitude": "0373734.20E"
+    },
+    {
+      "name": "nizus",
+      "latitude": "555543.56N",
+      "longitude": "0365907.82E"
+    },
+    {
+      "name": "olzon",
+      "latitude": "560116.60N",
+      "longitude": "0374404.80E"
+    },
+    {
+      "name": "orzim",
+      "latitude": "562333.68N",
+      "longitude": "0375422.43E"
+    },
+    {
+      "name": "ovvim",
+      "latitude": "560417.60N",
+      "longitude": "0371947.10E"
+    },
+    {
+      "name": "panzo",
+      "latitude": "560016.80N",
+      "longitude": "0375805.90E"
+    },
+    {
+      "name": "poget",
+      "latitude": "563100.90N",
+      "longitude": "0373035.60E"
+    },
+    {
+      "name": "ratke",
+      "latitude": "560735.10N",
+      "longitude": "0373711.60E"
+    },
+    {
+      "name": "rimde",
+      "latitude": "560745.50N",
+      "longitude": "0374104.20E"
+    },
+    {
+      "name": "rinlo",
+      "latitude": "544049.70N",
+      "longitude": "0380337.50E"
+    },
+    {
+      "name": "rugel",
+      "latitude": "555153.00N",
+      "longitude": "0375153.00E"
+    },
+    {
+      "name": "ndb rw",
+      "latitude": "554241.00N",
+      "longitude": "0381341.00E"
+    },
+    {
+      "name": "sifod",
+      "latitude": "560831.40N",
+      "longitude": "0375214.40E"
+    },
+    {
+      "name": "soret",
+      "latitude": "560131.70N",
+      "longitude": "0374614.80E"
+    },
+    {
+      "name": "taref",
+      "latitude": "554937.00N",
+      "longitude": "0382247.00E"
+    },
+    {
+      "name": "toknu",
+      "latitude": "562142.00N",
+      "longitude": "0362300.00E"
+    },
+    {
+      "name": "umlol",
+      "latitude": "560026.70N",
+      "longitude": "0373825.00E"
+    },
+    {
+      "name": "votdo",
+      "latitude": "555624.00N",
+      "longitude": "0371117.70E"
+    },
+    {
+      "name": "dme wnk",
+      "latitude": "553517.70N",
+      "longitude": "0371515.20E"
+    },
+    {
+      "name": "zubha",
+      "latitude": "560018.70N",
+      "longitude": "0373833.60E"
+    }
+  ]
+}

@@ -8,11 +8,7 @@ export function drawRoutePoints(
 ) {
   canvasContext.fillStyle = color
   points.forEach((point) => {
-    point.path2D = drawRoutePoint(
-      point.normalizedCartesianData!.magneticCartesianCoordinates,
-      width,
-      canvasContext,
-    )
+    point.path2D = drawRoutePoint(point.getNormalizedCartesianCoordinates(), width, canvasContext)
   })
 }
 
@@ -42,13 +38,13 @@ export default function drawRouteLines(
   points.forEach((point, index) => {
     if (index === 0) {
       canvasContext.moveTo(
-        point.normalizedCartesianData!.magneticCartesianCoordinates.x,
-        point.normalizedCartesianData!.magneticCartesianCoordinates.y,
+        point.getNormalizedCartesianCoordinates().x,
+        point.getNormalizedCartesianCoordinates().y,
       )
     } else {
       canvasContext.lineTo(
-        point.normalizedCartesianData!.magneticCartesianCoordinates.x,
-        point.normalizedCartesianData!.magneticCartesianCoordinates.y,
+        point.getNormalizedCartesianCoordinates().x,
+        point.getNormalizedCartesianCoordinates().y,
       )
     }
   })
@@ -60,16 +56,46 @@ export function cleanCanvas(canvasContext: CanvasRenderingContext2D) {
   canvasContext.clearRect(0, 0, 10000000, 10000000)
 }
 
+export function drawText(
+  routePoint: RoutePoint,
+  textSize: number,
+  textFont: string,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  canvasContext.font = `${textSize}px ${textFont.toLowerCase()}`
+  const x = routePoint.getNormalizedCartesianCoordinates().x
+  const y = routePoint.getNormalizedCartesianCoordinates().y
+  canvasContext.fillText(routePoint.name, x + x / 50, y + y / 50)
+}
+
 export function drawPoint(
   point: Point,
   color: string,
+  strokeColor: string,
   width: number,
+  strokeWidth: number,
+  ifOuterStroke: boolean,
   canvasContext: CanvasRenderingContext2D,
 ) {
   const path = new Path2D()
   path.rect(point.x - width / 2, point.y - width / 2, width, width)
+
+  // Fill the point with the specified color
   canvasContext.fillStyle = color
   canvasContext.fill(path)
+
+  if (ifOuterStroke) {
+    // Add an outer stroke with black, slightly larger
+    canvasContext.strokeStyle = 'black'
+    canvasContext.lineWidth = strokeWidth + 5
+    canvasContext.stroke(path)
+
+    // Add another stroke around the black stroke
+    canvasContext.strokeStyle = strokeColor
+    canvasContext.lineWidth = strokeWidth
+    canvasContext.stroke(path)
+  }
+
   return path
 }
 

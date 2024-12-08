@@ -3,13 +3,14 @@ import type INormalizationParameters from '../Interfaces/INormalizationParameter
 import calculateBearingAndDistance from '../Modules/bearingAndDistanceCalculator'
 import calculateCartesianCoordinate from '../Modules/cartesianCoordinatesCalculator'
 import convertCartesianToGeographic from '../Modules/convertCartesianToGeographic'
+import findIntersections from '../Modules/intersectionsFinder'
 import normalizeCartesianCoordinates, {
   calculateNormalizationParameters,
   denormalizeCartesianCoordinates,
 } from '../Modules/normalizePoints'
 import AIPRoute from './AIPRoute/AIPRoute'
 import type GeographicCoordinate from './GeographicCoordinate'
-import Point from './Point'
+import type IntersectionPoint from './IntersectionPoint'
 import Route from './Route/Route'
 import RoutePoint from './Route/RoutePoint'
 
@@ -21,7 +22,7 @@ export default class CanvasData {
   AIPRoutes: AIPRoute[]
   magneticDeviation: number
 
-  conflictPoints: Point[] = []
+  intersectionPoints: IntersectionPoint[] | null
   activeRoute: Route | null = null
   inactiveRoutes: Route[] = []
   allRoutes: Route[] = []
@@ -43,6 +44,7 @@ export default class CanvasData {
     this.originCoordinate = originCoordinate
     this.magneticDeviation = magneticDeviation
     this.activeRoute = activeRoute
+    this.intersectionPoints = null
 
     this.allRoutes = this.makeRoutes(
       this.coordinates,
@@ -60,9 +62,10 @@ export default class CanvasData {
     this.inactiveRoutes = this.allRoutes.slice()
   }
 
-  changeRoutePoint(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
-    routePoint.normalizedCartesianData!.magneticCartesianCoordinates.x = normalizedX
-    routePoint.normalizedCartesianData!.magneticCartesianCoordinates.y = normalizedY
+  updateRoutePointCoordinates(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
+    routePoint.getNormalizedCartesianCoordinates().x = normalizedX
+    routePoint.getNormalizedCartesianCoordinates().y = normalizedY
+
     const denormalizedCoordinates = denormalizeCartesianCoordinates(
       normalizedX,
       normalizedY,
@@ -81,26 +84,23 @@ export default class CanvasData {
     routePoint.geographicCoordinate = newGeoCoordinates
   }
 
-  //Get aip routes and coordinates
-  //Make routes with points with coordinates
-  //For each point calculate bearing and distance from origin
-  //Set x and y for point based on canvas size
-
-  makeRoutes(
+  private makeRoutes(
     coordinates: IGeographicCoordinate[],
     AIPRoutes: AIPRoute[],
     originCoordinate: IGeographicCoordinate,
     magneticDeviation: number | undefined,
   ): Route[] {
-    const routes = AIPRoutes.map((aipRoute) => {
+    const routes: Route[] = AIPRoutes.map((aipRoute) => {
+      const route = new Route(aipRoute.name)
       const points = aipRoute.points.map((point) => {
         const geoCoordinate = coordinates.find((coordinate) => coordinate.name === point.name)
 
         if (!geoCoordinate) {
           throw new Error(
-            `Can't find coordinate for a Point: ${point.name} in Route:${aipRoute.name}`,
+            `Can't find coordinate for Point: ${point.name} in Route: ${aipRoute.name}`,
           )
         }
+
         const bearingAndDistanceFromOrigin = calculateBearingAndDistance(
           originCoordinate as GeographicCoordinate,
           geoCoordinate as GeographicCoordinate,
@@ -108,26 +108,53 @@ export default class CanvasData {
         )
 
         const cartesianCoordinate = calculateCartesianCoordinate(bearingAndDistanceFromOrigin)
-        const routePoint = new RoutePoint(
+
+        return new RoutePoint(
           point.name,
           point.altitude,
           geoCoordinate,
           bearingAndDistanceFromOrigin,
           cartesianCoordinate,
+          route,
         )
-
-        return routePoint
       })
 
-      const route = new Route(aipRoute.name, points)
-      points.forEach((point) => (point.route = route))
+      route.setPoints(points)
       return route
     })
 
     return routes
   }
 
+  updateIntersectionPoints() {
+    if (!this.activeRoute) {
+      throw new Error("Can't find intersections because no active route!")
+    }
+
+    const newIntersections = findIntersections(this.activeRoute, this.inactiveRoutes)
+
+    if (
+      !this.intersectionPoints ||
+      this.intersectionPoints.length !== newIntersections.length ||
+      !this.arePointsEqual(this.intersectionPoints, newIntersections)
+    ) {
+      this.intersectionPoints = newIntersections
+    }
+  }
+
+  private arePointsEqual(pointsA: IntersectionPoint[], pointsB: IntersectionPoint[]): boolean {
+    return (
+      pointsA.length === pointsB.length &&
+      pointsA.every((pointA, index) => {
+        const pointB = pointsB[index]
+        return pointA.x === pointB.x && pointA.y === pointB.y && pointA.z === pointB.z
+      })
+    )
+  }
+
   changeSize(newWidth: number, newHeight: number) {
+    console.log('change size!')
+
     this.width = newWidth
     this.height = newHeight
 
@@ -154,12 +181,6 @@ export default class CanvasData {
       this.inactiveRoutes = this.allRoutes.slice()
     }
   }
-
-  //On resize
-  //Find what points were changed
-  //Calculate new geo coors for them
-  //Based on new geo coors and canvas size calculate new x and y values
-  //Update these points
 
   setActiveRoute(route: Route) {
     // If the route is already active, do nothing

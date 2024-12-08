@@ -6,7 +6,7 @@ export default function normalizeCartesianCoordinates(
   allRoutes: Route[],
   normalizationParameters: INormalizationParameters,
 ) {
-  const routePoints = allRoutes.flatMap((route) => route.points)
+  const routePoints = allRoutes.flatMap((route) => route.getPoints())
   // Normalize points to fit into the canvas
   routePoints.forEach((point) => {
     const normalizedMagneticCoordinates = {
@@ -33,7 +33,7 @@ export default function normalizeCartesianCoordinates(
       magneticCartesianCoordinates: normalizedMagneticCoordinates,
       trueCartesianCoordinates: normalizedTrueCoordinates,
     }
-    point.setNormalizedCartesianCoordinates(normalizeCartesianCoordinates)
+    point.setNormalizedCartesianData(normalizeCartesianCoordinates)
   })
 }
 
@@ -42,7 +42,8 @@ export function calculateNormalizationParameters(
   canvasWidth: number,
   canvasHeight: number,
 ): INormalizationParameters {
-  const allRoutesPoints = allRoutes.flatMap((route) => route.points)
+  const allRoutesPoints = allRoutes.flatMap((route) => route.getPoints())
+  console.log('N of Points =', allRoutesPoints.length)
   const maxXMagnetic = Math.max(
     ...allRoutesPoints.map((point) => Math.abs(point.cartesianData.magneticCartesianCoordinates.x)),
   )

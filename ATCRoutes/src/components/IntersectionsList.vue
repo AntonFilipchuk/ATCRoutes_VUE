@@ -22,9 +22,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import { intersectionsStore } from '@/stores/intersectionsStore';
+import { canvasDataStore } from '@/stores/canvasDataStore';
 import { computed } from 'vue';
-const intersections = computed(() => intersectionsStore().intersections);
+const intersections = computed(() => canvasDataStore().intersectionPoints);
 </script>
 <style scoped>
 table {

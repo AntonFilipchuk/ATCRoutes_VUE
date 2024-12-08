@@ -7,25 +7,37 @@ export default class Route {
   pointColor: string
   pointWidth: number
   name: string
-  points: RoutePoint[]
+  private points: RoutePoint[] | undefined
   isActive: boolean
+  ifRouteMagnetic = true
   wasChanged: boolean = false
 
   constructor(
     name: string,
-    points: RoutePoint[],
     lineWidth = 10,
     pointWidth = 10,
     isActive = false,
+    ifRouteMagnetic = true,
   ) {
     this.name = name
-    this.points = points
     this.lineWidth = lineWidth
     this.pointWidth = pointWidth
     this.isActive = isActive
+    this.ifRouteMagnetic = ifRouteMagnetic
 
     const color = getRandomColor()
     this.lineColor = color
     this.pointColor = color
+  }
+
+  getPoints() {
+    if (!this.points) {
+      throw new Error(`${this.name} route doesn't have any points! Impossible!`)
+    }
+    return this.points
+  }
+
+  setPoints(points: RoutePoint[]) {
+    this.points = points
   }
 }
