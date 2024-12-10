@@ -1,14 +1,21 @@
+import type CanvasRoute from '../Classes/CanvasRoute/CanvasRoute'
 import type RoutePoint from '../Classes/Route/RoutePoint'
 
-export function drawRoutePoints(
-  points: RoutePoint[],
-  color: string,
-  width: number,
+export function drawCanvasRoutePoints(
+  canvasRoute: CanvasRoute,
   canvasContext: CanvasRenderingContext2D,
 ) {
-  canvasContext.fillStyle = color
+  canvasContext.fillStyle = canvasRoute.pointColor
+  const points = canvasRoute.route.getPoints()
   points.forEach((point) => {
-    point.path2D = drawRoutePoint(point.getNormalizedCartesianCoordinates(), width, canvasContext)
+    canvasRoute.routePointsAsPath2d.push({
+      name: point.name,
+      path2d: drawRoutePoint(
+        point.getNormalizedCartesianCoordinates(),
+        canvasRoute.pointWidth,
+        canvasContext,
+      ),
+    })
   })
 }
 
@@ -25,16 +32,15 @@ export function drawRoutePoint(
   return path
 }
 
-export default function drawRouteLines(
-  points: RoutePoint[],
-  color: string,
-  width: number,
+export default function drawCanvasRouteLines(
+  canvasRoute: CanvasRoute,
   canvasContext: CanvasRenderingContext2D,
 ) {
   canvasContext.beginPath()
-  canvasContext.strokeStyle = color
-  canvasContext.lineWidth = width
+  canvasContext.strokeStyle = canvasRoute.lineColor
+  canvasContext.lineWidth = canvasRoute.lineWidth
 
+  const points = canvasRoute.route.getPoints()
   points.forEach((point, index) => {
     if (index === 0) {
       canvasContext.moveTo(

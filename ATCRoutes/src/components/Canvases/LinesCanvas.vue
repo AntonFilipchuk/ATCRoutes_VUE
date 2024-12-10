@@ -6,41 +6,48 @@
 
 <script setup lang="ts">
 import { canvasDataStore } from '@/stores/canvasDataStore';
-import type Route from '@/utils/Classes/Route/Route';
+import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import drawRouteLines from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, } from 'vue';
 
 const linesCanvas = ref(null)
 const canvasStore = computed(() => canvasDataStore())
-
-
 const watchedProperties = [
     computed(() => canvasStore.value.width),
     computed(() => canvasStore.value.height),
     computed(() => canvasStore.value.activeRoute)
 ]
 
+const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes.map((route) => {
+    return {
+        ifVisible: route.ifVisible,
+        linesWidth: route.lineWidth,
+        lineColor: route.lineColor,
+    }
+}))
+
+watch([...watchedProperties, watchedRoutesVisualProps], () => { renderCanvas() })
+
 onMounted(() => {
     renderCanvas();
 });
 
-watch(watchedProperties, () => { renderCanvas() });
 
 function renderCanvas() {
     try {
         const canvasContext = getCanvasInfo(linesCanvas.value).canvasContext;
         setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height);
-        const routes = canvasStore.value.inactiveRoutes
+        const routes = canvasStore.value.inactiveRoutes.filter((route) => route.ifVisible)
         drawContent(canvasContext, routes);
     } catch (error) {
         console.error(error);
     }
 }
 
-function drawContent(canvasContext: CanvasRenderingContext2D, routes: Route[]) {
+function drawContent(canvasContext: CanvasRenderingContext2D, routes: CanvasRoute[]) {
     routes.forEach(route => {
-        drawRouteLines(route.getPoints(), route.lineColor, route.lineWidth, canvasContext);
+        drawRouteLines(route, canvasContext);
     });
 }
 

@@ -9,7 +9,6 @@ export default class RoutePoint {
   normalizedCartesianData: ICartesianData | undefined
   z: number
   route: Route
-  path2D: Path2D | undefined = undefined
   geographicCoordinate: IGeographicCoordinate | undefined
   bearingAndDistance: IBearingAndDistance
   wasChanged: boolean = false

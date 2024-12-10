@@ -8,7 +8,9 @@ import normalizeCartesianCoordinates, {
   calculateNormalizationParameters,
   denormalizeCartesianCoordinates,
 } from '../Modules/normalizePoints'
+import { getRandomColor } from '../Modules/randomColorGenerator'
 import AIPRoute from './AIPRoute/AIPRoute'
+import CanvasRoute from './CanvasRoute/CanvasRoute'
 import type GeographicCoordinate from './GeographicCoordinate'
 import type IntersectionPoint from './IntersectionPoint'
 import Route from './Route/Route'
@@ -22,10 +24,10 @@ export default class CanvasData {
   AIPRoutes: AIPRoute[]
   magneticDeviation: number
 
-  intersectionPoints: IntersectionPoint[] | null
-  activeRoute: Route | null = null
-  inactiveRoutes: Route[] = []
-  allRoutes: Route[] = []
+  intersectionPoints: IntersectionPoint[] | null = null
+  activeCanvasRoute: CanvasRoute | null = null
+  inactiveCanvasRoutes: CanvasRoute[] = []
+  allCanvasRoutes: CanvasRoute[] = []
   normalizationParameters: INormalizationParameters
 
   constructor(
@@ -35,7 +37,6 @@ export default class CanvasData {
     coordinates: GeographicCoordinate[],
     AIPRoutes: AIPRoute[],
     magneticDeviation: number,
-    activeRoute: Route | null = null,
   ) {
     this.AIPRoutes = AIPRoutes
     this.coordinates = coordinates
@@ -43,23 +44,25 @@ export default class CanvasData {
     this.height = height
     this.originCoordinate = originCoordinate
     this.magneticDeviation = magneticDeviation
-    this.activeRoute = activeRoute
-    this.intersectionPoints = null
 
-    this.allRoutes = this.makeRoutes(
+    this.allCanvasRoutes = this.makeRoutes(
       this.coordinates,
       this.AIPRoutes,
       originCoordinate,
       magneticDeviation,
     )
+    this.sortRoutesByName(this.allCanvasRoutes)
     this.normalizationParameters = calculateNormalizationParameters(
-      this.allRoutes,
+      this.allCanvasRoutes.map((route) => route.route),
       this.width,
       this.height,
     )
 
-    normalizeCartesianCoordinates(this.allRoutes, this.normalizationParameters)
-    this.inactiveRoutes = this.allRoutes.slice()
+    normalizeCartesianCoordinates(
+      this.allCanvasRoutes.map((route) => route.route),
+      this.normalizationParameters,
+    )
+    this.inactiveCanvasRoutes = this.allCanvasRoutes.slice()
   }
 
   updateRoutePointCoordinates(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
@@ -89,7 +92,7 @@ export default class CanvasData {
     AIPRoutes: AIPRoute[],
     originCoordinate: IGeographicCoordinate,
     magneticDeviation: number | undefined,
-  ): Route[] {
+  ): CanvasRoute[] {
     const routes: Route[] = AIPRoutes.map((aipRoute) => {
       const route = new Route(aipRoute.name)
       const points = aipRoute.points.map((point) => {
@@ -123,15 +126,26 @@ export default class CanvasData {
       return route
     })
 
-    return routes
+    const canvasRoutes = routes.map((route) => {
+      const randomColor = getRandomColor()
+      const canvasRoute = new CanvasRoute(route)
+      canvasRoute.lineColor = randomColor
+      canvasRoute.pointColor = randomColor
+      return canvasRoute
+    })
+
+    return canvasRoutes
   }
 
   updateIntersectionPoints() {
-    if (!this.activeRoute) {
+    if (!this.activeCanvasRoute) {
       throw new Error("Can't find intersections because no active route!")
     }
 
-    const newIntersections = findIntersections(this.activeRoute, this.inactiveRoutes)
+    const newIntersections = findIntersections(
+      this.activeCanvasRoute.route,
+      this.inactiveCanvasRoutes.map((route) => route.route),
+    )
 
     if (
       !this.intersectionPoints ||
@@ -159,47 +173,70 @@ export default class CanvasData {
     this.height = newHeight
 
     this.normalizationParameters = calculateNormalizationParameters(
-      this.allRoutes,
+      this.allCanvasRoutes.map((route) => route.route),
       this.width,
       this.height,
     )
 
-    normalizeCartesianCoordinates(this.allRoutes, this.normalizationParameters)
+    normalizeCartesianCoordinates(
+      this.allCanvasRoutes.map((route) => route.route),
+      this.normalizationParameters,
+    )
 
-    if (this.activeRoute) {
-      this.inactiveRoutes = this.allRoutes.slice()
-      const activeRoute = this.inactiveRoutes.find((route) => route.name === this.activeRoute?.name)
+    if (this.activeCanvasRoute) {
+      this.inactiveCanvasRoutes = this.allCanvasRoutes.slice()
+      const activeRoute = this.inactiveCanvasRoutes.find(
+        (route) => route.name === this.activeCanvasRoute?.name,
+      )
       if (!activeRoute) {
         throw new Error(
           "Active route was set, but after changing canvas size can't find active route!",
         )
       }
-      this.activeRoute = activeRoute
-      const routeIndex = this.inactiveRoutes.indexOf(activeRoute)
-      this.inactiveRoutes.splice(routeIndex, 1)
+      this.activeCanvasRoute = activeRoute
+      const routeIndex = this.inactiveCanvasRoutes.indexOf(activeRoute)
+      this.inactiveCanvasRoutes.splice(routeIndex, 1)
     } else {
-      this.inactiveRoutes = this.allRoutes.slice()
+      this.inactiveCanvasRoutes = this.allCanvasRoutes.slice()
     }
   }
 
-  setActiveRoute(route: Route) {
+  setActiveRoute(route: CanvasRoute) {
+    if (!this.activeCanvasRoute) {
+      this.activeCanvasRoute = this.activeCanvasRoute
+    }
+
     // If the route is already active, do nothing
-    if (this.activeRoute === route) return
+    if (this.activeCanvasRoute === route) return
 
     // If the new route is inactive, remove it from inactiveRoutes
-    const routeIndex = this.inactiveRoutes.indexOf(route)
+    const routeIndex = this.inactiveCanvasRoutes.indexOf(route)
     if (routeIndex > -1) {
-      this.inactiveRoutes.splice(routeIndex, 1)
+      this.inactiveCanvasRoutes.splice(routeIndex, 1)
     }
 
     // Deactivate the current active route if it exists
-    if (this.activeRoute) {
-      this.activeRoute.isActive = false
-      this.inactiveRoutes.push(this.activeRoute)
+    if (this.activeCanvasRoute) {
+      this.inactiveCanvasRoutes.push(this.activeCanvasRoute)
     }
+    this.activeCanvasRoute = route
 
-    // Set the new active route
-    this.activeRoute = route
-    this.activeRoute.isActive = true
+    this.sortRoutesByName(this.inactiveCanvasRoutes)
+  }
+
+  private sortRoutesByName(routes: CanvasRoute[]) {
+    routes.sort((a, b) => {
+      const nameA = a.name.toUpperCase() // ignore upper and lowercase
+      const nameB = b.name.toUpperCase() // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1
+      }
+      if (nameA > nameB) {
+        return 1
+      }
+
+      // names must be equal
+      return 0
+    })
   }
 }

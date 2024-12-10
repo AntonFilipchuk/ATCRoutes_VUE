@@ -21,17 +21,17 @@
             </div>
         </div>
     </div>
-    <div style="display: flex; flex-direction:row; align-items: stretch;">
+    <div style="display: flex; flex-direction:row; align-items: stretch; gap: 5px">
         <div :style="canvasContainerStyle">
             <LinesCanvas />
             <PointsCanvas />
             <TextCanvas />
             <ActiveRouteCanvas />
-            <ConflictPointsCanvas/> 
+            <ConflictPointsCanvas />
             <GridCanvas />
         </div>
         <div style="display: flex; flex: 1; position: relative;">
-            <IntersectionsList />
+            <DataTypeDisplaySelector />
         </div>
     </div>
 </template>
@@ -42,16 +42,17 @@ import GeographicCoordinate from '@/utils/Classes/GeographicCoordinate';
 import { computed, onBeforeMount, ref, type CSSProperties, type Ref } from 'vue';
 import { coordinatesStore } from '@/stores/coordinatesStore';
 import { AIPRoutesStore } from '@/stores/AIPRoutesStore';
-import IntersectionsList from './IntersectionsList.vue';
 import CanvasData from '@/utils/Classes/CanvasData';
 import PointsCanvas from './Canvases/PointsCanvas.vue';
 import { canvasDataStore } from '@/stores/canvasDataStore';
-import type Route from '@/utils/Classes/Route/Route';
 import LinesCanvas from './Canvases/LinesCanvas.vue';
 import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
 import GridCanvas from './Canvases/GridCanvas.vue';
 import ConflictPointsCanvas from './Canvases/ConflictPointsCanvas.vue';
 import TextCanvas from './Canvases/TextCanvas.vue';
+import DataTypeDisplaySelector from './DataTypeDisplaySelector.vue';
+import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
+
 
 const props = defineProps<{
     originPointName: string,
@@ -64,10 +65,20 @@ const canvasHeight: Ref<number> = ref(800)
 
 const coordinates = coordinatesStore().coordinates as GeographicCoordinate[];
 const aipRoutes = AIPRoutesStore().routes as AIPRoute[];
-
-
 const originCoordinate: GeographicCoordinate | undefined = coordinates.find(coordinate => {
     return coordinate.name === props.originPointName
+})
+
+const routes = computed(() => canvasDataStore().allRoutes)
+
+const activeRoute = computed({
+    get() {
+        return canvasDataStore().activeRoute
+    },
+    set(route: CanvasRoute) {
+        console.log("setting active route", route);
+        canvasDataStore().setActiveRoute(route)
+    }
 })
 
 onBeforeMount(() => {
@@ -76,19 +87,6 @@ onBeforeMount(() => {
     }
     canvasDataStore().setCanvasData(new CanvasData(canvasWidth.value, canvasHeight.value, originCoordinate, coordinates, aipRoutes, -11))
 })
-
-
-const routes = computed(() => canvasDataStore().allRoutes)
-
-const activeRoute = computed({
-    get() {
-        return canvasDataStore().activeRoute
-    },
-    set(route: Route) {
-        canvasDataStore().setActiveRoute(route)
-    }
-})
-
 
 const canvasContainerStyle = computed((): CSSProperties => ({
     width: `${canvasWidth.value}px`,

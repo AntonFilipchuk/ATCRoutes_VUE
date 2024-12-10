@@ -96,6 +96,31 @@
         { "name": "ee815", "altitude": 240 },
         { "name": "romta", "altitude": 240 }
       ]
+    },
+    {
+      "id": 7,
+      "name": "olopi3B",
+      "points": [
+        { "name": "olopi", "altitude": 240 },
+        { "name": "rifma", "altitude": 240 },
+        { "name": "okpen", "altitude": 240 },
+        { "name": "pozuk", "altitude": 230 },
+        { "name": "ndb ao", "altitude": 220 },
+        { "name": "tosla", "altitude": 200 },
+        { "name": "boppe", "altitude": 180 },
+        { "name": "ndb wt", "altitude": 170 },
+        { "name": "enmur", "altitude": 160 },
+        { "name": "kibur", "altitude": 150 },
+        { "name": "ndb lo", "altitude": 140 },
+        { "name": "bemas", "altitude": 130 },
+        { "name": "tebdi", "altitude": 100 },
+        { "name": "tepta", "altitude": 90 },
+        { "name": "ronez", "altitude": 90 },
+        { "name": "tolke", "altitude": 80 },
+        { "name": "tadut", "altitude": 80 },
+        { "name": "fidot", "altitude": 70 },
+        { "name": "roruk", "altitude": 60 }
+      ]
     }
   ]
 }

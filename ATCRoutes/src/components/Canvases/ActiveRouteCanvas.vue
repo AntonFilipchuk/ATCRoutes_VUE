@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas ref="canvas" @mousedown="clickPoint"></canvas>
+        <canvas ref="canvas" @mousedown="clickPoint" id="activeRouteCanvas"></canvas>
     </div>
 </template>
 
@@ -9,12 +9,12 @@
 
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
-import drawRouteLines, { cleanCanvas, drawRoutePoints } from '@/utils/Modules/drawer';
+import drawRouteLines, { cleanCanvas, drawCanvasRoutePoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
 
 
-const canvas = ref(null);
+const canvas: Ref<HTMLCanvasElement | null> = ref(null);
 const canvasStore = computed(() => canvasDataStore())
 const watchedProperties = [
     computed(() => canvasStore.value.width),
@@ -29,12 +29,37 @@ watch(watchedProperties, () => {
 })
 
 onMounted(() => {
+
+    document.addEventListener('mousedown', resetSelectedPointIfClickOutsideCanvas)
+
     try {
         renderCanvas();
     } catch (error) {
         console.error(error)
     }
 })
+
+onUnmounted(() => {
+    document.removeEventListener('mousedown', resetSelectedPointIfClickOutsideCanvas)
+})
+
+function resetSelectedPointIfClickOutsideCanvas(event: MouseEvent) {
+    if (!canvas.value) {
+        return
+    }
+
+    const target = event.target as HTMLElement;
+
+    if (!target) {
+        return
+    }
+
+    if (selectedPoint) {
+        if (canvas.value.id !== target.id) {
+            selectedPoint = null
+        }
+    }
+}
 
 function renderCanvas() {
     canvasContext = getCanvasInfo(canvas.value).canvasContext;
@@ -45,26 +70,39 @@ function renderCanvas() {
 function drawContent(canvasContext: CanvasRenderingContext2D) {
     const route = canvasStore.value.activeRoute;
     if (route) {
-        drawRouteLines(route.getPoints(), "black", route.lineWidth, canvasContext)
-        drawRoutePoints(route.getPoints(), "black", route.pointWidth, canvasContext)
+        drawRouteLines(route, canvasContext)
+        drawCanvasRoutePoints(route, canvasContext)
     }
 }
 
 function clickPoint(event: MouseEvent) {
     const route = canvasStore.value.activeRoute;
 
-    if (!route || !canvasContext) {
+    if (!canvasContext) {
         throw new Error("No active route or canvas context available.");
+    }
+
+    if (!route) {
+        return
     }
 
     const x = event.offsetX;
     const y = event.offsetY;
 
     if (!selectedPoint) {
-        selectedPoint = route.getPoints().find(point =>
-            point.path2D &&
-            (canvasContext!.isPointInPath(point.path2D, x, y) || canvasContext!.isPointInStroke(point.path2D, x, y))
-        ) || null;
+        const pointAsPath2D = route.routePointsAsPath2d.find(point => {
+            return canvasContext!.isPointInPath(point.path2d, x, y) || canvasContext!.isPointInStroke(point.path2d, x, y)
+        }) || null
+
+        if (pointAsPath2D) {
+            selectedPoint = route.route.getPoints().find((point) => point.name === pointAsPath2D.name)
+            if (!selectedPoint) {
+                throw new Error("Can't find a corresponding point in route from points as Path2D. Impossible!")
+            }
+        }
+        else {
+            selectedPoint = null
+        }
     } else {
         canvasStore.value.updateRoutePointCoordinates(selectedPoint, x, y);
         canvasStore.value.updateIntersectionPoints()

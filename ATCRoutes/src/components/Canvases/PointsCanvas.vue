@@ -7,18 +7,13 @@
 
 
 import { canvasDataStore } from '@/stores/canvasDataStore';
-import type Route from '@/utils/Classes/Route/Route';
-import { drawRoutePoints } from '@/utils/Modules/drawer';
+import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
+import { drawCanvasRoutePoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch } from 'vue'
 
 const pointsCanvas = ref(null);
 const canvasStore = computed(() => canvasDataStore())
-// const watchedProperties = [
-//     computed(() => canvasStore.value.canvasData?.width),
-//     computed(() => canvasStore.value.canvasData?.height),
-//     computed(() => canvasStore.value.canvasData?.activeRoute)
-// ]
 
 const watchedProperties = [
     computed(() => canvasStore.value.width),
@@ -26,7 +21,16 @@ const watchedProperties = [
     computed(() => canvasStore.value.activeRoute)
 ]
 
-watch(watchedProperties, () => {
+const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes.map((route) => {
+    return {
+        ifVisible: route.ifVisible,
+        pointColor: route.pointColor,
+        pointWidth: route.pointWidth,
+    }
+}))
+
+
+watch([...watchedProperties, watchedRoutesVisualProps], () => {
     renderCanvas();
 })
 
@@ -36,33 +40,23 @@ onMounted(() => {
 
 
 function renderCanvas() {
-    // if (!canvasStore.value.canvasData) {
-    //     throw new Error("No canvas data!");
-    // }
-
     try {
         const canvasContext = getCanvasInfo(pointsCanvas.value).canvasContext;
         setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.width);
-
-        //drawContent(canvasContext, canvasStore.value.canvasData.inactiveRoutes)
-
-        const inactiveRoutes = canvasDataStore().inactiveRoutes
-        drawContent(canvasContext, inactiveRoutes!)
+        const inactiveRoutes = canvasDataStore().inactiveRoutes.filter((route) => route.ifVisible)
+        drawContent(canvasContext, inactiveRoutes)
     } catch (error) {
         console.error(error)
     }
 }
 
-function drawContent(canvasContext: CanvasRenderingContext2D, routes: Route[]) {
+function drawContent(canvasContext: CanvasRenderingContext2D, routes: CanvasRoute[]) {
+
     routes.forEach(route => {
-        drawRoutePoints(route.getPoints(), route.pointColor, route.pointWidth, canvasContext)
+        drawCanvasRoutePoints(route, canvasContext)
     });
 
-    canvasDataStore().setInactiveRoutes(routes)
-
-    // canvasDataStore().$patch((state) => {
-    //     state.canvasData!.inactiveRoutes = routes
-    // })
+    //canvasDataStore().setInactiveRoutes(routes)
 }
 
 </script>

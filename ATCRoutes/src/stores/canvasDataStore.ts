@@ -1,8 +1,8 @@
 import { computed, ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import type CanvasData from '@/utils/Classes/CanvasData'
-import type Route from '@/utils/Classes/Route/Route'
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint'
+import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute'
 
 export const canvasDataStore = defineStore('canvasDataStore', () => {
   const canvasData: Ref<CanvasData | undefined> = ref(undefined)
@@ -18,15 +18,11 @@ export const canvasDataStore = defineStore('canvasDataStore', () => {
     canvasData.value = canvasData_
   }
 
-  function setInactiveRoutes(routes: Route[]) {
-    ensureCanvasData().inactiveRoutes = routes
-  }
-
   function changeCanvasSize(width: number, heigh: number) {
     ensureCanvasData().changeSize(width, heigh)
   }
 
-  function setActiveRoute(route: Route) {
+  function setActiveRoute(route: CanvasRoute) {
     ensureCanvasData().setActiveRoute(route)
   }
 
@@ -47,15 +43,15 @@ export const canvasDataStore = defineStore('canvasDataStore', () => {
   })
 
   const activeRoute = computed(() => {
-    return ensureCanvasData().activeRoute
+    return ensureCanvasData().activeCanvasRoute
   })
 
   const inactiveRoutes = computed(() => {
-    return ensureCanvasData().inactiveRoutes
+    return ensureCanvasData().inactiveCanvasRoutes
   })
 
   const allRoutes = computed(() => {
-    return ensureCanvasData().allRoutes
+    return ensureCanvasData().allCanvasRoutes
   })
 
   const width = computed(() => {
@@ -69,7 +65,6 @@ export const canvasDataStore = defineStore('canvasDataStore', () => {
     updateRoutePointCoordinates,
     setCanvasData,
     changeCanvasSize,
-    setInactiveRoutes,
     setActiveRoute,
     updateIntersectionPoints,
     intersectionPoints,

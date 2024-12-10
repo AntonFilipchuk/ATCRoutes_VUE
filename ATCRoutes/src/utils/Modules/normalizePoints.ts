@@ -43,7 +43,6 @@ export function calculateNormalizationParameters(
   canvasHeight: number,
 ): INormalizationParameters {
   const allRoutesPoints = allRoutes.flatMap((route) => route.getPoints())
-  console.log('N of Points =', allRoutesPoints.length)
   const maxXMagnetic = Math.max(
     ...allRoutesPoints.map((point) => Math.abs(point.cartesianData.magneticCartesianCoordinates.x)),
   )

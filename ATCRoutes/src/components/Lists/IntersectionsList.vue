@@ -29,6 +29,11 @@ const intersections = computed(() => canvasDataStore().intersectionPoints);
 <style scoped>
 table {
     width: 100%;
-    font-size: 46px;
+    font-size: 28px;
+}
+
+table th,
+td {
+    text-align: center;
 }
 </style>
