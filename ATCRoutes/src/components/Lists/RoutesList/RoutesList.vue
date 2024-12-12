@@ -55,7 +55,7 @@
                         <VisualParameters v-model:visual="route.routeVisuals.pointVisuals" />
                     </td>
                     <td>
-                        <VisualParameters v-model:visual="route.routeVisuals.lineVisuals" />
+                        <TextVisualParameters v-model:visual="route.routeVisuals.textVisuals" />
                     </td>
                 </tr>
             </tbody>
@@ -66,6 +66,7 @@
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import { computed } from 'vue';
 import VisualParameters from './VisualParameters.vue';
+import TextVisualParameters from './TextVisualParameters.vue';
 const activeRoute = computed(() => canvasDataStore().activeRoute)
 const inactiveRoutes = computed(() => canvasDataStore().inactiveRoutes);
 

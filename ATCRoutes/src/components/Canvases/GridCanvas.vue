@@ -30,6 +30,7 @@ onMounted(() => {
 function renderCanvas() {
     canvasContext = getCanvasInfo(canvas.value).canvasContext;
     setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height)
+    fillWithBackgroundColor(canvasContext)
     drawGrid(canvasContext, canvasStore.value.width, canvasStore.value.height)
 }
 
@@ -43,6 +44,11 @@ function drawGrid(canvasContext: CanvasRenderingContext2D, width: number, height
 
     drawLine(top, bottom, "black", 1, canvasContext)
     drawLine(left, right, "black", 1, canvasContext)
+}
+
+function fillWithBackgroundColor(canvasContext: CanvasRenderingContext2D) {
+    canvasContext.fillStyle = "lightgray"
+    canvasContext.fillRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height)
 }
 </script>
 <style scoped>

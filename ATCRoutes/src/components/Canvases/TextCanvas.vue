@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
-import { drawText } from '@/utils/Modules/drawer';
+import { drawRoutePointsText } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch, type WatchHandle } from 'vue';
 
@@ -21,7 +21,8 @@ onMounted(() => {
 const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes.map((route) => {
     return {
         ifVisible: route.ifVisible,
-        ifShowText: route.routeVisuals.ifShowText
+        ifShowText: route.routeVisuals.ifShowText,
+        ...route.routeVisuals.textVisuals
     }
 }))
 
@@ -73,9 +74,7 @@ function renderCanvas() {
 
 function drawContent(canvasContext: CanvasRenderingContext2D, routes: CanvasRoute[]) {
     routes.forEach(route => {
-        route.route.getPoints().forEach((point) => {
-            drawText(point, 28, "Arial", canvasContext)
-        })
+        drawRoutePointsText(route, canvasContext)
     });
 }
 

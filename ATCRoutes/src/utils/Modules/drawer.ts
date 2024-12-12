@@ -1,5 +1,6 @@
 import type CanvasRoute from '../Classes/CanvasRoute/CanvasRoute'
 import type RoutePoint from '../Classes/Route/RoutePoint'
+import type ITextVisual from '../Interfaces/Visuals/ITextVisual'
 import type IVisual from '../Interfaces/Visuals/IVisual'
 
 export function drawCanvasRoutePoints(
@@ -73,16 +74,35 @@ export function cleanCanvas(canvasContext: CanvasRenderingContext2D) {
   canvasContext.clearRect(0, 0, 10000000, 10000000)
 }
 
-export function drawText(
-  routePoint: RoutePoint,
-  textSize: number,
-  textFont: string,
+export function drawRoutePointsText(
+  canvasRoute: CanvasRoute,
   canvasContext: CanvasRenderingContext2D,
 ) {
-  canvasContext.font = `${textSize}px ${textFont.toLowerCase()}`
-  const x = routePoint.getNormalizedCartesianCoordinates().x
-  const y = routePoint.getNormalizedCartesianCoordinates().y
-  canvasContext.fillText(routePoint.name, x + x / 50, y + y / 50)
+  canvasRoute.route
+    .getPoints()
+    .forEach((point) => drawText(point, canvasRoute.routeVisuals.textVisuals, canvasContext))
+}
+
+export function drawText(
+  routePoint: RoutePoint,
+  textVisuals: ITextVisual,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  const font = textVisuals.font.toLowerCase()
+  const fontSize = textVisuals.width
+  const x = routePoint.getNormalizedCartesianCoordinates().x + textVisuals.xOffset
+  const y = routePoint.getNormalizedCartesianCoordinates().y + textVisuals.yOffset
+
+  canvasContext.miterLimit = 2
+  canvasContext.font = `${fontSize}px ${font}`
+
+  if (textVisuals.ifStroke) {
+    canvasContext.lineWidth = textVisuals.strokeWidth
+    canvasContext.strokeText(routePoint.name.toUpperCase(), x, y)
+  }
+
+  canvasContext.fillStyle = textVisuals.color
+  canvasContext.fillText(routePoint.name.toUpperCase(), x, y)
 }
 
 export function drawPoint(

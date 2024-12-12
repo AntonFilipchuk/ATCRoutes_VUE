@@ -1,3 +1,4 @@
+import type ITextVisual from './ITextVisual'
 import type IVisual from './IVisual'
 
 export default interface IRouteVisuals {
@@ -7,6 +8,6 @@ export default interface IRouteVisuals {
   pointVisuals: IVisual
   ifShowPoints: boolean
 
-  textVisuals: IVisual
+  textVisuals: ITextVisual
   ifShowText: boolean
 }
