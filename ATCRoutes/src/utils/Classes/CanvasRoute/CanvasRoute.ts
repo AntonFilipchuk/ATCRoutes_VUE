@@ -1,21 +1,17 @@
+import type IRouteVisuals from '@/utils/Interfaces/Visuals/IRouteVisuals'
 import type Route from '../Route/Route'
 
 export default class CanvasRoute {
   name: string
-  lineColor = 'black'
-  lineWidth = 10
-  pointColor = 'black'
-  pointWidth = 10
-
-  ifRouteMagnetic = true
+  routeVisuals: IRouteVisuals
   ifVisible = true
-  ifShowText = true
-
+  ifRouteMagnetic = true
   routePointsAsPath2d: IRoutePointsAsPath2d[] = []
   route: Route
 
-  constructor(route: Route) {
+  constructor(route: Route, routeVisuals: IRouteVisuals) {
     this.name = route.name
+    this.routeVisuals = routeVisuals
     this.route = route
   }
 }

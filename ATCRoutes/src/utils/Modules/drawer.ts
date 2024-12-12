@@ -1,34 +1,40 @@
 import type CanvasRoute from '../Classes/CanvasRoute/CanvasRoute'
 import type RoutePoint from '../Classes/Route/RoutePoint'
+import type IVisual from '../Interfaces/Visuals/IVisual'
 
 export function drawCanvasRoutePoints(
   canvasRoute: CanvasRoute,
   canvasContext: CanvasRenderingContext2D,
 ) {
-  canvasContext.fillStyle = canvasRoute.pointColor
+  const pointsVisuals = canvasRoute.routeVisuals.pointVisuals
   const points = canvasRoute.route.getPoints()
   points.forEach((point) => {
     canvasRoute.routePointsAsPath2d.push({
       name: point.name,
-      path2d: drawRoutePoint(
-        point.getNormalizedCartesianCoordinates(),
-        canvasRoute.pointWidth,
-        canvasContext,
-      ),
+      path2d: drawRoutePoint(point, pointsVisuals, canvasContext),
     })
   })
 }
 
 export function drawRoutePoint(
-  point: { x: number; y: number },
-  width: number,
+  point: RoutePoint,
+  visuals: IVisual,
   canvasContext: CanvasRenderingContext2D,
 ): Path2D {
   const path = new Path2D()
-  path.rect(point.x - width / 2, point.y - width / 2, width, width)
-  canvasContext.lineWidth = 10
-  canvasContext.stroke(path)
+  const x = point.getNormalizedCartesianCoordinates().x
+  const y = point.getNormalizedCartesianCoordinates().y
+  path.rect(x - visuals.width / 2, y - visuals.width / 2, visuals.width, visuals.width)
+
+  canvasContext.fillStyle = visuals.color
   canvasContext.fill(path)
+
+  if (visuals.ifStroke) {
+    canvasContext.strokeStyle = visuals.strokeColor
+    canvasContext.lineWidth = visuals.strokeWidth
+    canvasContext.stroke(path)
+  }
+
   return path
 }
 
@@ -36,26 +42,31 @@ export default function drawCanvasRouteLines(
   canvasRoute: CanvasRoute,
   canvasContext: CanvasRenderingContext2D,
 ) {
-  canvasContext.beginPath()
-  canvasContext.strokeStyle = canvasRoute.lineColor
-  canvasContext.lineWidth = canvasRoute.lineWidth
+  const visuals = canvasRoute.routeVisuals.lineVisuals
+
+  const linePath = new Path2D()
 
   const points = canvasRoute.route.getPoints()
+
   points.forEach((point, index) => {
+    const x = point.getNormalizedCartesianCoordinates().x
+    const y = point.getNormalizedCartesianCoordinates().y
     if (index === 0) {
-      canvasContext.moveTo(
-        point.getNormalizedCartesianCoordinates().x,
-        point.getNormalizedCartesianCoordinates().y,
-      )
+      linePath.moveTo(x, y)
     } else {
-      canvasContext.lineTo(
-        point.getNormalizedCartesianCoordinates().x,
-        point.getNormalizedCartesianCoordinates().y,
-      )
+      linePath.lineTo(x, y)
     }
   })
 
-  canvasContext.stroke()
+  if (visuals.ifStroke) {
+    canvasContext.strokeStyle = visuals.strokeColor
+    canvasContext.lineWidth = visuals.strokeWidth + visuals.width
+    canvasContext.stroke(linePath)
+  }
+
+  canvasContext.strokeStyle = visuals.color
+  canvasContext.lineWidth = visuals.width
+  canvasContext.stroke(linePath)
 }
 
 export function cleanCanvas(canvasContext: CanvasRenderingContext2D) {

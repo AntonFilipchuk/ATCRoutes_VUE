@@ -21,7 +21,7 @@ onMounted(() => {
 const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes.map((route) => {
     return {
         ifVisible: route.ifVisible,
-        ifShowText: route.ifShowText
+        ifShowText: route.routeVisuals.ifShowText
     }
 }))
 
@@ -64,7 +64,7 @@ function renderCanvas() {
     try {
         const canvasContext = getCanvasInfo(textCanvas.value).canvasContext;
         setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height);
-        const routes = canvasStore.value.allRoutes.filter((route) => route.ifVisible && route.ifShowText)
+        const routes = canvasStore.value.allRoutes.filter((route) => route.ifVisible && route.routeVisuals.ifShowText)
         drawContent(canvasContext, routes);
     } catch (error) {
         console.error(error);

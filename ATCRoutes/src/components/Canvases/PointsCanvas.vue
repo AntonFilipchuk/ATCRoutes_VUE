@@ -21,14 +21,12 @@ const watchedProperties = [
     computed(() => canvasStore.value.activeRoute)
 ]
 
-const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes.map((route) => {
-    return {
-        ifVisible: route.ifVisible,
-        pointColor: route.pointColor,
-        pointWidth: route.pointWidth,
-    }
-}))
 
+const watchedRoutesVisualProps = computed(() =>
+    canvasStore.value.inactiveRoutes.map(route => {
+        return { ...route.routeVisuals.pointVisuals, ifShowPoints: route.routeVisuals.ifShowPoints, ifVisible: route.ifVisible }
+    })
+);
 
 watch([...watchedProperties, watchedRoutesVisualProps], () => {
     renderCanvas();
@@ -43,7 +41,7 @@ function renderCanvas() {
     try {
         const canvasContext = getCanvasInfo(pointsCanvas.value).canvasContext;
         setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.width);
-        const inactiveRoutes = canvasDataStore().inactiveRoutes.filter((route) => route.ifVisible)
+        const inactiveRoutes = canvasDataStore().inactiveRoutes.filter((route) => route.ifVisible && route.routeVisuals.ifShowPoints)
         drawContent(canvasContext, inactiveRoutes)
     } catch (error) {
         console.error(error)
@@ -55,8 +53,6 @@ function drawContent(canvasContext: CanvasRenderingContext2D, routes: CanvasRout
     routes.forEach(route => {
         drawCanvasRoutePoints(route, canvasContext)
     });
-
-    //canvasDataStore().setInactiveRoutes(routes)
 }
 
 </script>

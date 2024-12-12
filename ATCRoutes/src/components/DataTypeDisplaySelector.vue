@@ -22,8 +22,8 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+import RoutesList from './Lists/RoutesList/RoutesList.vue';
 import IntersectionsList from './Lists/IntersectionsList.vue';
-import RoutesList from './Lists/RoutesList.vue';
 
 
 const buttons = [

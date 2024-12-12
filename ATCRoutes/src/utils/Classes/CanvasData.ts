@@ -3,12 +3,12 @@ import type INormalizationParameters from '../Interfaces/INormalizationParameter
 import calculateBearingAndDistance from '../Modules/bearingAndDistanceCalculator'
 import calculateCartesianCoordinate from '../Modules/cartesianCoordinatesCalculator'
 import convertCartesianToGeographic from '../Modules/convertCartesianToGeographic'
+import getRandomRouteVisuals from '../Modules/getRandomRouteVisuals'
 import findIntersections from '../Modules/intersectionsFinder'
 import normalizeCartesianCoordinates, {
   calculateNormalizationParameters,
   denormalizeCartesianCoordinates,
 } from '../Modules/normalizePoints'
-import { getRandomColor } from '../Modules/randomColorGenerator'
 import AIPRoute from './AIPRoute/AIPRoute'
 import CanvasRoute from './CanvasRoute/CanvasRoute'
 import type GeographicCoordinate from './GeographicCoordinate'
@@ -127,10 +127,7 @@ export default class CanvasData {
     })
 
     const canvasRoutes = routes.map((route) => {
-      const randomColor = getRandomColor()
-      const canvasRoute = new CanvasRoute(route)
-      canvasRoute.lineColor = randomColor
-      canvasRoute.pointColor = randomColor
+      const canvasRoute = new CanvasRoute(route, getRandomRouteVisuals())
       return canvasRoute
     })
 
@@ -234,7 +231,6 @@ export default class CanvasData {
       if (nameA > nameB) {
         return 1
       }
-
       // names must be equal
       return 0
     })
