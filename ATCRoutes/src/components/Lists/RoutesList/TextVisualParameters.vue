@@ -6,14 +6,7 @@
                     <p>Color</p>
                 </div>
                 <div class="line-option-container">
-                    <div class="color-display" :style="{
-                        'background-color': visual.color
-                    }">&nbsp;</div>
-                </div>
-                <div class="line-option-container">
-                    <button @click="changeColor(visual)">
-                        Change
-                    </button>
+                    <ColorPicker v-model:pure-color="visual.color" @color-change="changeColorFormPicker" />
                 </div>
             </div>
         </div>
@@ -61,14 +54,7 @@
                     <p>Stroke Color</p>
                 </div>
                 <div class="line-option-container">
-                    <div class="color-display" :style="{
-                        'background-color': visual.strokeColor
-                    }">&nbsp;</div>
-                </div>
-                <div class="line-option-container">
-                    <button @click="changeStrokeColor(visual)">
-                        Change
-                    </button>
+                    <ColorPicker v-model:pure-color="visual.strokeColor" @color-change="changeStrokeColorFormPicker" />
                 </div>
             </div>
         </div>
@@ -102,8 +88,8 @@
                 </div>
 
                 <div class="line-option-container">
-                    <button class="increase-decrease-button" @click="visual.xOffset += 2">+</button>
-                    <button class="increase-decrease-button" @click="visual.xOffset -= 2">-</button>
+                    <button class="increase-decrease-button" @click="visual.xOffset -= 2">←</button>
+                    <button class="increase-decrease-button" @click="visual.xOffset += 2">→</button>
                 </div>
 
             </div>
@@ -120,8 +106,8 @@
                 </div>
 
                 <div class="line-option-container">
-                    <button class="increase-decrease-button" @click="visual.yOffset += 2">+</button>
-                    <button class="increase-decrease-button" @click="visual.yOffset -= 2">-</button>
+                    <button class="increase-decrease-button" @click="visual.yOffset += 2">↓</button>
+                    <button class="increase-decrease-button" @click="visual.yOffset -= 2">↑</button>
                 </div>
 
             </div>
@@ -133,26 +119,22 @@
 
 <script setup lang="ts">
 import type ITextVisual from '@/utils/Interfaces/Visuals/ITextVisual';
-import { getRandomColor } from '@/utils/Modules/randomColorGenerator';
 import type { PropType } from 'vue';
+import ColorPicker from './ColorPicker.vue';
 
 const visual = defineModel<ITextVisual>('visual', { required: true, type: Object as PropType<ITextVisual> })
 
-
-function changeColor(visual: ITextVisual) {
-    visual.color = getRandomColor()
+function changeColorFormPicker(color: string) {
+    visual.value.color = color
 }
 
-function changeStrokeColor(visual: ITextVisual) {
-    visual.strokeColor = getRandomColor()
+function changeStrokeColorFormPicker(color: string) {
+    visual.value.strokeColor = color
 }
-
 
 </script>
 
-
-
-<style>
+<style scoped>
 .container .line-container:nth-child(even) {
     background-color: rgb(183, 183, 183)
 }
@@ -162,6 +144,7 @@ function changeStrokeColor(visual: ITextVisual) {
 }
 
 .line-container {
+    padding: 5px;
     display: flex;
     flex-direction: column;
 }
@@ -205,5 +188,12 @@ button h1 {
 p {
     margin: 0;
     padding: 0
+}
+
+input {
+    margin: 0;
+    padding: 0;
+    min-width: 30px;
+    min-height: 30px;
 }
 </style>

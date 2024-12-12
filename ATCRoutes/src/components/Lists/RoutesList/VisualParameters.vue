@@ -6,14 +6,7 @@
                     <p>Color</p>
                 </div>
                 <div class="line-option-container">
-                    <div class="color-display" :style="{
-                        'background-color': visual.color
-                    }">&nbsp;</div>
-                </div>
-                <div class="line-option-container">
-                    <button @click="changeColor(visual)">
-                        Change
-                    </button>
+                    <ColorPicker v-model:pure-color="visual.color" @color-change="changeColorFromPicker" />
                 </div>
             </div>
         </div>
@@ -30,10 +23,10 @@
 
 
                 <div class="line-option-container">
-                    <button class="increase-decrease-button" @click="increaseWidth(visual)">
+                    <button class="increase-decrease-button" @click="visual.width += 2">
                         +
                     </button>
-                    <button class="increase-decrease-button" @click="decreaseWidth(visual)">
+                    <button class="increase-decrease-button" @click="visual.width -= 2">
                         -
                     </button>
                 </div>
@@ -61,14 +54,7 @@
                     <p>Stroke Color</p>
                 </div>
                 <div class="line-option-container">
-                    <div class="color-display" :style="{
-                        'background-color': visual.strokeColor
-                    }">&nbsp;</div>
-                </div>
-                <div class="line-option-container">
-                    <button @click="changeStrokeColor(visual)">
-                        Change
-                    </button>
+                    <ColorPicker v-model:pure-color="visual.strokeColor" @color-change="changeStrokeColorFromPicker" />
                 </div>
             </div>
         </div>
@@ -84,8 +70,8 @@
                 </div>
 
                 <div class="line-option-container">
-                    <button class="increase-decrease-button" @click="increaseStrokeWidth(visual)">+</button>
-                    <button class="increase-decrease-button" @click="decreaseStrokeWidth(visual)">-</button>
+                    <button class="increase-decrease-button" @click="visual.strokeWidth += 2">+</button>
+                    <button class="increase-decrease-button" @click="visual.strokeWidth -= 2">-</button>
                 </div>
 
             </div>
@@ -98,35 +84,18 @@
 
 <script setup lang="ts">
 import type IVisual from '@/utils/Interfaces/Visuals/IVisual';
-import { getRandomColor } from '@/utils/Modules/randomColorGenerator';
 import type { PropType } from 'vue';
+import ColorPicker from './ColorPicker.vue';
 
 const visual = defineModel<IVisual>('visual', { required: true, type: Object as PropType<IVisual> })
 
-function increaseWidth(visual: IVisual) {
-    visual.width += 2;
+function changeColorFromPicker(color: string) {
+    visual.value.color = color
 }
 
-function decreaseWidth(visual: IVisual) {
-    visual.width -= 2;
+function changeStrokeColorFromPicker(color: string) {
+    visual.value.strokeColor = color
 }
-
-function increaseStrokeWidth(visual: IVisual) {
-    visual.strokeWidth += 2;
-}
-
-function decreaseStrokeWidth(visual: IVisual) {
-    visual.strokeWidth -= 2;
-}
-
-function changeColor(visual: IVisual) {
-    visual.color = getRandomColor()
-}
-
-function changeStrokeColor(visual: IVisual) {
-    visual.strokeColor = getRandomColor()
-}
-
 
 </script>
 
@@ -142,6 +111,7 @@ function changeStrokeColor(visual: IVisual) {
 }
 
 .line-container {
+    padding: 5px;
     display: flex;
     flex-direction: column;
 }
@@ -185,5 +155,12 @@ button h1 {
 p {
     margin: 0;
     padding: 0
+}
+
+input {
+    margin: 0;
+    padding: 0;
+    min-width: 30px;
+    min-height: 30px;
 }
 </style>

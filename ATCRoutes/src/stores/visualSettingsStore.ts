@@ -25,10 +25,10 @@ export const visualSettingsStore = defineStore('visualSettingsStore', () => {
   const ifShowLines_ = ref(true)
   const ifShowLines = computed({
     get: () => {
-      return ifShowLines_
+      return ifShowLines_ 
     },
     set: (val: boolean) => {
-      ifShowLines_.value = val
+        ifShowLines_ .value = val
     },
   })
 

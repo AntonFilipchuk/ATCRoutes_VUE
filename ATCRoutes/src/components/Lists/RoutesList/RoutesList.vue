@@ -176,6 +176,7 @@ th {
 }
 
 .show-container .show-option {
+    padding: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -203,5 +204,12 @@ table tr:nth-child(odd) {
 
 table tr:nth-child(even) {
     background-color: rgb(164, 164, 164);
+}
+
+input {
+    margin: 0;
+    padding: 0;
+    min-width: 30px;
+    min-height: 30px;
 }
 </style>
