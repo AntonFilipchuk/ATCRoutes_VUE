@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas ref="pointsCanvas"></canvas>
+        <canvas ref="pointsCanvas" :style="{ 'z-index': zIndex }"></canvas>
     </div>
 </template>
 <script setup lang="ts">
@@ -11,6 +11,10 @@ import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import { drawCanvasRoutePoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch } from 'vue'
+
+defineProps({
+    zIndex: { type: Number, required: true },
+})
 
 const pointsCanvas = ref(null);
 const canvasStore = computed(() => canvasDataStore())

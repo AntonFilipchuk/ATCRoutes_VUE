@@ -1,5 +1,6 @@
 import type CanvasRoute from '../Classes/CanvasRoute/CanvasRoute'
 import type RoutePoint from '../Classes/Route/RoutePoint'
+import type IRouteVisuals from '../Interfaces/Visuals/IRouteVisuals'
 import type ITextVisual from '../Interfaces/Visuals/ITextVisual'
 import type IVisual from '../Interfaces/Visuals/IVisual'
 
@@ -37,6 +38,24 @@ export function drawRoutePoint(
   }
 
   return path
+}
+
+export function drawActiveRouteLines(
+  canvasRoute: CanvasRoute,
+  activeRouteVisuals: IRouteVisuals,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  const route: CanvasRoute = { ...canvasRoute, routeVisuals: activeRouteVisuals }
+  drawCanvasRouteLines(route, canvasContext)
+}
+
+export function drawActiveRoutePoints(
+  canvasRoute: CanvasRoute,
+  activeRouteVisuals: IRouteVisuals,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  const route: CanvasRoute = { ...canvasRoute, routeVisuals: activeRouteVisuals }
+  drawCanvasRoutePoints(route, canvasContext)
 }
 
 export default function drawCanvasRouteLines(

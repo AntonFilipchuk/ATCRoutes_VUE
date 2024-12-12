@@ -1,5 +1,8 @@
 import type IGeographicCoordinate from '../Interfaces/IGeographicCoordinate'
 import type INormalizationParameters from '../Interfaces/INormalizationParameters'
+import type IRouteVisuals from '../Interfaces/Visuals/IRouteVisuals'
+import type ITextVisual from '../Interfaces/Visuals/ITextVisual'
+import type IVisual from '../Interfaces/Visuals/IVisual'
 import calculateBearingAndDistance from '../Modules/bearingAndDistanceCalculator'
 import calculateCartesianCoordinate from '../Modules/cartesianCoordinatesCalculator'
 import convertCartesianToGeographic from '../Modules/convertCartesianToGeographic'
@@ -29,6 +32,8 @@ export default class CanvasData {
   inactiveCanvasRoutes: CanvasRoute[] = []
   allCanvasRoutes: CanvasRoute[] = []
   normalizationParameters: INormalizationParameters
+
+  activeRouteVisuals: IRouteVisuals
 
   constructor(
     width: number,
@@ -63,6 +68,8 @@ export default class CanvasData {
       this.normalizationParameters,
     )
     this.inactiveCanvasRoutes = this.allCanvasRoutes.slice()
+
+    this.activeRouteVisuals = this.getActiveRouteVisuals()
   }
 
   updateRoutePointCoordinates(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
@@ -85,6 +92,44 @@ export default class CanvasData {
     )
 
     routePoint.geographicCoordinate = newGeoCoordinates
+  }
+
+  private getActiveRouteVisuals(): IRouteVisuals {
+    const lineVisuals: IVisual = {
+      color: 'black',
+      ifStroke: false,
+      strokeColor: 'black',
+      strokeWidth: 2,
+      width: 10,
+    }
+
+    const pointVisuals: IVisual = {
+      color: 'orange',
+      ifStroke: true,
+      strokeColor: 'black',
+      strokeWidth: 2,
+      width: 20,
+    }
+
+    const textVisuals: ITextVisual = {
+      color: 'white',
+      font: 'arial',
+      ifStroke: true,
+      strokeColor: 'black',
+      width: 14,
+      strokeWidth: 6,
+      xOffset: 0,
+      yOffset: 0,
+    }
+
+    return {
+      ifShowLines: true,
+      ifShowPoints: true,
+      ifShowText: true,
+      lineVisuals: lineVisuals,
+      pointVisuals: pointVisuals,
+      textVisuals: textVisuals,
+    }
   }
 
   private makeRoutes(

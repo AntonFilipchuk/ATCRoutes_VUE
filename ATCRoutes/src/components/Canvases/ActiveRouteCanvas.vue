@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas ref="canvas" @mousedown="clickPoint" id="activeRouteCanvas"></canvas>
+        <canvas ref="canvas" @mousedown="clickPoint" id="activeRouteCanvas" :style="{ 'z-index': zIndex }"></canvas>
     </div>
 </template>
 
@@ -9,10 +9,13 @@
 
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
-import drawRouteLines, { cleanCanvas, drawCanvasRoutePoints } from '@/utils/Modules/drawer';
+import { cleanCanvas, drawActiveRouteLines, drawActiveRoutePoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
 
+defineProps({
+    zIndex: { type: Number, required: true },
+})
 
 const canvas: Ref<HTMLCanvasElement | null> = ref(null);
 const canvasStore = computed(() => canvasDataStore())
@@ -70,8 +73,8 @@ function renderCanvas() {
 function drawContent(canvasContext: CanvasRenderingContext2D) {
     const route = canvasStore.value.activeRoute;
     if (route) {
-        drawRouteLines(route, canvasContext)
-        drawCanvasRoutePoints(route, canvasContext)
+        drawActiveRouteLines(route, canvasStore.value.activeRouteVisuals, canvasContext)
+        drawActiveRoutePoints(route, canvasStore.value.activeRouteVisuals, canvasContext)
     }
 }
 

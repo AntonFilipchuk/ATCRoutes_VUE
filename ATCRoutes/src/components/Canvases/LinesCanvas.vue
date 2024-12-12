@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas ref="linesCanvas"></canvas>
+        <canvas ref="linesCanvas" :style="{ 'z-index': zIndex }"></canvas>
     </div>
 </template>
 
@@ -10,6 +10,10 @@ import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import drawRouteLines from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch, } from 'vue';
+
+defineProps({
+    zIndex: { type: Number, required: true },
+})
 
 const linesCanvas = ref(null)
 const canvasStore = computed(() => canvasDataStore())
@@ -23,14 +27,11 @@ const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes
     return { ...route.routeVisuals.lineVisuals, ifShowLines: route.routeVisuals.ifShowLines, ifVisible: route.ifVisible }
 }))
 
-
-
 watch([...watchedProperties, watchedRoutesVisualProps], () => { renderCanvas() })
 
 onMounted(() => {
     renderCanvas();
 });
-
 
 function renderCanvas() {
     try {
@@ -53,10 +54,8 @@ function drawContent(canvasContext: CanvasRenderingContext2D, routes: CanvasRout
 
 <style scoped>
 canvas {
-    /* position: absolute; */
     left: 0;
     top: 0;
-    z-index: 0;
     pointer-events: none;
 }
 </style>

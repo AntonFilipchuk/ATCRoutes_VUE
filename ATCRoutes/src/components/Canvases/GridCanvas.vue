@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas ref="canvas"></canvas>
+        <canvas ref="canvas" :style="{ 'z-index': zIndex }"></canvas>
     </div>
 </template>
 <script setup lang="ts">
@@ -9,6 +9,9 @@ import { drawLine } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch } from 'vue';
 
+defineProps({
+    zIndex: { type: Number, required: true },
+})
 
 const canvas = ref(null);
 const canvasStore = computed(() => canvasDataStore())

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas ref="textCanvas"></canvas>
+        <canvas ref="textCanvas" :style="{ 'z-index': zIndex }"></canvas>
     </div>
 </template>
 
@@ -10,6 +10,11 @@ import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import { drawRoutePointsText } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch, type WatchHandle } from 'vue';
+
+
+defineProps({
+    zIndex: { type: Number, required: true },
+})
 
 const textCanvas = ref(null)
 const canvasStore = computed(() => canvasDataStore())

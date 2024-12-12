@@ -23,12 +23,12 @@
     </div>
     <div style="display: flex; flex-direction:row; align-items: stretch; gap: 5px">
         <div :style="canvasContainerStyle">
-            <LinesCanvas />
-            <PointsCanvas />
-            <TextCanvas />
-            <ActiveRouteCanvas />
-            <ConflictPointsCanvas />
-            <GridCanvas />
+            <GridCanvas :z-index=0 />
+            <LinesCanvas :z-index="1" />
+            <PointsCanvas :z-index="2" />
+            <ActiveRouteCanvas :z-index="3" />
+            <ConflictPointsCanvas :z-index="4" />
+            <TextCanvas :z-index="5" />
         </div>
         <div style="display: flex; flex: 1; position: relative;">
             <DataTypeDisplaySelector />
