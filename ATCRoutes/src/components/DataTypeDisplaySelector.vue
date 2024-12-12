@@ -51,7 +51,8 @@ function selectButton(id: string) {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    outline: black 3px solid;
+    border: solid black;
+    border-bottom: none;
 }
 
 .buttons-container div {
@@ -62,8 +63,8 @@ function selectButton(id: string) {
 }
 
 .buttons-container div.active {
-    outline: thick double white;
-    outline-offset: -4px;
+    outline: 6px double white;
+    outline-offset: -6px;
     background-color: #007bff;
     color: white;
 }

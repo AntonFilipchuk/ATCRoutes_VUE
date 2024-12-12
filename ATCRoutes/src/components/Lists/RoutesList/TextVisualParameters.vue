@@ -1,128 +1,130 @@
 <template>
-    <div class="line-container">
-        <div class="line-option">
-            <div class="line-option-container">
-                <p>Color</p>
-            </div>
-            <div class="line-option-container">
-                <div class="color-display" :style="{
-                    'background-color': visual.color
-                }">&nbsp;</div>
-            </div>
-            <div class="line-option-container">
-                <button @click="changeColor(visual)">
-                    Change
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="line-container">
-        <div class="line-option">
-
-            <div class="line-option-container">
-                <p>Size</p>
-            </div>
-
-            <div class="line-option-container">
-                <p>{{ visual.width }}px</p>
-            </div>
-
-
-            <div class="line-option-container">
-                <button class="increase-decrease-button" @click="visual.width += 2">
-                    +
-                </button>
-                <button class="increase-decrease-button" @click="visual.width -= 2">
-                    -
-                </button>
-            </div>
-
-        </div>
-    </div>
-    <div class="line-container">
-        <div class="line-option">
-
-            <div class="line-option-container">
-                <p>Stroke</p>
-            </div>
-
-            <div class="line-option-container"> &nbsp;</div>
-
-            <div class="line-option-container">
-                <input type="checkbox" v-model="visual.ifStroke">
-            </div>
-
-        </div>
-    </div>
-    <div class="line-container">
-        <div class="line-option">
-            <div class="line-option-container">
-                <p>Stroke Color</p>
-            </div>
-            <div class="line-option-container">
-                <div class="color-display" :style="{
-                    'background-color': visual.strokeColor
-                }">&nbsp;</div>
-            </div>
-            <div class="line-option-container">
-                <button @click="changeStrokeColor(visual)">
-                    Change
-                </button>
+    <div class="container">
+        <div class="line-container">
+            <div class="line-option">
+                <div class="line-option-container">
+                    <p>Color</p>
+                </div>
+                <div class="line-option-container">
+                    <div class="color-display" :style="{
+                        'background-color': visual.color
+                    }">&nbsp;</div>
+                </div>
+                <div class="line-option-container">
+                    <button @click="changeColor(visual)">
+                        Change
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="line-container">
-        <div class="line-option">
+        <div class="line-container">
+            <div class="line-option">
 
-            <div class="line-option-container">
-                <p>Stroke Width</p>
+                <div class="line-option-container">
+                    <p>Size</p>
+                </div>
+
+                <div class="line-option-container">
+                    <p>{{ visual.width }}px</p>
+                </div>
+
+
+                <div class="line-option-container">
+                    <button class="increase-decrease-button" @click="visual.width += 2">
+                        +
+                    </button>
+                    <button class="increase-decrease-button" @click="visual.width -= 2">
+                        -
+                    </button>
+                </div>
+
             </div>
-
-            <div class="line-option-container">
-                <p>{{ visual.strokeWidth }}px</p>
-            </div>
-
-            <div class="line-option-container">
-                <button class="increase-decrease-button" @click="visual.strokeWidth += 2">+</button>
-                <button class="increase-decrease-button" @click="visual.strokeWidth -= 2">-</button>
-            </div>
-
         </div>
-    </div>
-    <div class="line-container">
-        <div class="line-option">
+        <div class="line-container">
+            <div class="line-option">
 
-            <div class="line-option-container">
-                <p>X Offset</p>
+                <div class="line-option-container">
+                    <p>Stroke</p>
+                </div>
+
+                <div class="line-option-container"> &nbsp;</div>
+
+                <div class="line-option-container">
+                    <input type="checkbox" v-model="visual.ifStroke">
+                </div>
+
             </div>
-
-            <div class="line-option-container">
-                <p>{{ visual.xOffset }}px</p>
-            </div>
-
-            <div class="line-option-container">
-                <button class="increase-decrease-button" @click="visual.xOffset += 2">+</button>
-                <button class="increase-decrease-button" @click="visual.xOffset -= 2">-</button>
-            </div>
-
         </div>
-    </div>
-    <div class="line-container">
-        <div class="line-option">
-
-            <div class="line-option-container">
-                <p>Y Offset</p>
+        <div class="line-container">
+            <div class="line-option">
+                <div class="line-option-container">
+                    <p>Stroke Color</p>
+                </div>
+                <div class="line-option-container">
+                    <div class="color-display" :style="{
+                        'background-color': visual.strokeColor
+                    }">&nbsp;</div>
+                </div>
+                <div class="line-option-container">
+                    <button @click="changeStrokeColor(visual)">
+                        Change
+                    </button>
+                </div>
             </div>
+        </div>
+        <div class="line-container">
+            <div class="line-option">
 
-            <div class="line-option-container">
-                <p>{{ visual.yOffset }}px</p>
+                <div class="line-option-container">
+                    <p>Stroke Width</p>
+                </div>
+
+                <div class="line-option-container">
+                    <p>{{ visual.strokeWidth }}px</p>
+                </div>
+
+                <div class="line-option-container">
+                    <button class="increase-decrease-button" @click="visual.strokeWidth += 2">+</button>
+                    <button class="increase-decrease-button" @click="visual.strokeWidth -= 2">-</button>
+                </div>
+
             </div>
+        </div>
+        <div class="line-container">
+            <div class="line-option">
 
-            <div class="line-option-container">
-                <button class="increase-decrease-button" @click="visual.yOffset += 2">+</button>
-                <button class="increase-decrease-button" @click="visual.yOffset -= 2">-</button>
+                <div class="line-option-container">
+                    <p>X Offset</p>
+                </div>
+
+                <div class="line-option-container">
+                    <p>{{ visual.xOffset }}px</p>
+                </div>
+
+                <div class="line-option-container">
+                    <button class="increase-decrease-button" @click="visual.xOffset += 2">+</button>
+                    <button class="increase-decrease-button" @click="visual.xOffset -= 2">-</button>
+                </div>
+
             </div>
+        </div>
+        <div class="line-container">
+            <div class="line-option">
 
+                <div class="line-option-container">
+                    <p>Y Offset</p>
+                </div>
+
+                <div class="line-option-container">
+                    <p>{{ visual.yOffset }}px</p>
+                </div>
+
+                <div class="line-option-container">
+                    <button class="increase-decrease-button" @click="visual.yOffset += 2">+</button>
+                    <button class="increase-decrease-button" @click="visual.yOffset -= 2">-</button>
+                </div>
+
+            </div>
         </div>
     </div>
 </template>
@@ -151,6 +153,14 @@ function changeStrokeColor(visual: ITextVisual) {
 
 
 <style>
+.container .line-container:nth-child(even) {
+    background-color: rgb(183, 183, 183)
+}
+
+.container .line-container:nth-child(odd) {
+    background-color: rgb(233, 233, 233)
+}
+
 .line-container {
     display: flex;
     flex-direction: column;

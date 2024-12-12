@@ -1,6 +1,20 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <template>
     <div>
+        <div class="global-show-container">
+            <div class="container">
+                <h1>Show Text</h1>
+                <input type="checkbox" v-model="ifAllTextVisible" @change="toggleTextVisibility">
+            </div>
+            <div class="container">
+                <h1>Show Lines</h1>
+                <input type="checkbox" v-model="ifAllLinesVisible" @change="toggleLinesVisibility">
+            </div>
+            <div class="container">
+                <h1>Show Points</h1>
+                <input type="checkbox" v-model="ifAllPointsVisible" @change="togglePointsVisibility">
+            </div>
+        </div>
         <table>
             <thead>
                 <tr style="background-color: white;">
@@ -67,24 +81,85 @@ import { canvasDataStore } from '@/stores/canvasDataStore';
 import { computed } from 'vue';
 import VisualParameters from './VisualParameters.vue';
 import TextVisualParameters from './TextVisualParameters.vue';
+import { visualSettingsStore } from '@/stores/visualSettingsStore';
 const activeRoute = computed(() => canvasDataStore().activeRoute)
 const inactiveRoutes = computed(() => canvasDataStore().inactiveRoutes);
+
+
+
+const ifAllTextVisible = visualSettingsStore().ifShowText
+const ifAllLinesVisible = visualSettingsStore().ifShowLines
+const ifAllPointsVisible = visualSettingsStore().ifShowPoints
 
 function toUpperFirstLetter(str: string): string {
     if (str) { return str[0].toUpperCase() + str.slice(1, str.length) }
     return ''
 }
 
+function toggleTextVisibility() {
+    if (ifAllTextVisible.value) {
+        inactiveRoutes.value.forEach(route => route.routeVisuals.ifShowText = true)
+        return
+    }
+    inactiveRoutes.value.forEach(route => route.routeVisuals.ifShowText = false)
+}
 
+function toggleLinesVisibility() {
+    if (ifAllLinesVisible.value) {
+        inactiveRoutes.value.forEach(route => route.routeVisuals.ifShowLines = true)
+        return
+    }
+    inactiveRoutes.value.forEach(route => route.routeVisuals.ifShowLines = false)
+}
 
+function togglePointsVisibility() {
+    if (ifAllPointsVisible.value) {
+        inactiveRoutes.value.forEach(route => route.routeVisuals.ifShowPoints = true)
+        return
+    }
+    inactiveRoutes.value.forEach(route => route.routeVisuals.ifShowPoints = false)
+}
 
 </script>
 
 
 <style scoped>
+.global-show-container {
+    display: flex;
+    flex-direction: row;
+    border: solid black;
+    border-bottom: none;
+}
+
+.global-show-container .container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex: 1 1 0px
+}
+
+.global-show-container .container h1 {
+    font-size: 28px;
+    margin: 0;
+    padding-bottom: 3%;
+    text-align: center;
+}
+
+.global-show-container .container input {
+    margin-bottom: 3%;
+}
+
 table {
+    border: 3px solid black;
+    border-collapse: collapse;
     width: 100%;
     font-size: 28px;
+}
+
+td,
+th {
+    border: 3px solid black;
+    border-collapse: collapse;
 }
 
 .show-container {
