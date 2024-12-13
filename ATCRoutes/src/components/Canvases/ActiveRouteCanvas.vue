@@ -39,7 +39,6 @@ const activeRouteVisuals = computed(() => {
 const watchedProperties = [
     computed(() => canvasStore.value.width),
     computed(() => canvasStore.value.height),
-    //computed(() => canvasStore.value.activeRouteWithVisuals),
     activeRouteVisuals
 ]
 
@@ -111,9 +110,6 @@ function renderCanvas() {
 
 function drawContent(canvasContext: CanvasRenderingContext2D) {
     const route = canvasStore.value.activeRouteWithVisuals
-
-    console.log("Active route", route);
-
     if (route && route.routeVisuals.ifVisible) {
         if (route.routeVisuals.ifShowLines) {
             drawCanvasRouteLines(route, canvasContext)

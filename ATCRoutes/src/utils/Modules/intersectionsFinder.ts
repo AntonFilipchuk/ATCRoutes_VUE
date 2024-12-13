@@ -2,7 +2,6 @@ import IntersectionPoint from '../Classes/IntersectionPoint'
 import type Route from '../Classes/Route/Route'
 import type RoutePoint from '../Classes/Route/RoutePoint'
 
-
 export default function findIntersections(route: Route, routes: Route[]): IntersectionPoint[] {
   const intersectionPoints: IntersectionPoint[] = []
   const routePoints = route.getPoints()
@@ -50,12 +49,57 @@ export default function findIntersections(route: Route, routes: Route[]): Inters
   return intersectionPoints
 }
 
+function ifTwoEqualSections(
+  point1: RoutePoint,
+  point2: RoutePoint,
+  point3: RoutePoint,
+  point4: RoutePoint,
+) {
+  return ifPointsEqual(point1, point3) && ifPointsEqual(point2, point4)
+}
+
+function ifSectionsHaveSamePoint(
+  point1: RoutePoint,
+  point2: RoutePoint,
+  point3: RoutePoint,
+  point4: RoutePoint,
+) {
+  return (
+    ifPointsEqual(point1, point3) ||
+    ifPointsEqual(point1, point4) ||
+    ifPointsEqual(point2, point3) ||
+    ifPointsEqual(point2, point4)
+  )
+}
+
+function ifPointsEqual(point1: RoutePoint, point2: RoutePoint) {
+  return (
+    point1.name === point2.name &&
+    point1.z === point2.z &&
+    point1.bearingAndDistance.distance === point2.bearingAndDistance.distance &&
+    point1.bearingAndDistance.magneticBearing === point2.bearingAndDistance.magneticBearing
+  )
+}
+
 function findIntersection(
   point1: RoutePoint,
   point2: RoutePoint,
   point3: RoutePoint,
   point4: RoutePoint,
 ): IIntersectionPoint | string | undefined {
+  //Check if sections are equal
+  //Example: [p1 - p2] - [p1 - p2]
+  if (ifTwoEqualSections(point1, point2, point3, point4)) {
+    return undefined
+  }
+
+  //Check if any section has the same point
+  //Example: [p1 - p4] - [p1 - p3]
+  //Example: [p1 - p2] - [p2 - p3]
+  if (ifSectionsHaveSamePoint(point1, point2, point3, point4)) {
+    return undefined
+  }
+
   const p1 = makePoint(point1)
   const p2 = makePoint(point2)
   const q1 = makePoint(point3)

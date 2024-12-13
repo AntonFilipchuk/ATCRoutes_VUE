@@ -76,7 +76,6 @@ const activeRoute = computed({
         return canvasDataStore().activeRoute
     },
     set(route: CanvasRoute) {
-        console.log("setting active route", route);
         canvasDataStore().setActiveRoute(route)
     }
 })
