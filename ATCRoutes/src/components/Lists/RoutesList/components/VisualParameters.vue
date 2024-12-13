@@ -1,79 +1,56 @@
 <template>
     <div class="container">
-        <div class="line-container">
-            <div class="line-option">
-                <div class="line-option-container">
-                    <p>Color</p>
-                </div>
-                <div class="line-option-container">
-                    <ColorPicker v-model:pure-color="visual.color" @color-change="changeColorFromPicker" />
-                </div>
+        <div class="row">
+            <div class="option">
+                <p>Color</p>
+            </div>
+            <div class="option">
+                <ColorPicker v-model:pure-color="visual.color" @color-change="changeColorFromPicker" />
             </div>
         </div>
-        <div class="line-container">
-            <div class="line-option">
-
-                <div class="line-option-container">
-                    <p>Width</p>
-                </div>
-
-                <div class="line-option-container">
-                    <p>{{ visual.width }}px</p>
-                </div>
-
-
-                <div class="line-option-container">
-                    <button class="increase-decrease-button" @click="visual.width += 2">
-                        +
-                    </button>
-                    <button class="increase-decrease-button" @click="visual.width -= 2">
-                        -
-                    </button>
-                </div>
-
+        <div class="row">
+            <div class="option">
+                <p>Width</p>
+            </div>
+            <div class="option">
+                <p>{{ visual.width }}px</p>
+            </div>
+            <div class="option">
+                <button class="increase-decrease-button" @click="visual.width += 2">
+                    +
+                </button>
+                <button class="increase-decrease-button" @click="visual.width -= 2">
+                    -
+                </button>
             </div>
         </div>
-        <div class="line-container">
-            <div class="line-option">
-
-                <div class="line-option-container">
-                    <p>Stroke</p>
-                </div>
-
-                <div class="line-option-container"> &nbsp;</div>
-
-                <div class="line-option-container">
-                    <input type="checkbox" v-model="visual.ifStroke">
-                </div>
-
+        <div class="row">
+            <div class="option">
+                <p>Stroke</p>
+            </div>
+            <div class="option"> &nbsp;</div>
+            <div class="option">
+                <input type="checkbox" v-model="visual.ifStroke">
             </div>
         </div>
-        <div class="line-container">
-            <div class="line-option">
-                <div class="line-option-container">
-                    <p>Stroke Color</p>
-                </div>
-                <div class="line-option-container">
-                    <ColorPicker v-model:pure-color="visual.strokeColor" @color-change="changeStrokeColorFromPicker" />
-                </div>
+        <div class="row">
+            <div class="option">
+                <p>Stroke Color</p>
+            </div>
+            <div class="option">
+                <ColorPicker v-model:pure-color="visual.strokeColor" @color-change="changeStrokeColorFromPicker" />
             </div>
         </div>
-        <div class="line-container">
-            <div class="line-option">
-
-                <div class="line-option-container">
-                    <p>Stroke width</p>
-                </div>
-
-                <div class="line-option-container">
-                    <p>{{ visual.strokeWidth }}px</p>
-                </div>
-
-                <div class="line-option-container">
-                    <button class="increase-decrease-button" @click="visual.strokeWidth += 2">+</button>
-                    <button class="increase-decrease-button" @click="visual.strokeWidth -= 2">-</button>
-                </div>
-
+        <div class="row">
+            <div class="option">
+                <p>Stroke width</p>
+            </div>
+            <div class="option">
+                <p>{{ visual.strokeWidth }}px</p>
+            </div>
+            <div class="option">
+                <button class="increase-decrease-button" @click="visual.strokeWidth += 2">+</button>
+                <button class="increase-decrease-button" @click="visual.strokeWidth -= 2">-</button>
             </div>
         </div>
     </div>

@@ -49,14 +49,14 @@ export default function findIntersections(route: Route, routes: Route[]): Inters
   return intersectionPoints
 }
 
-function ifTwoEqualSections(
-  point1: RoutePoint,
-  point2: RoutePoint,
-  point3: RoutePoint,
-  point4: RoutePoint,
-) {
-  return ifPointsEqual(point1, point3) && ifPointsEqual(point2, point4)
-}
+// function ifTwoEqualSections(
+//   point1: RoutePoint,
+//   point2: RoutePoint,
+//   point3: RoutePoint,
+//   point4: RoutePoint,
+// ) {
+//   return ifPointsEqual(point1, point3) && ifPointsEqual(point2, point4)
+// }
 
 function ifSectionsHaveSamePoint(
   point1: RoutePoint,
@@ -89,9 +89,9 @@ function findIntersection(
 ): IIntersectionPoint | string | undefined {
   //Check if sections are equal
   //Example: [p1 - p2] - [p1 - p2]
-  if (ifTwoEqualSections(point1, point2, point3, point4)) {
-    return undefined
-  }
+  // if (ifTwoEqualSections(point1, point2, point3, point4)) {
+  //   return undefined
+  // }
 
   //Check if any section has the same point
   //Example: [p1 - p4] - [p1 - p3]

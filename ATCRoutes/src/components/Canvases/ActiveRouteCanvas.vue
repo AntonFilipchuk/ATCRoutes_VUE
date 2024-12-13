@@ -10,6 +10,7 @@
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
+import type IRouteVisuals from '@/utils/Interfaces/Visuals/IRouteVisuals';
 import drawCanvasRouteLines, { cleanCanvas, drawCanvasRoutePoints, DrawCanvasRouteText } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, onUnmounted, ref, watch, type Ref, type WatchHandle } from 'vue';
@@ -32,8 +33,13 @@ const activeRouteVisuals = computed(() => {
 
     const routeVisuals = canvasStore.value.activeRouteWithVisuals.routeVisuals
 
-    return { ...routeVisuals }
+    return {
+        ...routeVisuals, lineVisuals: { ...routeVisuals.lineVisuals },
+        textVisuals: { ...routeVisuals.textVisuals },
+        pointVisuals: { ...routeVisuals.pointVisuals }
+    } as IRouteVisuals
 })
+
 
 
 const watchedProperties = [
