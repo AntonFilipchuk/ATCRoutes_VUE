@@ -24,7 +24,7 @@ const watchedProperties = [
 ]
 
 const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes.map((route) => {
-    return { ...route.routeVisuals.lineVisuals, ifShowLines: route.routeVisuals.ifShowLines, ifVisible: route.ifVisible }
+    return { ...route.routeVisuals.lineVisuals, ifShowLines: route.routeVisuals.ifShowLines, ifVisible: route.routeVisuals.ifVisible }
 }))
 
 watch([...watchedProperties, watchedRoutesVisualProps], () => { renderCanvas() })
@@ -37,7 +37,7 @@ function renderCanvas() {
     try {
         const canvasContext = getCanvasInfo(linesCanvas.value).canvasContext;
         setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height);
-        const routes = canvasStore.value.inactiveRoutes.filter((route) => route.ifVisible && route.routeVisuals.ifShowLines)
+        const routes = canvasStore.value.inactiveRoutes.filter((route) => route.routeVisuals.ifVisible && route.routeVisuals.ifShowLines)
         drawContent(canvasContext, routes);
     } catch (error) {
         console.error(error);

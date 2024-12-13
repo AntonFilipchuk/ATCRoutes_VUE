@@ -31,6 +31,7 @@ export default function getRandomRouteVisuals(): IRouteVisuals {
     yOffset: 0,
   }
   return {
+    ifVisible: true,
     ifShowLines: true,
     ifShowPoints: true,
     ifShowText: true,

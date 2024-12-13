@@ -72,6 +72,13 @@ export default class CanvasData {
     this.activeRouteVisuals = this.getActiveRouteVisuals()
   }
 
+  getActiveRouteWithVisuals(): CanvasRoute | null {
+    if (!this.activeCanvasRoute) {
+      return null
+    }
+    return { ...this.activeCanvasRoute, routeVisuals: this.activeRouteVisuals } as CanvasRoute
+  }
+
   updateRoutePointCoordinates(routePoint: RoutePoint, normalizedX: number, normalizedY: number) {
     routePoint.getNormalizedCartesianCoordinates().x = normalizedX
     routePoint.getNormalizedCartesianCoordinates().y = normalizedY
@@ -123,6 +130,7 @@ export default class CanvasData {
     }
 
     return {
+      ifVisible: true,
       ifShowLines: true,
       ifShowPoints: true,
       ifShowText: true,

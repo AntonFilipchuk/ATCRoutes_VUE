@@ -46,6 +46,10 @@ export const canvasDataStore = defineStore('canvasDataStore', () => {
     return ensureCanvasData().activeCanvasRoute
   })
 
+  const activeRouteWithVisuals = computed(() => {
+    return ensureCanvasData().getActiveRouteWithVisuals()
+  })
+
   const inactiveRoutes = computed(() => {
     return ensureCanvasData().inactiveCanvasRoutes
   })
@@ -61,9 +65,6 @@ export const canvasDataStore = defineStore('canvasDataStore', () => {
     return ensureCanvasData().height
   })
 
-  const activeRouteVisuals = computed(() => {
-    return ensureCanvasData().activeRouteVisuals
-  })
 
   return {
     updateRoutePointCoordinates,
@@ -71,9 +72,9 @@ export const canvasDataStore = defineStore('canvasDataStore', () => {
     changeCanvasSize,
     setActiveRoute,
     updateIntersectionPoints,
-    activeRouteVisuals,
     intersectionPoints,
     activeRoute,
+    activeRouteWithVisuals,
     inactiveRoutes,
     allRoutes,
     width,

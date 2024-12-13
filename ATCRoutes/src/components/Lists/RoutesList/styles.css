@@ -1,0 +1,51 @@
+input {
+  margin: 0;
+  padding: 0;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+    padding: 6px;
+    margin: 0;
+    color: white;
+    background-color: #0060df;
+}
+
+.increase-decrease-button {
+    min-width: 30px;
+    min-height: 30px;
+}
+
+.container .line-container:nth-child(even) {
+  background-color: rgb(183, 183, 183);
+}
+
+.container .line-container:nth-child(odd) {
+  background-color: rgb(233, 233, 233);
+}
+
+.line-container {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.line-container .line-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.line-container .line-option .line-option-container {
+  flex: 1 1 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

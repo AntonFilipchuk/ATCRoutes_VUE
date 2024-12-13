@@ -8,28 +8,67 @@
 
 
 import { canvasDataStore } from '@/stores/canvasDataStore';
+import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
-import { cleanCanvas, drawActiveRouteLines, drawActiveRoutePoints } from '@/utils/Modules/drawer';
+import drawCanvasRouteLines, { cleanCanvas, drawCanvasRoutePoints, DrawCanvasRouteText } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
-import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, type Ref, type WatchHandle } from 'vue';
 
 defineProps({
     zIndex: { type: Number, required: true },
 })
 
+let canvasContext: CanvasRenderingContext2D | undefined = undefined;
+let selectedPoint: RoutePoint | undefined | null = undefined;
+
 const canvas: Ref<HTMLCanvasElement | null> = ref(null);
 const canvasStore = computed(() => canvasDataStore())
+
+const activeRouteVisuals = computed(() => {
+
+    if (!canvasStore.value.activeRouteWithVisuals) {
+        return
+    }
+
+    const routeVisuals = canvasStore.value.activeRouteWithVisuals.routeVisuals
+
+    return { ...routeVisuals }
+})
+
+
 const watchedProperties = [
     computed(() => canvasStore.value.width),
     computed(() => canvasStore.value.height),
-    computed(() => canvasStore.value.activeRoute)
+    //computed(() => canvasStore.value.activeRouteWithVisuals),
+    activeRouteVisuals
 ]
-let canvasContext: CanvasRenderingContext2D | undefined = undefined;
-let selectedPoint: RoutePoint | undefined | null = undefined;
 
 watch(watchedProperties, () => {
     renderCanvas();
 })
+
+let pointWatchers: WatchHandle[] = [];
+watch(
+    computed<CanvasRoute | null>(() => canvasStore.value.activeRouteWithVisuals),
+    (newActiveRoute) => {
+
+        pointWatchers.forEach(unwatch => unwatch());
+        if (!newActiveRoute) {
+            return
+        }
+
+        // Set up new watchers
+        pointWatchers = newActiveRoute.route.getPoints().map((point) =>
+            watch(
+                () => [point.getNormalizedCartesianCoordinates().x, point.getNormalizedCartesianCoordinates().y],
+                () => {
+                    renderCanvas()
+                }
+            )
+        );
+    },
+    { immediate: true }
+);
 
 onMounted(() => {
 
@@ -71,10 +110,20 @@ function renderCanvas() {
 }
 
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-    const route = canvasStore.value.activeRoute;
-    if (route) {
-        drawActiveRouteLines(route, canvasStore.value.activeRouteVisuals, canvasContext)
-        drawActiveRoutePoints(route, canvasStore.value.activeRouteVisuals, canvasContext)
+    const route = canvasStore.value.activeRouteWithVisuals
+
+    console.log("Active route", route);
+
+    if (route && route.routeVisuals.ifVisible) {
+        if (route.routeVisuals.ifShowLines) {
+            drawCanvasRouteLines(route, canvasContext)
+        }
+        if (route.routeVisuals.ifShowPoints) {
+            drawCanvasRoutePoints(route, canvasContext)
+        }
+        if (route.routeVisuals.ifShowText) {
+            DrawCanvasRouteText(route, canvasContext)
+        }
     }
 }
 
@@ -110,7 +159,8 @@ function clickPoint(event: MouseEvent) {
         canvasStore.value.updateRoutePointCoordinates(selectedPoint, x, y);
         canvasStore.value.updateIntersectionPoints()
         cleanCanvas(canvasContext);
-        drawContent(canvasContext);
+        //No need to call drawContent again because
+        //The route will be drawn because watchers will detect change in coordinates
         selectedPoint = null;
     }
 }

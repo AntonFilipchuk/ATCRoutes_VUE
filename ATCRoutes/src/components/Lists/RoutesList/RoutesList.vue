@@ -26,41 +26,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-if="activeRoute">
-                    <th>{{ toUpperFirstLetter(activeRoute.name) }}</th>
-                    <td> <input type="checkbox" v-model="activeRoute.ifVisible"></td>
+                <tr v-if="activeRouteWithVisuals">
+                    <th>{{ toUpperCaseFirstLetter(activeRouteWithVisuals.name) }}</th>
                     <td>
-                        <div :style="{
-                            'background-color': activeRoute.routeVisuals.lineColor
-                        }">&nbsp</div>
+                        <RouteVisibilityOptions v-model:route="activeRouteWithVisuals" />
                     </td>
                     <td>
-                        <div>{{ activeRoute.routeVisuals.lineWidth }} <button>+</button> <button>-</button></div>
+                        <VisualParameters v-model:visual="activeRouteWithVisuals.routeVisuals.lineVisuals" />
                     </td>
                     <td>
-                        <div :style="{
-                            'background-color': activeRoute.routeVisuals.pointColor
-                        }">&nbsp</div>
+                        <VisualParameters v-model:visual="activeRouteWithVisuals.routeVisuals.pointVisuals" />
                     </td>
-                    <td>{{ activeRoute.routeVisuals.pointWidth }}</td>
+                    <td>
+                        <TextVisualParameters v-model:visual="activeRouteWithVisuals.routeVisuals.textVisuals" />
+                    </td>
                 </tr>
                 <tr v-for="(route, index) in inactiveRoutes" :key="index">
-                    <th>{{ toUpperFirstLetter(route.name) }}</th>
+                    <th>{{ toUpperCaseFirstLetter(route.name) }}</th>
                     <td>
-                        <div class="show-container">
-                            <div class="show-option">
-                                <p>All</p> <input type="checkbox" v-model="route.ifVisible">
-                            </div>
-                            <div class="show-option">
-                                <p>Text</p> <input type="checkbox" v-model="route.routeVisuals.ifShowText">
-                            </div>
-                            <div class="show-option">
-                                <p>Lines</p> <input type="checkbox" v-model="route.routeVisuals.ifShowLines">
-                            </div>
-                            <div class="show-option">
-                                <p>Points</p> <input type="checkbox" v-model="route.routeVisuals.ifShowPoints">
-                            </div>
-                        </div>
+                        <RouteVisibilityOptions v-model:route="inactiveRoutes[index]" />
                     </td>
                     <td>
                         <VisualParameters v-model:visual="route.routeVisuals.lineVisuals" />
@@ -79,19 +63,19 @@
 <script setup lang="ts">
 import { canvasDataStore } from '@/stores/canvasDataStore';
 import { computed } from 'vue';
-import VisualParameters from './VisualParameters.vue';
-import TextVisualParameters from './TextVisualParameters.vue';
+import VisualParameters from './components/VisualParameters.vue';
+import TextVisualParameters from './components/TextVisualParameters.vue';
 import { visualSettingsStore } from '@/stores/visualSettingsStore';
-const activeRoute = computed(() => canvasDataStore().activeRoute)
+import RouteVisibilityOptions from './components/RouteVisibilityOptions.vue';
+const activeRouteWithVisuals = computed(() => canvasDataStore().activeRouteWithVisuals)
 const inactiveRoutes = computed(() => canvasDataStore().inactiveRoutes);
-
 
 
 const ifAllTextVisible = visualSettingsStore().ifShowText
 const ifAllLinesVisible = visualSettingsStore().ifShowLines
 const ifAllPointsVisible = visualSettingsStore().ifShowPoints
 
-function toUpperFirstLetter(str: string): string {
+function toUpperCaseFirstLetter(str: string): string {
     if (str) { return str[0].toUpperCase() + str.slice(1, str.length) }
     return ''
 }
@@ -162,34 +146,6 @@ th {
     border-collapse: collapse;
 }
 
-.show-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.show-container .show-option:nth-child(even) {
-    background-color: rgb(183, 183, 183)
-}
-
-.show-container .show-option:nth-child(odd) {
-    background-color: rgb(233, 233, 233)
-}
-
-.show-container .show-option {
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between
-}
-
-input {
-    padding: 0;
-    margin: 0;
-    min-width: 25px;
-    min-height: 25px;
-}
-
 
 table th,
 td {
@@ -204,12 +160,5 @@ table tr:nth-child(odd) {
 
 table tr:nth-child(even) {
     background-color: rgb(164, 164, 164);
-}
-
-input {
-    margin: 0;
-    padding: 0;
-    min-width: 30px;
-    min-height: 30px;
 }
 </style>
