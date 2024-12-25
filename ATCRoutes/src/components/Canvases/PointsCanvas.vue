@@ -6,7 +6,7 @@
 <script setup lang="ts">
 
 
-import { canvasDataStore } from '@/stores/canvasDataStore';
+import { canvasDataStore } from '@/stores/internal/canvasDataStore';
 import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import { drawCanvasRoutePoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';

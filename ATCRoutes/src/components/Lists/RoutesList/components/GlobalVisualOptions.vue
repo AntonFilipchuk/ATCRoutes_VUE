@@ -76,8 +76,8 @@
     </div>
 </template>
 <script setup lang="ts">
-import { canvasDataStore } from '@/stores/canvasDataStore';
-import { visualSettingsStore } from '@/stores/visualSettingsStore';
+import { canvasDataStore } from '@/stores/internal/canvasDataStore';
+import { visualSettingsStore } from '@/stores/internal/visualSettingsStore';
 import { computed } from 'vue';
 
 const lineWidthChange = visualSettingsStore().lineWidthChange

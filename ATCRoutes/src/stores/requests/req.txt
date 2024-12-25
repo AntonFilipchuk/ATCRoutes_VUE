@@ -1,0 +1,23 @@
+1. Be able to fetch AIP routes - Done 
+2. Be able to fetch coordinates of points - Done 
+3. Be able to fetch custom routes with styles 
+4. Be able to upload custom routes with styles 
+
+
+
+FROM BD : (AIPRoutes + coordinates) => standard routes => to canvas 
+FROM BD : (Custom routes) => to canvas
+
+
+
+To display a route we need:
+    1. Find bearing and distance from a center point (origin)
+    2. Calculate cartesian coordinates that are normalized
+    3. To normalize all coordinates we need to know bearing and distance 
+    of all points.
+    4. That's basically it - we have X and Y, Z, visuals.
+
+To save a route we need: 
+    1. Knowing normalized cartesian coordinates reverse calculations
+    and get geographical coordinates
+    

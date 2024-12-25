@@ -40,6 +40,7 @@ export default class GeographicCoordinate implements IGeographicCoordinate {
   }
 
   //"553642.44N", "0371636.78E"
+  //553642.44, 371636.78
   private toNumber(prop: string): number {
     const noPostfix = prop.slice(0, -1)
 

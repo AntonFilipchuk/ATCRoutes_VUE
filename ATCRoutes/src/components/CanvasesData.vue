@@ -40,11 +40,11 @@
 import type AIPRoute from '@/utils/Classes/AIPRoute/AIPRoute';
 import GeographicCoordinate from '@/utils/Classes/GeographicCoordinate';
 import { computed, onBeforeMount, ref, type CSSProperties, type Ref } from 'vue';
-import { coordinatesStore } from '@/stores/coordinatesStore';
-import { AIPRoutesStore } from '@/stores/AIPRoutesStore';
+import { coordinatesStore } from '@/stores/requests/coordinatesStore';
+import { AIPRoutesStore } from '@/stores/requests/AIPRoutesStore';
 import CanvasData from '@/utils/Classes/CanvasData';
 import PointsCanvas from './Canvases/PointsCanvas.vue';
-import { canvasDataStore } from '@/stores/canvasDataStore';
+import { canvasDataStore } from '@/stores/internal/canvasDataStore';
 import LinesCanvas from './Canvases/LinesCanvas.vue';
 import ActiveRouteCanvas from './Canvases/ActiveRouteCanvas.vue';
 import GridCanvas from './Canvases/GridCanvas.vue';

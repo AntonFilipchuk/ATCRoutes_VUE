@@ -1,6 +1,7 @@
 {
   "coordinates": [
     { "name": "Moscow", "latitude": "554424.63N", "longitude": "0373636.00E" },
+    { "name": "vnukovo", "latitude": "553518.00N", "longitude": "0371515.00E" },
     {
       "name": "rw01",
       "latitude": "553511.63N",

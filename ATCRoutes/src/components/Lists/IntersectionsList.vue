@@ -22,7 +22,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { canvasDataStore } from '@/stores/canvasDataStore';
+import { canvasDataStore } from '@/stores/internal/canvasDataStore';
 import { computed } from 'vue';
 const intersections = computed(() => canvasDataStore().intersectionPoints);
 </script>

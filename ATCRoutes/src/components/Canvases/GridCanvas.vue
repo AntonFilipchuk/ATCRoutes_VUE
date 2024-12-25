@@ -4,7 +4,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { canvasDataStore } from '@/stores/canvasDataStore';
+import { canvasDataStore } from '@/stores/internal/canvasDataStore';
 import { drawLine } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch } from 'vue';

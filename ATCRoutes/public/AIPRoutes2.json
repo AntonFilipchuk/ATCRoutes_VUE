@@ -1,0 +1,246 @@
+{
+  "aerodromes": [
+    {
+      "id": "ad41b97a-b384-4061-8058-bf2d2af453eb",
+      "name": "UUWW",
+      "STARs": [
+        {
+          "id": "8d3fca51-7c4d-4766-afee-3ae0b22644fd",
+          "name": "dimgi3A",
+          "visuals": {
+            "ifVisible": true,
+            "lineVisuals": {
+              "color": "red",
+              "width": 10,
+              "ifStroke": true,
+              "strokeColor": "black",
+              "strokeWidth": 2
+            },
+            "ifShowLines": true,
+
+            "pointVisuals": {
+              "color": "red",
+              "width": 10,
+              "ifStroke": true,
+              "strokeColor": "black",
+              "strokeWidth": 2
+            },
+            "ifShowPoints": true,
+
+            "textVisuals": {
+              "font": "arial",
+              "xOffset": 0,
+              "yOffset": 0,
+              "color": "red",
+              "width": 10,
+              "ifStroke": true,
+              "strokeColor": "black",
+              "strokeWidth": 2
+            },
+            "ifShowText": true
+          },
+          "points": [
+            {
+              "name": "dimgi",
+              "altitude": "280",
+              "latitude": "554740.00N",
+              "longitude": "0394840.00E"
+            },
+            {
+              "name": "vivzo",
+              "altitude": "270",
+              "latitude": "554601.00N",
+              "longitude": "0392403.00E"
+            },
+            {
+              "name": "mefed",
+              "altitude": "260",
+              "latitude": "554400.90N",
+              "longitude": "0385557.00E"
+            },
+            {
+              "name": "logpu",
+              "altitude": "240",
+              "latitude": "554255.00N",
+              "longitude": "0384149.00E"
+            },
+            {
+              "name": "duzev",
+              "altitude": "220",
+              "latitude": "554150.00N",
+              "longitude": "0382732.00E"
+            },
+            {
+              "name": "otsur",
+              "altitude": "200",
+              "latitude": "554044.20N",
+              "longitude": "0381319.50E"
+            },
+            {
+              "name": "gekla",
+              "altitude": "190",
+              "latitude": "553900.00N",
+              "longitude": "0375205.00E"
+            },
+            {
+              "name": "enmur",
+              "altitude": "150",
+              "latitude": "553310.00N",
+              "longitude": "0373419.00E"
+            },
+            {
+              "name": "kibur",
+              "altitude": "150",
+              "latitude": "552744.46N",
+              "longitude": "0373306.02E"
+            },
+            {
+              "name": "ndb lo",
+              "altitude": "140",
+              "latitude": "552104.00N",
+              "longitude": "0373137.00E"
+            },
+            {
+              "name": "bemas",
+              "altitude": "130",
+              "latitude": "551252.03N",
+              "longitude": "0373221.31E"
+            },
+            {
+              "name": "tebdi",
+              "altitude": "100",
+              "latitude": "550311.80N",
+              "longitude": "0373144.10E"
+            },
+            {
+              "name": "tepta",
+              "altitude": "80",
+              "latitude": "550141.70N",
+              "longitude": "0372113.80E"
+            },
+            {
+              "name": "fidot",
+              "altitude": "70",
+              "latitude": "551300.00N",
+              "longitude": "0372153.00E"
+            },
+            {
+              "name": "roruk",
+              "altitude": "60",
+              "latitude": "551858.90N",
+              "longitude": "0372213.90E"
+            }
+          ]
+        }
+      ],
+      "SIDs": [
+        {
+          "id": "5108096a-bf2e-405a-b403-70af4a2f5823",
+          "name": "kogom3A",
+          "runway": "06",
+          "visuals": {
+            "ifVisible": true,
+            "lineVisuals": {
+              "color": "orange",
+              "width": 10,
+              "ifStroke": true,
+              "strokeColor": "black",
+              "strokeWidth": 2
+            },
+            "ifShowLines": true,
+
+            "pointVisuals": {
+              "color": "orange",
+              "width": 10,
+              "ifStroke": true,
+              "strokeColor": "black",
+              "strokeWidth": 2
+            },
+            "ifShowPoints": true,
+
+            "textVisuals": {
+              "font": "arial",
+              "xOffset": 0,
+              "yOffset": 0,
+              "color": "red",
+              "width": 10,
+              "ifStroke": true,
+              "strokeColor": "black",
+              "strokeWidth": 2
+            },
+            "ifShowText": true
+          },
+          "points": [
+            {
+              "name": "vnukovo",
+              "altitude": "0",
+              "latitude": "553518.00N",
+              "longitude": "0371515.00E"
+            },
+            {
+              "name": "ww063",
+              "altitude": "20",
+              "latitude": "553722.21N",
+              "longitude": "0372403.40E"
+            },
+            {
+              "name": "ww019",
+              "altitude": "45-70",
+              "latitude": "542728.00N",
+              "longitude": "0375019.00E"
+            },
+            {
+              "name": "bitsa",
+              "altitude": "70-80",
+              "latitude": "553400.00N",
+              "longitude": "0373653.00E"
+            },
+            {
+              "name": "gekla",
+              "altitude": "90",
+              "latitude": "553900.00N",
+              "longitude": "0375205.00E"
+            },
+            {
+              "name": "unrum",
+              "altitude": "110-130",
+              "latitude": "553652.80N",
+              "longitude": "0380842.50E"
+            },
+            {
+              "name": "abviv",
+              "altitude": "140",
+              "latitude": "553431.00N",
+              "longitude": "0382710.00E"
+            },
+            {
+              "name": "korfi",
+              "altitude": "160",
+              "latitude": "553745.60N",
+              "longitude": "0383656.70E"
+            },
+            {
+              "name": "mefed",
+              "altitude": "170",
+              "latitude": "554400.90N",
+              "longitude": "0385557.00E"
+            },
+            {
+              "name": "udzok",
+              "altitude": "170-210",
+              "latitude": "555056.00N",
+              "longitude": "0390900.00E"
+            },
+            {
+              "name": "kogom",
+              "altitude": "230",
+              "latitude": "555933.00N",
+              "longitude": "0394004.00E"
+            }
+          ]
+        }
+      ]
+    },
+    {}
+  ]
+}

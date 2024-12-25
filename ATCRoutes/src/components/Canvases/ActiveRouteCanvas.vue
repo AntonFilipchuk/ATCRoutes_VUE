@@ -7,7 +7,7 @@
 <script setup lang="ts">
 
 
-import { canvasDataStore } from '@/stores/canvasDataStore';
+import { canvasDataStore } from '@/stores/internal/canvasDataStore';
 import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
 import type IRouteVisuals from '@/utils/Interfaces/Visuals/IRouteVisuals';

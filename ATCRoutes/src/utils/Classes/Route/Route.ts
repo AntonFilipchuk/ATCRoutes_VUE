@@ -1,8 +1,8 @@
 import type RoutePoint from './RoutePoint'
 
 export default class Route {
-  name: string
   private points: RoutePoint[] | undefined
+  name: string
   ifRouteMagnetic = true
 
   constructor(name: string, ifRouteMagnetic = true) {
