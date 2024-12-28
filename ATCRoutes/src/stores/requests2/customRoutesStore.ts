@@ -2,17 +2,17 @@ import type IAerodrome from '@/utils/Interfaces/IAerodrome'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const aerodromesStore = defineStore('aerodromesStore', () => {
+export const customRoutesStore = defineStore('customRoutesStore', () => {
   const aerodromes = ref<IAerodrome[]>([])
   const loading = ref(true)
   const errorMessage = ref<string | null>(null)
 
-  async function fetchAerodromes(api: string) {
+  async function fetchRoutes(api: string) {
     try {
       const response = await fetch(api)
 
       if (!response.ok) {
-        throw new Error('Failed to fetch aerodromes data!')
+        throw new Error('Failed to fetch routes data!')
       }
 
       const result = await response.json()
@@ -34,5 +34,5 @@ export const aerodromesStore = defineStore('aerodromesStore', () => {
     }
   }
 
-  return { aerodromes, loading, errorMessage, fetchAerodromes }
+  return { aerodromes, loading, errorMessage, fetchRoutes }
 })

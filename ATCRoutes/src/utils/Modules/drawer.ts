@@ -1,7 +1,45 @@
 import type CanvasRoute from '../Classes/CanvasRoute/CanvasRoute'
 import type RoutePoint from '../Classes/Route/RoutePoint'
+import type ICanvasPoint from '../Interfaces/CanvasRoute/ICanvasPoint'
+import type ICanvasRoute from '../Interfaces/CanvasRoute/ICanvasRoute'
 import type ITextVisual from '../Interfaces/Visuals/ITextVisual'
 import type IVisual from '../Interfaces/Visuals/IVisual'
+
+export function drawCanvasRoutePoints_(
+  canvasRoute: ICanvasRoute,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  const pointsVisuals = canvasRoute.visuals.pointVisuals
+  const points = canvasRoute.points
+  points.forEach((point) => {
+    canvasRoute.routePointsAsPath2d.push({
+      name: point.name,
+      path2d: drawRoutePoint_(point, pointsVisuals, canvasContext),
+    })
+  })
+}
+
+export function drawRoutePoint_(
+  point: ICanvasPoint,
+  visuals: IVisual,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  const path = new Path2D()
+  const x = point.x
+  const y = point.y
+  path.rect(x - visuals.width / 2, y - visuals.width / 2, visuals.width, visuals.width)
+
+  canvasContext.fillStyle = visuals.color
+  canvasContext.fill(path)
+
+  if (visuals.ifStroke) {
+    canvasContext.strokeStyle = visuals.strokeColor
+    canvasContext.lineWidth = visuals.strokeWidth
+    canvasContext.stroke(path)
+  }
+
+  return path
+}
 
 export function drawCanvasRoutePoints(
   canvasRoute: CanvasRoute,
@@ -37,6 +75,37 @@ export function drawRoutePoint(
   }
 
   return path
+}
+
+export function drawCanvasLines_(
+  canvasRoute: ICanvasRoute,
+  canvasContext: CanvasRenderingContext2D,
+) {
+  const visuals = canvasRoute.visuals.lineVisuals
+
+  const linePath = new Path2D()
+
+  const points = canvasRoute.points
+
+  points.forEach((point, index) => {
+    const x = point.x
+    const y = point.y
+    if (index === 0) {
+      linePath.moveTo(x, y)
+    } else {
+      linePath.lineTo(x, y)
+    }
+  })
+
+  if (visuals.ifStroke) {
+    canvasContext.strokeStyle = visuals.strokeColor
+    canvasContext.lineWidth = visuals.strokeWidth + visuals.width
+    canvasContext.stroke(linePath)
+  }
+
+  canvasContext.strokeStyle = visuals.color
+  canvasContext.lineWidth = visuals.width
+  canvasContext.stroke(linePath)
 }
 
 export default function drawCanvasRouteLines(

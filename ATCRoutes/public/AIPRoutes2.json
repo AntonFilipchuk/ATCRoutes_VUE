@@ -6,6 +6,9 @@
       "STARs": [
         {
           "id": "8d3fca51-7c4d-4766-afee-3ae0b22644fd",
+          "aerodromeId": "ad41b97a-b384-4061-8058-bf2d2af453eb",
+          "aerodromeName" : "UUWW",
+          "type": "STAR",
           "name": "dimgi3A",
           "visuals": {
             "ifVisible": true,
@@ -136,6 +139,9 @@
       "SIDs": [
         {
           "id": "5108096a-bf2e-405a-b403-70af4a2f5823",
+          "aerodromeId": "ad41b97a-b384-4061-8058-bf2d2af453eb",
+          "aerodromeName": "UUWW",
+          "type": "SID",
           "name": "kogom3A",
           "runway": "06",
           "visuals": {
@@ -186,8 +192,8 @@
             {
               "name": "ww019",
               "altitude": "45-70",
-              "latitude": "542728.00N",
-              "longitude": "0375019.00E"
+              "latitude": "553426.75N",
+              "longitude": "0372929.75E"
             },
             {
               "name": "bitsa",
@@ -240,7 +246,6 @@
           ]
         }
       ]
-    },
-    {}
+    }
   ]
 }

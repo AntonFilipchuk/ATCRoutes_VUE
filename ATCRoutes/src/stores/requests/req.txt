@@ -21,3 +21,12 @@ To save a route we need:
     1. Knowing normalized cartesian coordinates reverse calculations
     and get geographical coordinates
     
+
+
+1. Load standard routes and custom routes
+2. Find if a standard route was changed and now it is a custom route
+3. Remove these routes from standard routes
+4. Draw standard and custom routes together
+5. When changing the route determine if it is a custom route or a standard route
+6. If standard route was changed move it to custom routes
+7. Save custom routes to json by converting cartesian coordinates back to geographic 
