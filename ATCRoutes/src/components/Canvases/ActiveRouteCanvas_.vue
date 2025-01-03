@@ -1,11 +1,11 @@
 <template>
   <div>
-    <canvas ref="canvas" @mousedown="clickPoint"></canvas>
+    <canvas ref="activeRouteCanvas" @mousedown="clickPoint"></canvas>
   </div>
 </template>
 
 <script setup lang="ts">
-import { canvasRoutesStore } from '@/stores/requests2/canvasRoutesStore'
+import { canvasStore } from '@/stores/requests2/canvasStore'
 import type CanvasPoint from '@/utils/Interfaces/CanvasRoute/CanvasPoint'
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
 import type IRouteVisuals from '@/utils/Interfaces/Visuals/IRouteVisuals'
@@ -16,15 +16,15 @@ import { computed, onMounted, onUnmounted, ref, watch, type Ref, type WatchHandl
 let canvasContext: CanvasRenderingContext2D | undefined = undefined
 let selectedPoint: CanvasPoint | undefined | null = undefined
 
-const canvas: Ref<HTMLCanvasElement | null> = ref(null)
-const canvasStore = computed(() => canvasRoutesStore())
+const activeRouteCanvas: Ref<HTMLCanvasElement | null> = ref(null)
+const canvas = computed(() => canvasStore())
 
 const activeRouteVisuals = computed(() => {
-  if (!canvasStore.value.activeRoute) {
+  if (!canvas.value.selectedRoute) {
     return
   }
 
-  const routeVisuals = canvasStore.value.activeRoute.visuals
+  const routeVisuals = canvas.value.selectedRoute.visuals
 
   return {
     ...routeVisuals,
@@ -35,8 +35,8 @@ const activeRouteVisuals = computed(() => {
 })
 
 const watchedProperties = [
-  computed(() => canvasStore.value.width),
-  computed(() => canvasStore.value.height),
+  computed(() => canvas.value.width),
+  computed(() => canvas.value.height),
   activeRouteVisuals,
 ]
 
@@ -46,7 +46,7 @@ watch(watchedProperties, () => {
 
 let pointWatchers: WatchHandle[] = []
 watch(
-  computed<ICanvasRoute | null>(() => canvasStore.value.activeRoute),
+  computed<ICanvasRoute | null>(() => canvas.value.selectedRoute),
   (newActiveRoute) => {
     pointWatchers.forEach((unwatch) => unwatch())
     if (!newActiveRoute) {
@@ -83,7 +83,7 @@ onUnmounted(() => {
 })
 
 function resetSelectedPointIfClickOutsideCanvas(event: MouseEvent) {
-  if (!canvas.value) {
+  if (!activeRouteCanvas.value) {
     return
   }
 
@@ -94,20 +94,20 @@ function resetSelectedPointIfClickOutsideCanvas(event: MouseEvent) {
   }
 
   if (selectedPoint) {
-    if (canvas.value.id !== target.id) {
+    if (activeRouteCanvas.value.id !== target.id) {
       selectedPoint = null
     }
   }
 }
 
 function renderCanvas() {
-  canvasContext = getCanvasInfo(canvas.value).canvasContext
-  setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height)
+  canvasContext = getCanvasInfo(activeRouteCanvas.value).canvasContext
+  setCanvasDimensions(canvasContext, canvas.value.width, canvas.value.height)
   drawContent(canvasContext)
 }
 
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-  const route = canvasStore.value.activeRoute
+  const route = canvas.value.selectedRoute
   if (route && route.visuals.ifVisible) {
     if (route.visuals.ifShowLines) {
       drawCanvasLines_(route, canvasContext)
@@ -122,7 +122,7 @@ function drawContent(canvasContext: CanvasRenderingContext2D) {
 }
 
 function clickPoint(event: MouseEvent) {
-  const route = canvasStore.value.activeRoute
+  const route = canvas.value.selectedRoute
 
   if (!canvasContext) {
     throw new Error('No active route or canvas context available.')
@@ -155,8 +155,8 @@ function clickPoint(event: MouseEvent) {
       selectedPoint = null
     }
   } else {
-    canvasStore.value.updateRoutePointCoordinates(selectedPoint, x, y)
-    canvasStore.value.makeStandardRouteCustom(canvasStore.value.activeRoute)
+    canvas.value.updatePoint(selectedPoint, x, y)
+    //canvas.value.makeStandardRouteCustom(canvas.value.selectedRoute)
     //canvasStore.value.updateIntersectionPoints()
     cleanCanvas(canvasContext)
     //No need to call drawContent again because

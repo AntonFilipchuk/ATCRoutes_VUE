@@ -2,19 +2,19 @@
   <div><canvas ref="linesCanvas"></canvas></div>
 </template>
 <script setup lang="ts">
-import { canvasRoutesStore } from '@/stores/requests2/canvasRoutesStore'
+import { canvasStore } from '@/stores/requests2/canvasStore'
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
 import { drawCanvasLines_ } from '@/utils/Modules/drawer'
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo'
 import { computed, onMounted, ref, watch } from 'vue'
 
-const canvasStore = computed(() => canvasRoutesStore())
+const canvas = computed(() => canvasStore())
 const linesCanvas = ref(null)
 
 const watchedProperties = [
   // computed(() => canvasStore.value.width),
   // computed(() => canvasStore.value.height),
-  computed(() => canvasRoutesStore().activeRoute),
+  computed(() => canvasStore().selectedRoute),
 ]
 
 // const watchedRoutesVisualProps = computed(() => canvasStore.value.inactiveRoutes.map((route) => {
@@ -22,8 +22,6 @@ const watchedProperties = [
 // }))
 
 watch(watchedProperties, () => {
-  console.log('Active route changed!')
-
   renderCanvas()
 })
 
@@ -34,12 +32,8 @@ onMounted(() => {
 function renderCanvas() {
   try {
     const canvasContext = getCanvasInfo(linesCanvas.value).canvasContext
-    setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height)
-    const standardRoutes = canvasStore.value.standardRoutes
-    const customRoutes = canvasStore.value.customRoutes
-
-    const routes = standardRoutes.concat(customRoutes).flatMap((a) => a.SIDs.concat(a.STARs))
-
+    setCanvasDimensions(canvasContext, canvas.value.width, canvas.value.height)
+    const routes = canvas.value.getRoutes()
     drawContent(canvasContext, routes)
   } catch (error) {
     console.error(error)

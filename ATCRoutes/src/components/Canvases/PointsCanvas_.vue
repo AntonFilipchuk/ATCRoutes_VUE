@@ -2,14 +2,26 @@
   <div><canvas ref="pointsCanvas"></canvas></div>
 </template>
 <script setup lang="ts">
-import { canvasRoutesStore } from '@/stores/requests2/canvasRoutesStore'
+import { canvasStore } from '@/stores/requests2/canvasStore'
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
 import { drawCanvasRoutePoints_ } from '@/utils/Modules/drawer'
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
-const canvasStore = computed(() => canvasRoutesStore())
+const canvas = computed(() => canvasStore())
 const pointsCanvas = ref(null)
+
+const watchedProperties = [
+  // computed(() => canvasStore.value.width),
+  // computed(() => canvasStore.value.height),
+  computed(() => canvasStore().selectedRoute),
+]
+
+watch(watchedProperties, () => {
+  renderCanvas()
+})
+
+
 onMounted(() => {
   renderCanvas()
 })
@@ -17,13 +29,10 @@ onMounted(() => {
 function renderCanvas() {
   try {
     const canvasContext = getCanvasInfo(pointsCanvas.value).canvasContext
-    setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height)
-    const routes = [
-      ...canvasStore.value.standardRoutes.SIDs,
-      ...canvasStore.value.standardRoutes.STARs,
-      ...canvasStore.value.customRoutes.SIDs,
-      ...canvasStore.value.customRoutes.STARs,
-    ]
+    setCanvasDimensions(canvasContext, canvas.value.width, canvas.value.height)
+    const routes = canvas.value.getRoutes()
+    console.log("routes", routes);
+    
     drawContent(canvasContext, routes)
   } catch (error) {
     console.error(error)

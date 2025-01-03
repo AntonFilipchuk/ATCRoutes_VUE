@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column; align-items: baseline; gap: 10px">
+  <div style="display: flex; flex-direction: row; align-items: baseline; gap: 10px">
     <div>
       <div>
         <h1>Selected aerodrome:</h1>
@@ -22,11 +22,11 @@
     </div>
     <div v-if="selectedAerodromeName">
       <div>
-        <h1>Route Category:</h1>
+        <h1>Route category</h1>
       </div>
-      <select v-model="selectedRouteCategory">
+      <select v-model="ifSelectedRouteStandard">
         <option
-          v-for="(routeCategory, index) in routeCategories"
+          v-for="(routeCategory, index) in RouteCategories"
           :key="index"
           :value="routeCategory"
         >
@@ -46,66 +46,92 @@
     </div>
   </div>
   <div>
-    <!-- <PointsCanvas_ /> -->
+    <PointsCanvas_ />
     <LinesCanvas_ />
     <ActiveRouteCanvas_ />
   </div>
 </template>
 
 <script setup lang="ts">
-import { canvasRoutesStore } from '@/stores/requests2/canvasRoutesStore'
 import LinesCanvas_ from './Canvases/LinesCanvas_.vue'
 import { customRoutesStore } from '@/stores/requests2/customRoutesStore'
 import { standardRoutesStore } from '@/stores/requests2/standardRoutesStore'
-import ActiveRouteCanvas_ from './Canvases/ActiveRouteCanvas_.vue'
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
 import { computed } from 'vue'
+import { canvasStore } from '@/stores/requests2/canvasStore'
+import RoutePoint_ from '@/utils/Classes/Route/RoutePoint_'
+import ActiveRouteCanvas_ from './Canvases/ActiveRouteCanvas_.vue'
+import PointsCanvas_ from './Canvases/PointsCanvas_.vue'
 
 const selectedRoute = computed({
   get() {
-    return canvasRoutesStore().activeRoute
+    return canvasStore().selectedRoute
   },
   set(route: ICanvasRoute) {
-    canvasRoutesStore().setActiveRoute(route)
+    canvasStore().setSelectedRoute(route)
   },
 })
 
 const selectedAerodromeName = computed({
   get() {
-    return canvasRoutesStore().activeAerodrome
+    return canvasStore().selectedAerodromeName
   },
   set(a: string) {
-    canvasRoutesStore().setActiveAerodrome(a)
+    canvasStore().setAerodromeName(a)
   },
 })
 
 const selectedRouteType = computed({
   get() {
-    return canvasRoutesStore().routeType
+    return canvasStore().selectedRouteType
   },
   set(t: string) {
-    canvasRoutesStore().setRouteType(t)
+    canvasStore().setRouteType(t)
   },
 })
 
-const selectedRouteCategory = computed({
+enum RouteCategories {
+  Custom = 'Custom',
+  Standard = 'Standard',
+}
+
+const ifSelectedRouteStandard = computed({
   get() {
-    return canvasRoutesStore().routeCategory
+    return canvasStore().ifSelectedRouteStandard
   },
-  set(c: string) {
-    canvasRoutesStore().setRouteCategory(c)
+  set(c: RouteCategories) {
+    switch (c) {
+      case RouteCategories.Custom:
+        canvasStore().ifSelectedRouteStandard = false
+        break
+      case RouteCategories.Standard:
+        canvasStore().ifSelectedRouteStandard = true
+        break
+
+      default:
+        throw new Error('Error setting route category')
+    }
   },
 })
 
-const routeTypes = computed(() => canvasRoutesStore().getRouteTypes())
-const routeCategories = computed(() => canvasRoutesStore().getRouteCategories())
-const aerodromes = computed(() => canvasRoutesStore().getAerodromesForSelection())
-const routes = computed(() => canvasRoutesStore().getRoutesForSelection())
+const routeTypes = computed(() => canvasStore().getRouteTypes())
+const aerodromes = computed(() => canvasStore().getAerodromeNames())
+const routes = computed(() => {
+  console.log('getting routes')
+  return canvasStore().getRoutesForSelection()
+})
 
 const customRoutes = customRoutesStore().aerodromes
 const standardRoutes = standardRoutesStore().aerodromes
 
-canvasRoutesStore().createCanvasData(1000, 1000, -11, standardRoutes, customRoutes)
+canvasStore().init(
+  1000,
+  1000,
+  -11,
+  standardRoutes,
+  customRoutes,
+  new RoutePoint_('Moscow', '0', '554424.63N', '0373636.00E'),
+)
 </script>
 
 <style></style>

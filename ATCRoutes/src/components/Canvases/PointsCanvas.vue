@@ -7,6 +7,7 @@
 
 
 import { canvasDataStore } from '@/stores/internal/canvasDataStore';
+import { canvasStore } from '@/stores/requests2/canvasStore';
 import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import { drawCanvasRoutePoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
@@ -17,22 +18,22 @@ defineProps({
 })
 
 const pointsCanvas = ref(null);
-const canvasStore = computed(() => canvasDataStore())
+const canvas = computed(() => canvasStore())
 
 const watchedProperties = [
-    computed(() => canvasStore.value.width),
-    computed(() => canvasStore.value.height),
-    computed(() => canvasStore.value.activeRoute)
+    computed(() => canvas.value.width),
+    computed(() => canvas.value.height),
+    computed(() => canvas.value.selectedRoute)
 ]
 
 
-const watchedRoutesVisualProps = computed(() =>
-    canvasStore.value.inactiveRoutes.map(route => {
-        return { ...route.routeVisuals.pointVisuals, ifShowPoints: route.routeVisuals.ifShowPoints, ifVisible: route.routeVisuals.ifVisible }
-    })
-);
+// const watchedRoutesVisualProps = computed(() =>
+//     canvas.value.inactiveRoutes.map(route => {
+//         return { ...route.routeVisuals.pointVisuals, ifShowPoints: route.routeVisuals.ifShowPoints, ifVisible: route.routeVisuals.ifVisible }
+//     })
+// );
 
-watch([...watchedProperties, watchedRoutesVisualProps], () => {
+watch([...watchedProperties], () => {
     renderCanvas();
 })
 
@@ -44,7 +45,7 @@ onMounted(() => {
 function renderCanvas() {
     try {
         const canvasContext = getCanvasInfo(pointsCanvas.value).canvasContext;
-        setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.width);
+        setCanvasDimensions(canvasContext, canvas.value.width, canvas.value.width);
         const inactiveRoutes = canvasDataStore().inactiveRoutes.filter((route) => route.routeVisuals.ifVisible && route.routeVisuals.ifShowPoints)
         drawContent(canvasContext, inactiveRoutes)
     } catch (error) {

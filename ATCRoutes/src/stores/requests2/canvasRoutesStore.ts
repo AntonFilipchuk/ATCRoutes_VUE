@@ -6,6 +6,7 @@ import { defineStore } from 'pinia'
 import { computed, ref, type Ref } from 'vue'
 
 export const canvasRoutesStore = defineStore('canvasRoutesStore', () => {
+  
   const canvasData: Ref<Canvas_Data | undefined> = ref(undefined)
 
   function ensureCanvasData(): Canvas_Data {
