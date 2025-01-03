@@ -1,16 +1,22 @@
 import IntersectionPoint from '../Classes/IntersectionPoint'
-import type Route from '../Classes/Route/Route'
-import type RoutePoint from '../Classes/Route/RoutePoint'
+import type CanvasPoint from '../Interfaces/CanvasRoute/CanvasPoint'
+import type ICanvasRoute from '../Interfaces/CanvasRoute/ICanvasRoute'
 
-export default function findIntersections(route: Route, routes: Route[]): IntersectionPoint[] {
+export default function findIntersections(
+  route: ICanvasRoute,
+  routes: ICanvasRoute[],
+): IntersectionPoint[] {
   const intersectionPoints: IntersectionPoint[] = []
-  const routePoints = route.getPoints()
+  const routePoints = route.points
+
+  console.log('Points:', routePoints)
+
   for (let index = 1; index < routePoints.length; index++) {
     const prevPoint = routePoints[index - 1]
     const point = routePoints[index]
 
     routes.forEach((route_) => {
-      const route_Points = route_.getPoints()
+      const route_Points = route_.points
       if (route_ === route) {
         throw new Error('Trying to calculate for 2 equal routes!')
       }
@@ -49,20 +55,11 @@ export default function findIntersections(route: Route, routes: Route[]): Inters
   return intersectionPoints
 }
 
-// function ifTwoEqualSections(
-//   point1: RoutePoint,
-//   point2: RoutePoint,
-//   point3: RoutePoint,
-//   point4: RoutePoint,
-// ) {
-//   return ifPointsEqual(point1, point3) && ifPointsEqual(point2, point4)
-// }
-
 function ifSectionsHaveSamePoint(
-  point1: RoutePoint,
-  point2: RoutePoint,
-  point3: RoutePoint,
-  point4: RoutePoint,
+  point1: CanvasPoint,
+  point2: CanvasPoint,
+  point3: CanvasPoint,
+  point4: CanvasPoint,
 ) {
   return (
     ifPointsEqual(point1, point3) ||
@@ -72,20 +69,20 @@ function ifSectionsHaveSamePoint(
   )
 }
 
-function ifPointsEqual(point1: RoutePoint, point2: RoutePoint) {
+function ifPointsEqual(point1: CanvasPoint, point2: CanvasPoint) {
   return (
     point1.name === point2.name &&
-    point1.z === point2.z &&
-    point1.bearingAndDistance.distance === point2.bearingAndDistance.distance &&
-    point1.bearingAndDistance.magneticBearing === point2.bearingAndDistance.magneticBearing
+    point1.altitude === point2.altitude &&
+    point1.latitude === point2.latitude &&
+    point1.longitude === point2.longitude
   )
 }
 
 function findIntersection(
-  point1: RoutePoint,
-  point2: RoutePoint,
-  point3: RoutePoint,
-  point4: RoutePoint,
+  point1: CanvasPoint,
+  point2: CanvasPoint,
+  point3: CanvasPoint,
+  point4: CanvasPoint,
 ): IIntersectionPoint | string | undefined {
   //Check if sections are equal
   //Example: [p1 - p2] - [p1 - p2]
@@ -105,11 +102,11 @@ function findIntersection(
   const q1 = makePoint(point3)
   const q2 = makePoint(point4)
 
-  function makePoint(routePoint: RoutePoint): { x: number; y: number; z: number } {
+  function makePoint(routePoint: CanvasPoint): { x: number; y: number; z: number } {
     return {
-      x: routePoint.getNormalizedCartesianCoordinates().x,
-      y: routePoint.getNormalizedCartesianCoordinates().y,
-      z: routePoint.z,
+      x: routePoint.x,
+      y: routePoint.y,
+      z: +routePoint.altitude,
     }
   }
 

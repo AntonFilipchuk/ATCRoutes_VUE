@@ -24,12 +24,8 @@
       <div>
         <h1>Route category</h1>
       </div>
-      <select v-model="ifSelectedRouteStandard">
-        <option
-          v-for="(routeCategory, index) in RouteCategories"
-          :key="index"
-          :value="routeCategory"
-        >
+      <select v-model="routeCategory">
+        <option v-for="(routeCategory, index) in RouteCategory" :key="index" :value="routeCategory">
           {{ routeCategory }}
         </option>
       </select>
@@ -46,22 +42,28 @@
     </div>
   </div>
   <div>
-    <PointsCanvas_ />
-    <LinesCanvas_ />
-    <ActiveRouteCanvas_ />
+    <GridCanvas :z-index="0" />
+    <LinesCanvas_ :z-index="1" />
+    <PointsCanvas_ :z-index="2" />
+    <ActiveRouteCanvas_ :z-index="3" />
+    <ConflictPointsCanvas :z-index="5" />
+    <TextCanvas :z-index="4" />
   </div>
 </template>
 
 <script setup lang="ts">
 import LinesCanvas_ from './Canvases/LinesCanvas_.vue'
-import { customRoutesStore } from '@/stores/requests2/customRoutesStore'
-import { standardRoutesStore } from '@/stores/requests2/standardRoutesStore'
+import { fetchedDataStore } from '@/stores/requests2/fetchedDataStore'
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
 import { computed } from 'vue'
 import { canvasStore } from '@/stores/requests2/canvasStore'
 import RoutePoint_ from '@/utils/Classes/Route/RoutePoint_'
 import ActiveRouteCanvas_ from './Canvases/ActiveRouteCanvas_.vue'
 import PointsCanvas_ from './Canvases/PointsCanvas_.vue'
+import { RouteCategory } from '@/utils/Enums/RouteCategory'
+import GridCanvas from './Canvases/GridCanvas.vue'
+import TextCanvas from './Canvases/TextCanvas.vue'
+import ConflictPointsCanvas from './Canvases/ConflictPointsCanvas.vue'
 
 const selectedRoute = computed({
   get() {
@@ -90,22 +92,20 @@ const selectedRouteType = computed({
   },
 })
 
-enum RouteCategories {
-  Custom = 'Custom',
-  Standard = 'Standard',
-}
-
-const ifSelectedRouteStandard = computed({
+const routeCategory = computed({
   get() {
-    return canvasStore().ifSelectedRouteStandard
+    if (canvasStore().ifSelectedRouteStandard) {
+      return RouteCategory.Standard
+    }
+    return RouteCategory.Custom
   },
-  set(c: RouteCategories) {
+  set(c: RouteCategory) {
     switch (c) {
-      case RouteCategories.Custom:
-        canvasStore().ifSelectedRouteStandard = false
+      case RouteCategory.Custom:
+        canvasStore().setRouteCategory(false)
         break
-      case RouteCategories.Standard:
-        canvasStore().ifSelectedRouteStandard = true
+      case RouteCategory.Standard:
+        canvasStore().setRouteCategory(true)
         break
 
       default:
@@ -117,19 +117,22 @@ const ifSelectedRouteStandard = computed({
 const routeTypes = computed(() => canvasStore().getRouteTypes())
 const aerodromes = computed(() => canvasStore().getAerodromeNames())
 const routes = computed(() => {
-  console.log('getting routes')
   return canvasStore().getRoutesForSelection()
 })
 
-const customRoutes = customRoutesStore().aerodromes
-const standardRoutes = standardRoutesStore().aerodromes
+const customRoutes = fetchedDataStore().customRoutes
+const standardRoutes = fetchedDataStore().standardRoutes
+const selectedRouteVisuals = fetchedDataStore().selectedRouteVisual!
+const conflictPointVisuals = fetchedDataStore().conflictPointVisual!
 
 canvasStore().init(
-  1000,
-  1000,
+  1500,
+  1500,
   -11,
   standardRoutes,
   customRoutes,
+  selectedRouteVisuals,
+  conflictPointVisuals,
   new RoutePoint_('Moscow', '0', '554424.63N', '0373636.00E'),
 )
 </script>

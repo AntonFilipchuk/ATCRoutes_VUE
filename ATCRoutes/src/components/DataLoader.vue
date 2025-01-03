@@ -13,10 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { standardRoutesStore } from '@/stores/requests2/standardRoutesStore'
 import { onMounted, ref } from 'vue'
 import CanvasesData from './Canvases-Data.vue'
-import { customRoutesStore } from '@/stores/requests2/customRoutesStore'
+import { fetchedDataStore } from '@/stores/requests2/fetchedDataStore'
 
 const loading = ref(true)
 
@@ -28,17 +27,16 @@ async function load() {
   try {
     loading.value = true
     await Promise.all([
-      standardRoutesStore().fetchRoutes('/AIPRoutes2.json'),
-      customRoutesStore().fetchRoutes('/customRoutes.json'),
+      fetchedDataStore().fetchStandardRoutes('/AIPRoutes2.json'),
+      fetchedDataStore().fetchCustomRoutes('/customRoutes.json'),
+      fetchedDataStore().fetchSelectedRouteVisuals('/visuals.json'),
+      fetchedDataStore().fetchConflictPointVisuals('/visuals.json'),
     ])
   } catch (error) {
     if (error instanceof Error) {
       throw new Error('An unknown error has occurred while fetching for routes')
     }
-
-    errorMessage.value =
-      (standardRoutesStore().errorMessage || '') +
-      (customRoutesStore().errorMessage ? ` | ${customRoutesStore().errorMessage}` : '')
+    errorMessage.value = 'Error fetching data!'
   } finally {
     loading.value = false
   }

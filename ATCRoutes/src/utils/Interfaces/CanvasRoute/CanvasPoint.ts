@@ -34,9 +34,6 @@ export default class CanvasPoint implements ICanvasPoint {
       longitudeDegrees: coordinateDegrees.longitudeDegrees,
     })
 
-    console.log('Old coordinate', this.latitude)
-    console.log('New coordinate', converted.latitude)
-
     this.latitude = converted.latitude
     this.longitude = converted.longitude
   }

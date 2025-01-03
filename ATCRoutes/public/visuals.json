@@ -1,0 +1,44 @@
+{
+  "selectedRoute": {
+    "ifVisible": true,
+    "lineVisuals": {
+      "color": "black",
+      "width": 10,
+      "ifStroke": false,
+      "strokeColor": "black",
+      "strokeWidth": 2
+    },
+    "ifShowLines": true,
+
+    "pointVisuals": {
+      "color": "yellow",
+      "width": 15,
+      "ifStroke": true,
+      "strokeColor": "black",
+      "strokeWidth": 3
+    },
+    "ifShowPoints": true,
+
+    "textVisuals": {
+      "font": "arial",
+      "xOffset": 0,
+      "yOffset": 0,
+      "color": "black",
+      "width": 10,
+      "ifStroke": true,
+      "strokeColor": "black",
+      "strokeWidth": 2
+    },
+    "ifShowText": true
+  },
+
+  "conflictPoint": {
+    "pointVisuals": {
+      "color": "blue",
+      "width": 15,
+      "ifStroke": true,
+      "strokeColor": "black",
+      "strokeWidth": 4
+    }
+  }
+}

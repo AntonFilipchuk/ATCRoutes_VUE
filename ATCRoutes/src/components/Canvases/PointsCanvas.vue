@@ -9,7 +9,7 @@
 import { canvasDataStore } from '@/stores/internal/canvasDataStore';
 import { canvasStore } from '@/stores/requests2/canvasStore';
 import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
-import { drawCanvasRoutePoints } from '@/utils/Modules/drawer';
+import { drawPoints } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, ref, watch } from 'vue'
 
@@ -56,7 +56,7 @@ function renderCanvas() {
 function drawContent(canvasContext: CanvasRenderingContext2D, routes: CanvasRoute[]) {
 
     routes.forEach(route => {
-        drawCanvasRoutePoints(route, canvasContext)
+        drawPoints(route, canvasContext)
     });
 }
 

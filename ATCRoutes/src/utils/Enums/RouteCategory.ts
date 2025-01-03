@@ -1,4 +1,4 @@
 export enum RouteCategory {
-  CUSTOM = 'CUSTOM',
-  STANDARD = 'STANDARD',
+  Custom = 'Custom',
+  Standard = 'Standard',
 }

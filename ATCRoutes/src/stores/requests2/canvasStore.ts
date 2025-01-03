@@ -1,3 +1,4 @@
+import type IntersectionPoint from '@/utils/Classes/IntersectionPoint'
 import type {
   IBearingAndDistance,
   ICartesianPoint,
@@ -11,6 +12,9 @@ import type { ICanvasAerodrome } from '@/utils/Interfaces/CanvasRoute/ICanvasAer
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
 import type IAerodrome from '@/utils/Interfaces/IAerodrome'
 import type IRoute from '@/utils/Interfaces/IRoute'
+import type IRouteVisuals from '@/utils/Interfaces/Visuals/IRouteVisuals'
+import type IVisual from '@/utils/Interfaces/Visuals/IVisual'
+import findIntersections from '@/utils/Modules/intersectionsFinder'
 import { defineStore } from 'pinia'
 import { computed, ref, type Ref } from 'vue'
 
@@ -18,16 +22,29 @@ const useCanvasPropertiesState = defineStore('canvas-properties-private', () => 
   const width = ref(0)
   const height = ref(0)
   const deviation = ref(0)
-  const originPoint: Ref<RoutePoint_ | undefined> = ref<RoutePoint_ | undefined>(undefined)
+  const originPoint = ref<RoutePoint_ | undefined>(undefined)
   const customRoutes: Ref<ICanvasAerodrome[] | undefined> = ref<ICanvasAerodrome[] | undefined>(
     undefined,
   )
   const standardRoutes: Ref<ICanvasAerodrome[] | undefined> = ref<ICanvasAerodrome[] | undefined>(
     undefined,
   )
+
+  const selectedRouteVisuals: Ref<IRouteVisuals | undefined> = ref(undefined)
+  const conflictPointVisuals: Ref<IVisual | undefined> = ref(undefined)
   const previousRoutes: Ref<ICanvasRoute[] | null> = ref<ICanvasRoute[] | null>(null)
 
-  return { width, height, deviation, originPoint, customRoutes, standardRoutes, previousRoutes }
+  return {
+    width,
+    height,
+    deviation,
+    originPoint,
+    customRoutes,
+    standardRoutes,
+    previousRoutes,
+    selectedRouteVisuals,
+    conflictPointVisuals,
+  }
 })
 
 export const canvasStore = defineStore('canvasStore', () => {
@@ -37,6 +54,7 @@ export const canvasStore = defineStore('canvasStore', () => {
   const selectedRouteType = ref(RouteType.STAR)
   const ifSelectedRouteStandard = ref(false)
   const selectedRoute = ref<ICanvasRoute | null>(null)
+  const intersectionPoints: Ref<IntersectionPoint[]> = ref([])
 
   function init(
     width: number,
@@ -44,12 +62,16 @@ export const canvasStore = defineStore('canvasStore', () => {
     deviation: number,
     standardRoutes: IAerodrome[],
     customRoutes: IAerodrome[],
+    selectedRouteVisuals: IRouteVisuals,
+    conflictPointVisuals: IVisual,
     originPoint: RoutePoint_,
   ) {
     canvasPropertiesState.width = width
     canvasPropertiesState.height = height
     canvasPropertiesState.deviation = deviation
     canvasPropertiesState.originPoint = originPoint
+    canvasPropertiesState.selectedRouteVisuals = selectedRouteVisuals
+    canvasPropertiesState.conflictPointVisuals = conflictPointVisuals
     canvasPropertiesState.customRoutes = makeCanvasRoutes(
       customRoutes,
       false,
@@ -136,6 +158,7 @@ export const canvasStore = defineStore('canvasStore', () => {
         canvasPropertiesState.standardRoutes,
         canvasPropertiesState.customRoutes,
       )
+      intersectionPoints.value = calculateConflictPoints(selectedRoute.value, getRoutes())
       return
     }
 
@@ -143,6 +166,7 @@ export const canvasStore = defineStore('canvasStore', () => {
       return
     }
 
+    intersectionPoints.value = calculateConflictPoints(selectedRoute.value, getRoutes())
     findAndAddRoute(
       selectedRoute.value,
       canvasPropertiesState.standardRoutes,
@@ -160,8 +184,9 @@ export const canvasStore = defineStore('canvasStore', () => {
     point.x = x
     point.y = y
 
-    const denormalized = denormalizeCartesianCoordinates(x, y, np.value!, width.value, height.value)
+    intersectionPoints.value = calculateConflictPoints(selectedRoute.value, getRoutes())
 
+    const denormalized = denormalizeCartesianCoordinates(x, y, np.value!, width.value, height.value)
     const newGeographicCoordinates = convertCartesianToGeographic(
       denormalized,
       canvasPropertiesState.deviation,
@@ -176,9 +201,10 @@ export const canvasStore = defineStore('canvasStore', () => {
   }
 
   function setAerodromeName(a: string) {
-    selectedRoute.value = null
-    ifSelectedRouteStandard.value = false
-    selectedRouteType.value = RouteType.STAR
+    if (selectedRoute.value) {
+      findAndAddRoute(selectedRoute.value, standardRoutes.value, customRoutes.value)
+      selectedRoute.value = null
+    }
     switch (a) {
       case AerodromeName.UUWW:
         selectedAerodromeName.value = AerodromeName.UUWW
@@ -199,6 +225,10 @@ export const canvasStore = defineStore('canvasStore', () => {
   }
 
   function setRouteType(t: string) {
+    if (selectedRoute.value) {
+      findAndAddRoute(selectedRoute.value, standardRoutes.value, customRoutes.value)
+      selectedRoute.value = null
+    }
     switch (t) {
       case RouteType.SID:
         selectedRouteType.value = RouteType.SID
@@ -212,6 +242,10 @@ export const canvasStore = defineStore('canvasStore', () => {
   }
 
   function setRouteCategory(c: boolean) {
+    if (selectedRoute.value) {
+      findAndAddRoute(selectedRoute.value, standardRoutes.value, customRoutes.value)
+      selectedRoute.value = null
+    }
     ifSelectedRouteStandard.value = c
   }
 
@@ -247,6 +281,22 @@ export const canvasStore = defineStore('canvasStore', () => {
     return canvasPropertiesState.standardRoutes
   })
 
+  const selectedRouteVisuals = computed(() => {
+    if (!canvasPropertiesState.selectedRouteVisuals) {
+      throw new Error('Selected route visuals are undefined!')
+    }
+
+    return canvasPropertiesState.selectedRouteVisuals
+  })
+
+  const conflictPointVisuals = computed(() => {
+    if (!canvasPropertiesState.conflictPointVisuals) {
+      throw new Error('Conflict point visuals are undefined!')
+    }
+
+    return canvasPropertiesState.conflictPointVisuals
+  })
+
   function getRoutes(): ICanvasRoute[] {
     const allStandard = standardRoutes.value.flatMap((aerodromes) =>
       aerodromes.SIDs.concat(aerodromes.STARs),
@@ -264,8 +314,11 @@ export const canvasStore = defineStore('canvasStore', () => {
     standardRoutes,
     selectedAerodromeName,
     selectedRoute,
+    selectedRouteVisuals,
+    conflictPointVisuals,
     ifSelectedRouteStandard,
     selectedRouteType,
+    intersectionPoints,
     init,
     getRoutes,
     setSelectedRoute,
@@ -278,6 +331,17 @@ export const canvasStore = defineStore('canvasStore', () => {
     getAerodromeNames,
   }
 })
+
+function calculateConflictPoints(
+  selectedRoute: ICanvasRoute | undefined | null,
+  routes: ICanvasRoute[],
+): IntersectionPoint[] {
+  if (!selectedRoute) {
+    throw new Error("Can't find intersections if no route is selected!")
+  }
+
+  return findIntersections(selectedRoute, routes)
+}
 
 function findAndAddRoute(
   route: ICanvasRoute,
@@ -293,8 +357,6 @@ function findAndRemoveRoute(
   customRoutes: ICanvasAerodrome[],
 ) {
   const routes = findRoutesListForRoute(route, standardRoutes, customRoutes)
-  console.log(routes)
-
   const index = routes.findIndex((r) => r.id === route.id)
   if (index < 0) {
     throw new Error(`Can't find route "${route.name}" to remove from route list!`)

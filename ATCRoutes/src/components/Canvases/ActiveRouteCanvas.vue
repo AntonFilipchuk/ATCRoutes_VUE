@@ -11,7 +11,7 @@ import { canvasDataStore } from '@/stores/internal/canvasDataStore';
 import type CanvasRoute from '@/utils/Classes/CanvasRoute/CanvasRoute';
 import type RoutePoint from '@/utils/Classes/Route/RoutePoint';
 import type IRouteVisuals from '@/utils/Interfaces/Visuals/IRouteVisuals';
-import drawCanvasRouteLines, { cleanCanvas, drawCanvasRoutePoints, DrawCanvasRouteText } from '@/utils/Modules/drawer';
+import drawCanvasRouteLines, { cleanCanvas, drawPoints, drawRouteText } from '@/utils/Modules/drawer';
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
 import { computed, onMounted, onUnmounted, ref, watch, type Ref, type WatchHandle } from 'vue';
 
@@ -121,10 +121,10 @@ function drawContent(canvasContext: CanvasRenderingContext2D) {
             drawCanvasRouteLines(route, canvasContext)
         }
         if (route.routeVisuals.ifShowPoints) {
-            drawCanvasRoutePoints(route, canvasContext)
+            drawPoints(route, canvasContext)
         }
         if (route.routeVisuals.ifShowText) {
-            DrawCanvasRouteText(route, canvasContext)
+            drawRouteText(route, canvasContext)
         }
     }
 }

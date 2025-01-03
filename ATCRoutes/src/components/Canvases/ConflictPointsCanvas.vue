@@ -1,82 +1,67 @@
 <template>
-    <div>
-        <canvas ref="canvas" :style="{ 'z-index': zIndex }"></canvas>
-    </div>
+  <div>
+    <canvas ref="conflictPointsCanvas" :style="{ 'z-index': zIndex }"></canvas>
+  </div>
 </template>
 <script setup lang="ts">
-import { canvasDataStore } from '@/stores/internal/canvasDataStore';
-import type IntersectionPoint from '@/utils/Classes/IntersectionPoint';
-import { drawPoint } from '@/utils/Modules/drawer';
-import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo';
-import { ref, onMounted, computed, watch } from 'vue';
+import { canvasStore } from '@/stores/requests2/canvasStore'
+import type IntersectionPoint from '@/utils/Classes/IntersectionPoint'
+import { drawConflictPoint } from '@/utils/Modules/drawer'
+import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo'
+import { ref, onMounted, computed, watch } from 'vue'
 
 defineProps({
-    zIndex: { type: Number, required: true },
+  zIndex: { type: Number, required: true },
 })
 
-const canvas = ref(null);
-const canvasStore = computed(() => canvasDataStore())
+const conflictPointsCanvas = ref(null)
+const canvas = computed(() => canvasStore())
 const watchedProperties = [
-    computed(() => canvasStore.value.width),
-    computed(() => canvasStore.value.height),
-    computed(() => canvasStore.value.activeRoute),
-    computed(() => canvasStore.value.intersectionPoints)
+  computed(() => canvas.value.width),
+  computed(() => canvas.value.height),
+  computed(() => canvas.value.intersectionPoints),
 ]
-let canvasContext: CanvasRenderingContext2D | undefined = undefined;
+let canvasContext: CanvasRenderingContext2D | undefined = undefined
 
 watch(watchedProperties, () => {
-    renderCanvas();
+
+  renderCanvas()
 })
 
 onMounted(() => {
-    try {
-        renderCanvas();
-    } catch (error) {
-        console.error(error)
-    }
+  try {
+    renderCanvas()
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 function renderCanvas() {
-    canvasContext = getCanvasInfo(canvas.value).canvasContext;
-    setCanvasDimensions(canvasContext, canvasStore.value.width, canvasStore.value.height)
-    drawContent(canvasContext)
+  canvasContext = getCanvasInfo(conflictPointsCanvas.value).canvasContext
+  setCanvasDimensions(canvasContext, canvas.value.width, canvas.value.height)
+  drawContent(canvasContext)
 }
-
-//TODO: move calculation of intersections to a separate module
 
 function drawContent(canvasContext: CanvasRenderingContext2D) {
-    const activeRoute = canvasStore.value.activeRoute
-    if (!activeRoute) {
-        return
-    }
-    canvasStore.value.updateIntersectionPoints()
+  const selectedRoute = canvas.value.selectedRoute
+  if (!selectedRoute) {
+    return
+  }
+  const intersectionPoints: IntersectionPoint[] = canvas.value.intersectionPoints
 
-    const intersectionPoints: IntersectionPoint[] | null = canvasStore.value.intersectionPoints;
-
-    if (intersectionPoints) {
-        intersectionPoints.forEach(intersection => {
-            if (!intersection.edgeCaseMessage) {
-                drawPoint({ x: intersection.x, y: intersection.y }, "red", "yellow", 25, 5, true, canvasContext)
-            }
-
-        })
-    }
+  if (intersectionPoints.length > 0) {
+    intersectionPoints.forEach((intersection) => {
+      if (!intersection.edgeCaseMessage) {
+        drawConflictPoint(
+          { x: intersection.x, y: intersection.y },
+          canvasStore().conflictPointVisuals,
+          canvasContext,
+        )
+      }
+    })
+  }
 }
-
-
-
 </script>
-<style lang="">
+<style lang=""></style>
 
-</style>
-
-
-<style scoped>
-canvas {
-    /* position: absolute; */
-    left: 0;
-    top: 0;
-    z-index: 3;
-    pointer-events: none;
-}
-</style>
+<style scoped></style>

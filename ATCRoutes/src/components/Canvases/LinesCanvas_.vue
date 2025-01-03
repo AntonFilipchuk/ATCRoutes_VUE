@@ -1,12 +1,16 @@
 <template>
-  <div><canvas ref="linesCanvas"></canvas></div>
+  <div><canvas ref="linesCanvas" :style="{ 'z-index': zIndex }"></canvas></div>
 </template>
 <script setup lang="ts">
 import { canvasStore } from '@/stores/requests2/canvasStore'
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
-import { drawCanvasLines_ } from '@/utils/Modules/drawer'
+import { drawLines } from '@/utils/Modules/drawer'
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo'
 import { computed, onMounted, ref, watch } from 'vue'
+
+defineProps({
+  zIndex: { type: Number, required: true },
+})
 
 const canvas = computed(() => canvasStore())
 const linesCanvas = ref(null)
@@ -42,12 +46,9 @@ function renderCanvas() {
 
 function drawContent(canvasContext: CanvasRenderingContext2D, routes: ICanvasRoute[]) {
   routes.forEach((route) => {
-    drawCanvasLines_(route, canvasContext)
+    drawLines(route, route.visuals, canvasContext)
   })
 }
 </script>
 <style scoped>
-canvas {
-  z-index: 0;
-}
 </style>
