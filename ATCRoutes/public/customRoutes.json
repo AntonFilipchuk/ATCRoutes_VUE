@@ -46,37 +46,37 @@
           "points": [
             {
               "name": "test1",
-              "altitude": "280",
+              "altitude": "240",
               "latitude": "555742.00N",
               "longitude": "0393243.00E"
             },
             {
               "name": "test2",
-              "altitude": "270",
+              "altitude": "180-220",
               "latitude": "553930.00N",
               "longitude": "0393736.00E"
             },
             {
               "name": "test3",
-              "altitude": "260",
+              "altitude": "150-180",
               "latitude": "553511.00N",
               "longitude": "0391716.00E"
             },
             {
               "name": "test4",
-              "altitude": "240",
+              "altitude": "140",
               "latitude": "554921.00N",
               "longitude": "0384504.00E"
             },
             {
               "name": "test5",
-              "altitude": "220",
+              "altitude": "120",
               "latitude": "552923.00N",
               "longitude": "0385104.00E"
             },
             {
               "name": "test6",
-              "altitude": "200",
+              "altitude": "100",
               "latitude": "554715.00N",
               "longitude": "0381428.00E"
             }

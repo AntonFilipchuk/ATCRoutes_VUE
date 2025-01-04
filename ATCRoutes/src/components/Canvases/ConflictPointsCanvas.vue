@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { canvasStore } from '@/stores/requests2/canvasStore'
-import type IntersectionPoint from '@/utils/Classes/IntersectionPoint'
+import type IConflictPoints from '@/utils/Interfaces/IConflictPoint'
 import { drawConflictPoint } from '@/utils/Modules/drawer'
 import getCanvasInfo, { setCanvasDimensions } from '@/utils/Modules/getCanvasInfo'
 import { ref, onMounted, computed, watch } from 'vue'
@@ -24,7 +24,6 @@ const watchedProperties = [
 let canvasContext: CanvasRenderingContext2D | undefined = undefined
 
 watch(watchedProperties, () => {
-
   renderCanvas()
 })
 
@@ -47,17 +46,13 @@ function drawContent(canvasContext: CanvasRenderingContext2D) {
   if (!selectedRoute) {
     return
   }
-  const intersectionPoints: IntersectionPoint[] = canvas.value.intersectionPoints
+  const conflictPoints: IConflictPoints[] = canvas.value.intersectionPoints
 
-  if (intersectionPoints.length > 0) {
-    intersectionPoints.forEach((intersection) => {
-      if (!intersection.edgeCaseMessage) {
-        drawConflictPoint(
-          { x: intersection.x, y: intersection.y },
-          canvasStore().conflictPointVisuals,
-          canvasContext,
-        )
-      }
+  if (conflictPoints.length > 0) {
+    conflictPoints.forEach((conflictPoint) => {
+      conflictPoint.conflictPoints.forEach((point) => {
+        drawConflictPoint(point, canvas.value.conflictPointVisuals, canvasContext)
+      })
     })
   }
 }

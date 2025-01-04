@@ -1,15 +1,14 @@
-import IntersectionPoint from '../Classes/IntersectionPoint'
+import type CanvasRoute from '../Classes/CanvasRoute/CanvasRoute'
 import type CanvasPoint from '../Interfaces/CanvasRoute/CanvasPoint'
 import type ICanvasRoute from '../Interfaces/CanvasRoute/ICanvasRoute'
+import type IConflictPoints from '../Interfaces/IConflictPoint'
 
-export default function findIntersections(
+export default function findConflictPoints(
   route: ICanvasRoute,
   routes: ICanvasRoute[],
-): IntersectionPoint[] {
-  const intersectionPoints: IntersectionPoint[] = []
+): IConflictPoints[] {
+  const intersectionsList: IConflictPoints[] = []
   const routePoints = route.points
-
-  console.log('Points:', routePoints)
 
   for (let index = 1; index < routePoints.length; index++) {
     const prevPoint = routePoints[index - 1]
@@ -25,34 +24,20 @@ export default function findIntersections(
         const prevPoint_ = route_Points[index - 1]
         const point_ = route_Points[index]
 
-        const intersection: IIntersectionPoint | string | undefined = findIntersection(
-          prevPoint,
-          point,
-          prevPoint_,
-          point_,
+        const intersections = findIntersections(
+          { point: prevPoint, route: route },
+          { point: point, route: route },
+          { point: prevPoint_, route: route_ },
+          { point: point_, route: route_ },
         )
 
-        if (typeof intersection === 'string') {
-          intersectionPoints.push(
-            new IntersectionPoint(0, 0, 0, route, route_, [prevPoint, point], [prevPoint_, point_]),
-          )
-        } else if (intersection) {
-          intersectionPoints.push(
-            new IntersectionPoint(
-              intersection.x,
-              intersection.y,
-              intersection.z,
-              route,
-              route_,
-              [prevPoint, point],
-              [prevPoint_, point_],
-            ),
-          )
+        if (intersections) {
+          intersectionsList.push(intersections)
         }
       }
     })
   }
-  return intersectionPoints
+  return intersectionsList
 }
 
 function ifSectionsHaveSamePoint(
@@ -78,12 +63,17 @@ function ifPointsEqual(point1: CanvasPoint, point2: CanvasPoint) {
   )
 }
 
-function findIntersection(
-  point1: CanvasPoint,
-  point2: CanvasPoint,
-  point3: CanvasPoint,
-  point4: CanvasPoint,
-): IIntersectionPoint | string | undefined {
+interface IRoutePoint {
+  point: CanvasPoint
+  route: ICanvasRoute
+}
+
+function findIntersections(
+  d1: IRoutePoint,
+  d2: IRoutePoint,
+  d3: IRoutePoint,
+  d4: IRoutePoint,
+): IConflictPoints | undefined {
   //Check if sections are equal
   //Example: [p1 - p2] - [p1 - p2]
   // if (ifTwoEqualSections(point1, point2, point3, point4)) {
@@ -93,23 +83,101 @@ function findIntersection(
   //Check if any section has the same point
   //Example: [p1 - p4] - [p1 - p3]
   //Example: [p1 - p2] - [p2 - p3]
-  if (ifSectionsHaveSamePoint(point1, point2, point3, point4)) {
+  if (ifSectionsHaveSamePoint(d1.point, d2.point, d3.point, d4.point)) {
     return undefined
   }
 
-  const p1 = makePoint(point1)
-  const p2 = makePoint(point2)
-  const q1 = makePoint(point3)
-  const q2 = makePoint(point4)
+  const intersections: IConflictPoint[] = []
+  const edgeCases: string[] = []
 
-  function makePoint(routePoint: CanvasPoint): { x: number; y: number; z: number } {
-    return {
-      x: routePoint.x,
-      y: routePoint.y,
-      z: +routePoint.altitude,
+  const point1 = addAllAltitudesToPoint(d1.point)
+  const point2 = addAllAltitudesToPoint(d2.point)
+  const point3 = addAllAltitudesToPoint(d3.point)
+  const point4 = addAllAltitudesToPoint(d4.point)
+
+  for (const altitude1 of point1.z) {
+    for (const altitude2 of point2.z) {
+      for (const altitude3 of point3.z) {
+        for (const altitude4 of point4.z) {
+          const intersection = findIntersection(
+            { name: point1.name, x: point1.x, y: point1.y, z: altitude1 },
+            { name: point2.name, x: point2.x, y: point2.y, z: altitude2 },
+            { name: point3.name, x: point3.x, y: point3.y, z: altitude3 },
+            { name: point4.name, x: point4.x, y: point4.y, z: altitude4 },
+          )
+          if (!intersection) {
+            continue
+          }
+          if (typeof intersection === 'string') {
+            edgeCases.push(intersection)
+            continue
+          }
+          intersections.push(intersection)
+        }
+      }
     }
   }
 
+  return { conflictPoints: intersections, edgeCases: edgeCases }
+}
+
+function addAllAltitudesToPoint(routePoint: CanvasPoint): IPoint {
+  const tryParseNumber = (n: string): number => {
+    let number: unknown
+    try {
+      number = Number(n)
+    } catch (error) {
+      if (error instanceof TypeError) {
+        throw new Error(`Error casting altitude range, wrong type!: ${error}`)
+      }
+      throw new Error(`Unexpected error casting altitude range!`)
+    }
+
+    if (isNaN(number as number)) {
+      throw new Error(`Unexpected error casting altitude range!`)
+    }
+
+    return number as number
+  }
+  if (!routePoint.altitude.includes('-')) {
+    return {
+      name: routePoint.name,
+      x: routePoint.x,
+      y: routePoint.y,
+      z: [tryParseNumber(routePoint.altitude)],
+    }
+  }
+
+  const point = {
+    name: routePoint.name,
+    x: routePoint.x,
+    y: routePoint.y,
+    z: [] as number[],
+  }
+  const altitudeRange = routePoint.altitude.split('-')
+  if (altitudeRange.length != 2) {
+    throw new Error(
+      `Altitude range "${routePoint.altitude}" for point "${routePoint.name}" has wrong format! `,
+    )
+  }
+
+  let a1 = tryParseNumber(altitudeRange[0])
+  const a2 = tryParseNumber(altitudeRange[1])
+
+  do {
+    point.z.push(a1)
+    a1 += 10
+  } while (a1 < a2)
+
+  return point
+}
+
+function findIntersection(
+  p1: { name: string; x: number; y: number; z: number },
+  p2: { name: string; x: number; y: number; z: number },
+  q1: { name: string; x: number; y: number; z: number },
+  q2: { name: string; x: number; y: number; z: number },
+) {
   const d1 = { x: p2.x - p1.x, y: p2.y - p1.y, z: p2.z - p1.z }
   const d2 = { x: q2.x - q1.x, y: q2.y - q1.y, z: q2.z - q1.z }
 
@@ -170,8 +238,28 @@ function findIntersection(
   }
 }
 
-interface IIntersectionPoint {
+interface IConflictPoint {
   x: number
   y: number
   z: number
+  section1: IRouteSection
+  section2: IRouteSection
+}
+
+interface IRouteSection {
+  route: ICanvasRoute
+  startPoint: CanvasPoint
+  endPoint: CanvasPoint
+}
+
+interface IPoint {
+  name: string
+  x: number
+  y: number
+  z: number[]
+}
+
+interface IPointData {
+  point: IPoint
+  route: CanvasRoute
 }
