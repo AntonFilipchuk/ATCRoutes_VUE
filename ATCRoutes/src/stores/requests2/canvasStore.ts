@@ -10,11 +10,11 @@ import CanvasPoint from '@/utils/Interfaces/CanvasRoute/CanvasPoint'
 import type { ICanvasAerodrome } from '@/utils/Interfaces/CanvasRoute/ICanvasAerodrome'
 import type ICanvasRoute from '@/utils/Interfaces/CanvasRoute/ICanvasRoute'
 import type IAerodrome from '@/utils/Interfaces/IAerodrome'
-import type IConflictPoints from '@/utils/Interfaces/IConflictPoint'
+import type { IConflictPoint } from '@/utils/Interfaces/IConflictPoint';
 import type IRoute from '@/utils/Interfaces/IRoute'
 import type IRouteVisuals from '@/utils/Interfaces/Visuals/IRouteVisuals'
 import type IVisual from '@/utils/Interfaces/Visuals/IVisual'
-import findIntersections from '@/utils/Modules/intersectionsFinder'
+import findConflictPoints from '@/utils/Modules/intersections';
 import { defineStore } from 'pinia'
 import { computed, ref, type Ref } from 'vue'
 
@@ -54,7 +54,7 @@ export const canvasStore = defineStore('canvasStore', () => {
   const selectedRouteType = ref(RouteType.STAR)
   const ifSelectedRouteStandard = ref(false)
   const selectedRoute = ref<ICanvasRoute | null>(null)
-  const conflictPoints: Ref<IConflictPoints[]> = ref([])
+  const conflictPoints: Ref<IConflictPoint[]> = ref([])
 
   function init(
     width: number,
@@ -335,12 +335,12 @@ export const canvasStore = defineStore('canvasStore', () => {
 function calculateConflictPoints(
   selectedRoute: ICanvasRoute | undefined | null,
   routes: ICanvasRoute[],
-): IConflictPoints[] {
+): IConflictPoint[] {
   if (!selectedRoute) {
     throw new Error("Can't find intersections if no route is selected!")
   }
 
-  return findIntersections(selectedRoute, routes)
+  return findConflictPoints(selectedRoute, routes)
 }
 
 function findAndAddRoute(

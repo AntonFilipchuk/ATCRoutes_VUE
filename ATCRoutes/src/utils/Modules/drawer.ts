@@ -1,5 +1,6 @@
 import type ICanvasPoint from '../Interfaces/CanvasRoute/ICanvasPoint'
 import type ICanvasRoute from '../Interfaces/CanvasRoute/ICanvasRoute'
+import type { IConflictPoint } from '../Interfaces/IConflictPoint';
 import type IRouteVisuals from '../Interfaces/Visuals/IRouteVisuals'
 import type ITextVisual from '../Interfaces/Visuals/ITextVisual'
 import type IVisual from '../Interfaces/Visuals/IVisual'
@@ -57,7 +58,7 @@ export function drawPoint(
 }
 
 export function drawConflictPoint(
-  point: Point,
+  point: IConflictPoint,
   visuals: IVisual,
   canvasContext: CanvasRenderingContext2D,
 ) {

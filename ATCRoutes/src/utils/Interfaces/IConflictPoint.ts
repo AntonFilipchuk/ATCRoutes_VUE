@@ -1,14 +1,17 @@
-import type ICanvasRoute from './CanvasRoute/ICanvasRoute'
+import type CanvasPoint from './CanvasRoute/CanvasPoint';
+import type ICanvasRoute from './CanvasRoute/ICanvasRoute';
 
-export default interface IConflictPoints {
-  conflictPoints: IConflictPoint[]
-  edgeCases: string[]
+export interface IConflictPoint
+{
+  route1: ICanvasRoute;
+  route2: ICanvasRoute;
+  x: number;
+  y: number;
+  z: number[];
+  section1: CanvasPoint[];
+  section2: CanvasPoint[];
 }
 
-interface IConflictPoint {
-  route1: ICanvasRoute
-  route2: ICanvasRoute
-  x: number
-  y: number
-  z: number
+interface IConflict {
+  
 }
