@@ -20,8 +20,9 @@
       <div v-if="selectedButton === 'intersections'">
         <IntersectionsList />
       </div>
-      <div v-if="selectedButton === 'aipRoutes'">AIP Routes Content</div>
-      <div v-if="selectedButton === 'coordinates'">Coordinates Content</div>
+      <div v-if="selectedButton === 'coordinates'">
+        <CoordinatesList />
+      </div>
     </div>
   </div>
 </template>
@@ -29,11 +30,11 @@
 import { ref } from 'vue'
 import RoutesList from './Lists/RoutesList/RoutesList.vue'
 import IntersectionsList from './Lists/IntersectionsList.vue'
+import CoordinatesList from './Lists/CoordinatesList.vue'
 
 const buttons = [
   { id: 'routes', label: 'Routes' },
   { id: 'intersections', label: 'Intersections' },
-  { id: 'aipRoutes', label: 'AIP Routes' },
   { id: 'coordinates', label: 'Coordinates' },
 ]
 
